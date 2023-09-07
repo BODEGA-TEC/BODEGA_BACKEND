@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Sibe.API.props" />
+</Project>

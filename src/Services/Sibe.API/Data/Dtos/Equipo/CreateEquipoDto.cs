@@ -13,7 +13,6 @@ namespace Sibe.API.Data.Dtos.Equipo
         public int CategoriaId { get; set; }
 
         public int EstadoId { get; set; } = 1;
-        public TipoEstado TipoEstado { get; set; } = TipoEstado.BODEGA;
 
         public string Descripcion { get; set; } = string.Empty!;
 

@@ -2,6 +2,8 @@
 {
     public class ServiceResponse<T>
     {
+        private readonly string ErrorPrefix = "[ERROR] ";
+
         public T? Data { get; set; }
 
         public bool Success { get; set; } = true;
@@ -11,7 +13,11 @@
         public void SetError(string errorMessage)
         {
             Success = false;
-            Message = errorMessage;
+            Message = ErrorPrefix + errorMessage;
+        }
+        public void SetSuccess(string successMessage)
+        {
+            Message = successMessage;
         }
     }
 }

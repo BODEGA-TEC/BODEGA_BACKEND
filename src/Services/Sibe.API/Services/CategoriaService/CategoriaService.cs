@@ -11,39 +11,46 @@ namespace Sibe.API.Services.CategoriaService
 {
     public class CategoriaService : ICategoriaService
     {
+        // Variables gloables
         private readonly DataContext _context;
-        private const string ErrorPrefix = "[ERROR] - ";
+        private readonly CategoriaServiceMessages _message;
+
+        // Clase interna para gestionar los mensajes
+        private class CategoriaServiceMessages
+        {
+            public readonly string NotFound = "Categoría no encontrada.";
+            public readonly string CreateSuccess = "Categoría creada con éxito.";
+            public readonly string ReadSuccess = "Categoría(s) recuperada(s) con éxito.";
+            public readonly string Empty = "No se han registrado categorias.";
+            public readonly string UpdatedSuccess = "Categoría actualizada con éxito.";
+            public readonly string DeletedSuccess = "Categoría eliminada con éxito.";
+        }
 
         public CategoriaService(DataContext context)
         {
             _context = context;
+            _message = new CategoriaServiceMessages();
         }
+
         public async Task<ServiceResponse<Categoria>> Create(Categoria categoria)
         {
             var response = new ServiceResponse<Categoria>();
 
-            // Iniciar transacción
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
             try
             {
-                // Agregar la nueva categoría a la base de datos
+                // Agregar la categoría
                 _context.Categorias.Add(categoria);
                 await _context.SaveChangesAsync();
 
-                // Confirmar la transacción
-                await _context.Database.CommitTransactionAsync();
-
+                // Configurar la respuesta
                 response.Data = categoria;
-                response.Success = true;
-                response.Message = "Categoría creada con éxito.";
+                response.SetSuccess(_message.CreateSuccess);
             }
+
             catch (Exception ex)
             {
-                // Si ocurre un error, puedes deshacer la transacción
-                await transaction.RollbackAsync();
-
-                response.SetError(ErrorPrefix + ex.InnerException?.Message);
+                // Configurar el error
+                response.SetError(ex.Message);
             }
 
             return response;
@@ -55,17 +62,23 @@ namespace Sibe.API.Services.CategoriaService
 
             try
             {
-                var categorias = await _context.Categorias.ToListAsync() 
-                    ?? throw new Exception("Equipo no encontrado.");
+                // Recuperar las categorías
+                var categorias = await _context.Categorias
+                    .ToListAsync() 
+                    ?? throw new Exception(_message.NotFound);
 
+                // Configurar la respuesta
                 response.Data = categorias;
-                response.Success = true;
-                response.Message = categorias.Count == 0
-                    ? "No se ha registrado equipo." : "Categorías recuperadas con éxito.";
+                string message = categorias.Count == 0 
+                    ? _message.Empty 
+                    : _message.ReadSuccess;
+                response.SetSuccess(message);
             }
+
             catch (Exception ex)
             {
-                response.SetError(ErrorPrefix + ex.Message);
+                // Configurar el error
+                response.SetError(ex.Message);
             }
 
             return response;
@@ -77,16 +90,20 @@ namespace Sibe.API.Services.CategoriaService
 
             try
             {
-                var categoria = await _context.Categorias.FindAsync(id)
-                    ?? throw new Exception("Categoria no encontrada.");
+                // Recuperar la categoría
+                var categoria = await _context.Categorias
+                    .FindAsync(id)
+                    ?? throw new Exception(_message.NotFound);
 
+                // Configurar la respuesta
                 response.Data = categoria;
-                response.Success = true;
-                response.Message = "Categoría obtenida con éxito.";
+                response.SetSuccess(_message.ReadSuccess);
             }
+
             catch (Exception ex)
             {
-                response.SetError(ErrorPrefix + ex.InnerException?.Message);
+                // Configurar el error
+                response.SetError(ex.Message);
             }
 
             return response;
@@ -98,18 +115,21 @@ namespace Sibe.API.Services.CategoriaService
 
             try
             {
+                // Recuperar las categorías
                 var categorias = await _context.Categorias
                     .Where(c => c.Tipo == tipo)
                     .ToListAsync()
-                    ?? throw new Exception("Categoria no encontrada.");
+                    ?? throw new Exception(_message.NotFound);
 
+                // Configurar la respuesta
                 response.Data = categorias;
-                response.Success = true;
-                response.Message = "Categorías obtenidas con éxito.";
+                response.SetSuccess(_message.ReadSuccess);
             }
+
             catch (Exception ex)
             {
-                response.SetError(ErrorPrefix + ex.InnerException?.Message);
+                // Configurar el error
+                response.SetError(ex.Message);
             }
 
             return response;
@@ -119,33 +139,27 @@ namespace Sibe.API.Services.CategoriaService
         {
             var response = new ServiceResponse<Categoria>();
 
-            // Iniciar transacción
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
             try
             {
-                var categoriaExistente = await _context.Categorias.FindAsync(id)
-                    ?? throw new Exception("Categoria no encontrada.");
+                // Recuperar la categoría
+                var target = await _context.Categorias
+                    .FindAsync(id)
+                    ?? throw new Exception(_message.NotFound);
 
-                // Actualizar los datos de la categoría existente
-                categoriaExistente.Descripcion = categoria.Descripcion;
-                categoriaExistente.Tipo = categoria.Tipo;
-
+                // Actualizar la categoría
+                target.Descripcion = categoria.Descripcion;
+                target.Tipo = categoria.Tipo;
                 await _context.SaveChangesAsync();
 
-                // Confirmar la transacción
-                await _context.Database.CommitTransactionAsync();
-
-                response.Data = categoriaExistente;
-                response.Success = true;
-                response.Message = "Categoría actualizada con éxito.";
+                // Configurar la respuesta
+                response.Data = target;
+                response.SetSuccess(_message.UpdatedSuccess);
             }
+
             catch (Exception ex)
             {
-                // Si ocurre un error, puedes deshacer la transacción
-                await transaction.RollbackAsync();
-
-                response.SetError(ErrorPrefix + ex.InnerException?.Message);
+                // Configurar el error
+                response.SetError(ex.Message);
             }
 
             return response;
@@ -155,29 +169,25 @@ namespace Sibe.API.Services.CategoriaService
         {
             var response = new ServiceResponse<object>();
 
-            // Iniciar transacción
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
             try
             {
-                var categoriaExistente = await _context.Categorias.FindAsync(id)
-                    ?? throw new Exception("Categoria no encontrada.");
+                // Recuperar la categoría
+                var categoriaExistente = await _context.Categorias
+                    .FindAsync(id)
+                    ?? throw new Exception(_message.NotFound);
 
+                // Eliminar la categoría
                 _context.Categorias.Remove(categoriaExistente);
                 await _context.SaveChangesAsync();
 
-                // Confirmar la transacción
-                await _context.Database.CommitTransactionAsync();
-
-                response.Success = true;
-                response.Message = "Categoría eliminada con éxito.";
+                // Configurar la respuesta
+                response.SetSuccess(_message.DeletedSuccess);
             }
+
             catch (Exception ex)
             {
-                // Si ocurre un error, puedes deshacer la transacción
-                await transaction.RollbackAsync();
-
-                response.SetError(ErrorPrefix + ex.InnerException?.Message);
+                // Configurar el error
+                response.SetError(ex.Message);
             }
 
             return response;

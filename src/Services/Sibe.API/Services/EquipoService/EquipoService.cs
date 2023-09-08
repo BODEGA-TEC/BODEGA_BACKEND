@@ -3,20 +3,87 @@ using Sibe.API.Data;
 using Sibe.API.Data.Dtos.Equipo;
 using Sibe.API.Models;
 using Sibe.API.Services.CategoriaService;
+using Sibe.API.Services.EstadoService;
 
 namespace Sibe.API.Services.EquipoService
 {
     public class EquipoService : IEquipoService
     {
+        // Variables gloables
         private readonly DataContext _context;
+        private readonly IEstadoService _estadoService;
         private readonly ICategoriaService _categoriaService;
+        private readonly EquipoServiceMessages _message;
 
-        private const string ErrorPrefix = "[ERROR] - ";
-
-        public EquipoService(DataContext context, ICategoriaService categoriaService)
+        // Clase interna para gestionar los mensajes
+        private class EquipoServiceMessages
         {
-            _categoriaService = categoriaService;
+            public readonly string NotFound = "Equipo no encontrado.";
+            public readonly string CreateSuccess = "Equipo creado con éxito.";
+            public readonly string ReadSuccess = "Equipo recuperado con éxito.";
+            public readonly string Empty = "No se ha registrado equipo.";
+            public readonly string UpdatedSuccess = "Equipo actualizado con éxito.";
+            public readonly string DeletedSuccess = "Equipo eliminado con éxito.";
+        }
+
+        public EquipoService(DataContext context, IEstadoService estadoService, ICategoriaService categoriaService)
+        {
             _context = context;
+            _estadoService = estadoService;
+            _categoriaService = categoriaService;
+            _message = new EquipoServiceMessages();
+        }
+
+        public async Task<ServiceResponse<Equipo>> Create(CreateEquipoDto equipoDto)
+        {
+            var response = new ServiceResponse<Equipo>();
+
+            try
+            {
+                // Recuperar categorias
+                var categoriaResponse = await _categoriaService.ReadById(equipoDto.CategoriaId);
+                if (!categoriaResponse.Success)
+                {
+                    response.SetError(categoriaResponse.Message);
+                    return response;
+                }
+
+                // Recuperar estado
+                var estadoResponse = await _estadoService.ReadById(equipoDto.EstadoId);
+                if (!estadoResponse.Success)
+                {
+                    response.SetError(estadoResponse.Message);
+                    return response;
+                }
+
+                // Crear equipo
+                var equipo = new Equipo
+                {
+                    Activo = equipoDto.Activo,
+                    Serie = equipoDto.Serie,
+                    Categoria = categoriaResponse.Data,
+                    Estado = estadoResponse.Data,
+                    Descripcion = equipoDto.Descripcion,
+                    Marca = equipoDto.Marca,
+                    Modelo = equipoDto.Modelo,
+                    Observaciones = equipoDto.Observaciones
+                };
+
+                // Agregar equipo
+                _context.Equipo.Add(equipo);
+                await _context.SaveChangesAsync();
+
+                response.Data = equipo;
+                response.SetSuccess(_message.CreateSuccess);
+            }
+
+            catch (Exception ex)
+            {
+                // Configurar error
+                response.SetError(ex.Message);
+            }
+
+            return response;
         }
 
         public async Task<ServiceResponse<List<Equipo>>> ReadAll()
@@ -25,24 +92,28 @@ namespace Sibe.API.Services.EquipoService
 
             try
             {
-                // Lógica para obtener todos los equipos con entidades relacionadas
+                // Recuperar equipo
                 var equipo = await _context.Equipo
-                    .Include(e => e.Categoria) // Incluye la entidad relacionada Categoria
-                    .Include(e => e.Estado)    // Incluye la entidad relacionada Estado
-                    .ToListAsync() ?? throw new Exception("Equipo no encontrado.");
+                    .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
+                    .Include(e => e.Estado)    // Incluye entidad relacionada Estado
+                    .ToListAsync() ?? throw new Exception(_message.NotFound);
 
+                // Configurar respuesta
                 response.Data = equipo;
-                response.Success = true;
-                response.Message = equipo.Count == 0 
-                    ? "No se ha registrado equipo." : "Equipos recuperados con éxito.";
+                string message = equipo.Count == 0
+                    ? _message.Empty
+                    : _message.ReadSuccess;
+                response.SetSuccess(message);
             }
+
             catch (Exception ex)
             {
-                response.SetError(ErrorPrefix + ex.Message);
+                // Configurar error
+                response.SetError(ex.Message);
             }
+
             return response;
         }
-
 
         public async Task<ServiceResponse<Equipo>> ReadById(int id)
         {
@@ -50,160 +121,113 @@ namespace Sibe.API.Services.EquipoService
 
             try
             {
-                // Lógica para obtener un equipo por su ID incluyendo las entidades relacionadas
+                // Recuperar equipo
                 var equipo = await _context.Equipo
-                    .Include(e => e.Categoria) // Incluye la entidad relacionada Categoria
-                    .Include(e => e.Estado)    // Incluye la entidad relacionada Estado
+                    .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
+                    .Include(e => e.Estado)    // Incluye entidad relacionada Estado
                     .FirstOrDefaultAsync(e => e.Id == id)
-                    ?? throw new Exception("Equipo no encontrado.");
+                    ?? throw new Exception(_message.NotFound);
 
+                // Configurar respuesta
                 response.Data = equipo;
-                response.Success = true;
-                response.Message = "Equipo recuperado con éxito.";
+                response.SetSuccess(_message.ReadSuccess);
             }
+
             catch (Exception ex)
             {
-                response.SetError(ErrorPrefix + ex.Message);
+                // Configurar error
+                response.SetError(ex.Message);
             }
+
             return response;
         }
 
-
-        public async Task<ServiceResponse<Equipo>> Create(CreateEquipoDto equipoDto)
+        public async Task<ServiceResponse<Equipo>> Update(int id, UpdateEquipoDto equipo)
         {
             var response = new ServiceResponse<Equipo>();
 
             try
             {
-                // Obtener la categoría por ID fuera del bloque de transacción
-                // a través del servicio de categorías (mantenibilidad)
-                var categoriaResponse = await _categoriaService.ReadById(equipoDto.CategoriaId);
-                if (!categoriaResponse.Success)
+                // Recuperar equipo
+                var target = await _context.Equipo
+                    .FindAsync(id)
+                    ?? throw new Exception(_message.NotFound);
+
+                // Actualizar equipo | Solamente datos que no son null
+                target.Activo = equipo.Activo ?? target.Activo;
+                target.Serie = equipo.Serie ?? target.Serie;
+                target.Descripcion = equipo.Descripcion ?? target.Descripcion;
+                target.Marca = equipo.Marca ?? target.Marca;
+                target.Modelo = equipo.Modelo ?? target.Modelo;
+                target.Observaciones = equipo.Observaciones ?? target.Observaciones;
+
+                // Actualizar categoria
+                if (equipo.CategoriaId.HasValue)
                 {
-                    response.SetError(categoriaResponse.Message);
-                    return response;
-                }
-
-                // Obtener el estado
-                var estado = _context.Estados.FirstOrDefault(e => e.Id == equipoDto.EstadoId);
-                if (estado == null)
-                {
-                    response.SetError("Estado no encontrado.");
-                    return response;
-                }
-
-                // Crear un nuevo equipo
-                var equipo = new Equipo
-                {
-                    Activo = equipoDto.Activo,
-                    Serie = equipoDto.Serie,
-                    Categoria = categoriaResponse.Data,
-                    Estado = estado,
-                    Descripcion = equipoDto.Descripcion,
-                    Marca = equipoDto.Marca,
-                    Modelo = equipoDto.Modelo,
-                    Observaciones = equipoDto.Observaciones
-                };
-
-                // Agregar el nuevo equipo a la base de datos
-                _context.Equipo.Add(equipo);
-                await _context.SaveChangesAsync();
-
-                response.Data = equipo;
-                response.Success = true;
-                response.Message = "Equipo creado con éxito.";
-            }
-            catch (Exception ex)
-            {
-                response.SetError(ErrorPrefix + ex.InnerException?.Message);
-            }
-            return response;
-        }
-
-
-        public async Task<ServiceResponse<Equipo>> Update(int id, UpdateEquipoDto equipoDto)
-        {
-            var response = new ServiceResponse<Equipo>();
-
-            try
-            {
-                // Lógica para actualizar un equipo existente por su ID
-                var equipo = await _context.Equipo.FindAsync(id)
-                    ?? throw new Exception("Equipo no encontrado.");
-
-                // Actualizar los datos solo si no son null
-                equipo.Activo = equipoDto.Activo ?? equipo.Activo;
-                equipo.Serie = equipoDto.Serie ?? equipo.Serie;
-                equipo.Descripcion = equipoDto.Descripcion ?? equipo.Descripcion;
-                equipo.Marca = equipoDto.Marca ?? equipo.Marca;
-                equipo.Modelo = equipoDto.Modelo ?? equipo.Modelo;
-                equipo.Observaciones = equipoDto.Observaciones ?? equipo.Observaciones;
-
-                if (equipoDto.CategoriaId.HasValue) {
-                    var categoriaResponse = await _categoriaService.ReadById((int)equipoDto.CategoriaId);
+                    var categoriaResponse = await _categoriaService.ReadById((int)equipo.CategoriaId);
                     if (!categoriaResponse.Success)
                     {
                         response.SetError(categoriaResponse.Message);
                         return response;
                     }
-                    equipo.Categoria = categoriaResponse.Data;
+                    target.Categoria = categoriaResponse.Data;
                 }
-                
-                if (equipoDto.EstadoId.HasValue) {
-                    // Obtener el estado
-                    var estado = _context.Estados.FirstOrDefault(e => e.Id == equipoDto.EstadoId);
-                    if (estado == null)
+
+                // Actualizar estado
+                if (equipo.EstadoId.HasValue)
+                {
+                    var estado = await _estadoService.ReadById((int)equipo.EstadoId);
+                    if (!estado.Success)
                     {
-                        response.SetError("Estado no encontrado.");
+                        response.SetError(estado.Message);
                         return response;
                     }
-                    equipo.Estado = estado;
+                    target.Estado = estado.Data;
                 }
 
-                // Guardar los cambios en la base de datos
+                // Actualizar equipo
                 await _context.SaveChangesAsync();
-                response.Data = equipo;
-                response.Success = true;
-                response.Message = "Equipo actualizado con éxito.";
+
+                // Configurar respuesta
+                var result = await ReadById(id);
+                response.Data = result.Data;
+                response.SetSuccess(_message.UpdatedSuccess);
             }
+
             catch (Exception ex)
             {
-                response.SetError(ErrorPrefix + ex.InnerException?.Message);
+                // Configurar error
+                response.SetError(ex.Message);
             }
+
             return response;
         }
-
 
         public async Task<ServiceResponse<object>> Delete(int id)
         {
             var response = new ServiceResponse<object>();
 
-            // Iniciar transacción
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
             try
             {
-                // Lógica para eliminar un equipo por su ID
-                var equipo = await _context.Equipo.FindAsync(id)
-                    ?? throw new Exception("Equipo no encontrado.");
+                // Recuperar categoría
+                var equipo = await _context.Equipo
+                    .FindAsync(id)
+                    ?? throw new Exception(_message.NotFound);
 
-                // Realizar la eliminación en la base de datos
+                // Eliminar categoría
                 _context.Equipo.Remove(equipo);
                 await _context.SaveChangesAsync();
 
-                // Confirmar la transacción
-                await transaction.CommitAsync();
-
-                response.Success = true;
-                response.Message = "Equipo eliminado con éxito.";
+                // Configurar respuesta
+                response.SetSuccess(_message.DeletedSuccess);
             }
+
             catch (Exception ex)
             {
-                // Si ocurre un error, puedes deshacer la transacción
-                await transaction.RollbackAsync();
-
-                response.SetError(ErrorPrefix + ex.InnerException?.Message);
+                // Configurar error
+                response.SetError(ex.Message);
             }
+
             return response;
         }
     }

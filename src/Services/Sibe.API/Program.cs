@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Sibe.API.Models.Enums;
+using Sibe.API.Services.EstadoService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,8 +36,9 @@ builder.Services.AddSwaggerGen();
 
 // Inyeccion de servicios
 builder.Services.AddScoped<IEquipoService, EquipoService>();
-//builder.Services.AddScoped<IComponenteService, ComponenteService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+builder.Services.AddScoped<IEstadoService, EstadoService>();
+//builder.Services.AddScoped<IComponenteService, ComponenteService>();
 
 
 var app = builder.Build();

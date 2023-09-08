@@ -6,6 +6,8 @@ namespace Sibe.API.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Descripcion { get; set; } = null!;
+
+        [Required]
+        public string Descripcion { get; set; } = string.Empty!;
     }
 }

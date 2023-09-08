@@ -37,7 +37,7 @@ namespace Sibe.API.Services.EstadoService
                 var estado = new Estado { Descripcion = descripcion };
 
                 // Agregar estado
-                _context.Estados.Add(estado);
+                _context.Estado.Add(estado);
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
@@ -61,7 +61,7 @@ namespace Sibe.API.Services.EstadoService
             try
             {
                 // Recuperar estados
-                var estados = await _context.Estados
+                var estados = await _context.Estado
                     .ToListAsync()
                     ?? throw new Exception(_message.NotFound);
 
@@ -89,7 +89,7 @@ namespace Sibe.API.Services.EstadoService
             try
             {
                 // Recuperar estado
-                var estado = await _context.Estados
+                var estado = await _context.Estado
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
@@ -114,7 +114,7 @@ namespace Sibe.API.Services.EstadoService
             try
             {
                 // Recuperar estado
-                var target = await _context.Estados
+                var target = await _context.Estado
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
@@ -143,12 +143,12 @@ namespace Sibe.API.Services.EstadoService
             try
             {
                 // Recuperar estado
-                var estadoExistente = await _context.Estados
+                var estadoExistente = await _context.Estado
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
                 // Eliminar estado
-                _context.Estados.Remove(estadoExistente);
+                _context.Estado.Remove(estadoExistente);
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta

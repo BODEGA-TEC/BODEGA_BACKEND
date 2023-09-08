@@ -8,10 +8,10 @@ namespace Sibe.API.Models
         public int Id { get; set; }
 
         [Required]
-        public Categoria? Categoria { get; set; }
+        public Categoria Categoria { get; set; } = null!;
 
         [Required]
-        public Estado? Estado { get; set; }
+        public Estado Estado { get; set; } = null!;
 
         public string Activo { get; set; } = string.Empty!;
 

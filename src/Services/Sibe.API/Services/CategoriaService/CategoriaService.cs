@@ -35,7 +35,7 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Agregar categoría
-                _context.Categorias.Add(categoria);
+                _context.Categoria.Add(categoria);
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
@@ -59,7 +59,7 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Recuperar categorías
-                var categorias = await _context.Categorias
+                var categorias = await _context.Categoria
                     .ToListAsync() 
                     ?? throw new Exception(_message.NotFound);
 
@@ -87,7 +87,7 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Recuperar categoría
-                var categoria = await _context.Categorias
+                var categoria = await _context.Categoria
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
@@ -112,7 +112,7 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Recuperar categorías
-                var categorias = await _context.Categorias
+                var categorias = await _context.Categoria
                     .Where(c => c.Tipo == tipo)
                     .ToListAsync()
                     ?? throw new Exception(_message.NotFound);
@@ -138,7 +138,7 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Recuperar categoría
-                var target = await _context.Categorias
+                var target = await _context.Categoria
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
@@ -168,12 +168,12 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Recuperar categoría
-                var categoria = await _context.Categorias
+                var categoria = await _context.Categoria
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
                 // Eliminar categoría
-                _context.Categorias.Remove(categoria);
+                _context.Categoria.Remove(categoria);
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta

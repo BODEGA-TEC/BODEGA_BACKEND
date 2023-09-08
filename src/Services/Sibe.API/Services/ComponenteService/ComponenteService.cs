@@ -42,7 +42,7 @@ namespace Sibe.API.Services.ComponenteService
             {
                 // Recuperar categorias
                 var categoriaResponse = await _categoriaService.ReadById(componenteDto.CategoriaId);
-                if (!categoriaResponse.Success)
+                if (!categoriaResponse.Success || categoriaResponse.Data == null)
                 {
                     response.SetError(categoriaResponse.Message);
                     return response;
@@ -50,7 +50,7 @@ namespace Sibe.API.Services.ComponenteService
 
                 // Recuperar estado
                 var estadoResponse = await _estadoService.ReadById(componenteDto.EstadoId);
-                if (!estadoResponse.Success)
+                if (!estadoResponse.Success || estadoResponse.Data == null)
                 {
                     response.SetError(estadoResponse.Message);
                     return response;
@@ -67,7 +67,7 @@ namespace Sibe.API.Services.ComponenteService
                 };
 
                 // Agregar componente
-                _context.Componentes.Add(componente);
+                _context.Componente.Add(componente);
                 await _context.SaveChangesAsync();
 
                 response.Data = componente;
@@ -90,7 +90,7 @@ namespace Sibe.API.Services.ComponenteService
             try
             {
                 // Recuperar componentes
-                var componentes = await _context.Componentes
+                var componentes = await _context.Componente
                     .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
                     .ToListAsync() ?? throw new Exception(_message.NotFound);
 
@@ -118,7 +118,7 @@ namespace Sibe.API.Services.ComponenteService
             try
             {
                 // Recuperar componente
-                var componente = await _context.Componentes
+                var componente = await _context.Componente
                     .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
                     .FirstOrDefaultAsync(e => e.Id == id)
                     ?? throw new Exception(_message.NotFound);
@@ -144,7 +144,7 @@ namespace Sibe.API.Services.ComponenteService
             try
             {
                 // Recuperar componente
-                var target = await _context.Componentes
+                var target = await _context.Componente
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
@@ -157,7 +157,7 @@ namespace Sibe.API.Services.ComponenteService
                 if (componenteDto.CategoriaId.HasValue)
                 {
                     var categoriaResponse = await _categoriaService.ReadById((int)componenteDto.CategoriaId);
-                    if (!categoriaResponse.Success)
+                    if (!categoriaResponse.Success || categoriaResponse.Data == null)
                     {
                         response.SetError(categoriaResponse.Message);
                         return response;
@@ -169,7 +169,7 @@ namespace Sibe.API.Services.ComponenteService
                 if (componenteDto.EstadoId.HasValue)
                 {
                     var estadoResponse = await _estadoService.ReadById((int)componenteDto.EstadoId);
-                    if (!estadoResponse.Success)
+                    if (!estadoResponse.Success || estadoResponse.Data == null)
                     {
                         response.SetError(estadoResponse.Message);
                         return response;
@@ -202,12 +202,12 @@ namespace Sibe.API.Services.ComponenteService
             try
             {
                 // Recuperar componente
-                var componente = await _context.Componentes
+                var componente = await _context.Componente
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
                 // Eliminar componente
-                _context.Componentes.Remove(componente);
+                _context.Componente.Remove(componente);
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta

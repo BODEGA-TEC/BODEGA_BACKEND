@@ -42,7 +42,7 @@ namespace Sibe.API.Services.EquipoService
             {
                 // Recuperar categorias
                 var categoriaResponse = await _categoriaService.ReadById(equipoDto.CategoriaId);
-                if (!categoriaResponse.Success)
+                if (!categoriaResponse.Success || categoriaResponse.Data == null)
                 {
                     response.SetError(categoriaResponse.Message);
                     return response;
@@ -50,7 +50,7 @@ namespace Sibe.API.Services.EquipoService
 
                 // Recuperar estado
                 var estadoResponse = await _estadoService.ReadById(equipoDto.EstadoId);
-                if (!estadoResponse.Success)
+                if (!estadoResponse.Success || estadoResponse.Data == null)
                 {
                     response.SetError(estadoResponse.Message);
                     return response;
@@ -165,7 +165,7 @@ namespace Sibe.API.Services.EquipoService
                 if (equipoDto.CategoriaId.HasValue)
                 {
                     var categoriaResponse = await _categoriaService.ReadById((int)equipoDto.CategoriaId);
-                    if (!categoriaResponse.Success)
+                    if (!categoriaResponse.Success || categoriaResponse.Data == null)
                     {
                         response.SetError(categoriaResponse.Message);
                         return response;
@@ -177,7 +177,7 @@ namespace Sibe.API.Services.EquipoService
                 if (equipoDto.EstadoId.HasValue)
                 {
                     var estadoResponse = await _estadoService.ReadById((int)equipoDto.EstadoId);
-                    if (!estadoResponse.Success)
+                    if (!estadoResponse.Success || estadoResponse.Data == null)
                     {
                         response.SetError(estadoResponse.Message);
                         return response;

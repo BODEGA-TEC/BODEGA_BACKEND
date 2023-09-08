@@ -8,9 +8,9 @@ namespace Sibe.API.Models
         public int Id { get; set; }
 
         [Required]
-        public Categoria? Categoria { get; set; }
+        public Categoria Categoria { get; set; } = null!;
 
-        public Estado? Estado { get; set; }
+        public Estado Estado { get; set; } = null!;
 
         public string Activo { get; set; } = string.Empty!;
 
@@ -24,6 +24,5 @@ namespace Sibe.API.Models
         public string? Modelo { get; set; }
 
         public string Observaciones { get; set; } = string.Empty;
-
     }
 }

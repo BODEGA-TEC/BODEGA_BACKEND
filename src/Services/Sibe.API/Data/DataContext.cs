@@ -46,9 +46,9 @@ namespace Sibe.API.Data
             );
         }
 
-        public DbSet<Estado> Estados { get; set; }
-        public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Estado> Estado { get; set; }
+        public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Equipo> Equipo { get; set; }
-        public DbSet<Componente> Componentes { get; set; }
+        public DbSet<Componente> Componente { get; set; }
     }
 }

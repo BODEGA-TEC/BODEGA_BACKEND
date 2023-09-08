@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Sibe.API.Data;
 using Sibe.API.Models;
 using Sibe.API.Models.Enums;
@@ -38,18 +34,18 @@ namespace Sibe.API.Services.CategoriaService
 
             try
             {
-                // Agregar la categoría
+                // Agregar categoría
                 _context.Categorias.Add(categoria);
                 await _context.SaveChangesAsync();
 
-                // Configurar la respuesta
+                // Configurar respuesta
                 response.Data = categoria;
                 response.SetSuccess(_message.CreateSuccess);
             }
 
             catch (Exception ex)
             {
-                // Configurar el error
+                // Configurar error
                 response.SetError(ex.Message);
             }
 
@@ -62,12 +58,12 @@ namespace Sibe.API.Services.CategoriaService
 
             try
             {
-                // Recuperar las categorías
+                // Recuperar categorías
                 var categorias = await _context.Categorias
                     .ToListAsync() 
                     ?? throw new Exception(_message.NotFound);
 
-                // Configurar la respuesta
+                // Configurar respuesta
                 response.Data = categorias;
                 string message = categorias.Count == 0 
                     ? _message.Empty 
@@ -77,7 +73,7 @@ namespace Sibe.API.Services.CategoriaService
 
             catch (Exception ex)
             {
-                // Configurar el error
+                // Configurar error
                 response.SetError(ex.Message);
             }
 
@@ -90,19 +86,19 @@ namespace Sibe.API.Services.CategoriaService
 
             try
             {
-                // Recuperar la categoría
+                // Recuperar categoría
                 var categoria = await _context.Categorias
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
-                // Configurar la respuesta
+                // Configurar respuesta
                 response.Data = categoria;
                 response.SetSuccess(_message.ReadSuccess);
             }
 
             catch (Exception ex)
             {
-                // Configurar el error
+                // Configurar error
                 response.SetError(ex.Message);
             }
 
@@ -115,20 +111,20 @@ namespace Sibe.API.Services.CategoriaService
 
             try
             {
-                // Recuperar las categorías
+                // Recuperar categorías
                 var categorias = await _context.Categorias
                     .Where(c => c.Tipo == tipo)
                     .ToListAsync()
                     ?? throw new Exception(_message.NotFound);
 
-                // Configurar la respuesta
+                // Configurar respuesta
                 response.Data = categorias;
                 response.SetSuccess(_message.ReadSuccess);
             }
 
             catch (Exception ex)
             {
-                // Configurar el error
+                // Configurar error
                 response.SetError(ex.Message);
             }
 
@@ -141,24 +137,24 @@ namespace Sibe.API.Services.CategoriaService
 
             try
             {
-                // Recuperar la categoría
+                // Recuperar categoría
                 var target = await _context.Categorias
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
-                // Actualizar la categoría
+                // Actualizar categoría
                 target.Descripcion = categoria.Descripcion;
                 target.Tipo = categoria.Tipo;
                 await _context.SaveChangesAsync();
 
-                // Configurar la respuesta
+                // Configurar respuesta
                 response.Data = target;
                 response.SetSuccess(_message.UpdatedSuccess);
             }
 
             catch (Exception ex)
             {
-                // Configurar el error
+                // Configurar error
                 response.SetError(ex.Message);
             }
 
@@ -171,22 +167,22 @@ namespace Sibe.API.Services.CategoriaService
 
             try
             {
-                // Recuperar la categoría
+                // Recuperar categoría
                 var categoriaExistente = await _context.Categorias
                     .FindAsync(id)
                     ?? throw new Exception(_message.NotFound);
 
-                // Eliminar la categoría
+                // Eliminar categoría
                 _context.Categorias.Remove(categoriaExistente);
                 await _context.SaveChangesAsync();
 
-                // Configurar la respuesta
+                // Configurar respuesta
                 response.SetSuccess(_message.DeletedSuccess);
             }
 
             catch (Exception ex)
             {
-                // Configurar el error
+                // Configurar error
                 response.SetError(ex.Message);
             }
 

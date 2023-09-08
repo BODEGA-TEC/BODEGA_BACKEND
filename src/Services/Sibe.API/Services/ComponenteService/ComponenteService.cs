@@ -11,6 +11,7 @@ namespace Sibe.API.Services.ComponenteService
     {
         // Variables gloables
         private readonly DataContext _context;
+        private readonly IEstadoService _estadoService;
         private readonly ICategoriaService _categoriaService;
         private readonly ComponenteServiceMessages _message;
 
@@ -25,9 +26,10 @@ namespace Sibe.API.Services.ComponenteService
             public readonly string DeletedSuccess = "Componente eliminado con éxito.";
         }
 
-        public ComponenteService(DataContext context, ICategoriaService categoriaService)
+        public ComponenteService(DataContext context, IEstadoService estadoService, ICategoriaService categoriaService)
         {
             _context = context;
+            _estadoService = estadoService;
             _categoriaService = categoriaService;
             _message = new ComponenteServiceMessages();
         }
@@ -46,11 +48,20 @@ namespace Sibe.API.Services.ComponenteService
                     return response;
                 }
 
+                // Recuperar estado
+                var estadoResponse = await _estadoService.ReadById(componenteDto.EstadoId);
+                if (!estadoResponse.Success)
+                {
+                    response.SetError(estadoResponse.Message);
+                    return response;
+                }
+
                 // Crear componente
                 var componente = new Componente
                 {
                     Activo = componenteDto.Activo,
                     Categoria = categoriaResponse.Data,
+                    Estado = estadoResponse.Data,
                     Descripcion = componenteDto.Descripcion.ToUpper(),
                     Observaciones = componenteDto.Observaciones
                 };
@@ -152,6 +163,18 @@ namespace Sibe.API.Services.ComponenteService
                         return response;
                     }
                     target.Categoria = categoriaResponse.Data;
+                }
+
+                // Actualizar estado
+                if (componenteDto.EstadoId.HasValue)
+                {
+                    var estadoResponse = await _estadoService.ReadById((int)componenteDto.EstadoId);
+                    if (!estadoResponse.Success)
+                    {
+                        response.SetError(estadoResponse.Message);
+                        return response;
+                    }
+                    target.Estado = estadoResponse.Data;
                 }
 
                 // Actualizar componente

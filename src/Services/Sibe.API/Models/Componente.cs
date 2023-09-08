@@ -10,6 +10,9 @@ namespace Sibe.API.Models
         [Required]
         public Categoria? Categoria { get; set; }
 
+        [Required]
+        public Estado? Estado { get; set; }
+
         public string Activo { get; set; } = string.Empty!;
 
         [Required]

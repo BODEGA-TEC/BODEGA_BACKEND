@@ -176,13 +176,13 @@ namespace Sibe.API.Services.EquipoService
                 // Actualizar estado
                 if (equipoDto.EstadoId.HasValue)
                 {
-                    var estado = await _estadoService.ReadById((int)equipoDto.EstadoId);
-                    if (!estado.Success)
+                    var estadoResponse = await _estadoService.ReadById((int)equipoDto.EstadoId);
+                    if (!estadoResponse.Success)
                     {
-                        response.SetError(estado.Message);
+                        response.SetError(estadoResponse.Message);
                         return response;
                     }
-                    target.Estado = estado.Data;
+                    target.Estado = estadoResponse.Data;
                 }
 
                 // Actualizar equipo

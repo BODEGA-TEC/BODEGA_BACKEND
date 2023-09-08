@@ -38,7 +38,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IEquipoService, EquipoService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<IEstadoService, EstadoService>();
-//builder.Services.AddScoped<IComponenteService, ComponenteService>();
+builder.Services.AddScoped<IComponenteService, ComponenteService>();
 
 
 var app = builder.Build();

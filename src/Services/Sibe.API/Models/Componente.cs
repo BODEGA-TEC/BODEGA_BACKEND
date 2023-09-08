@@ -15,7 +15,6 @@ namespace Sibe.API.Models
         [Required]
         public string Descripcion { get; set; } = string.Empty!;
 
-        public string? Observaciones { get; set; }
-
+        public string Observaciones { get; set; } = string.Empty;
     }
 }

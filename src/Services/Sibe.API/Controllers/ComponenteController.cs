@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Sibe.API.Data.Dtos.Componente;
 using Sibe.API.Models;
 using Sibe.API.Services.ComponenteService;
 
@@ -16,7 +17,7 @@ namespace Sibe.API.Controllers
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<ServiceResponse<Componente>>> Create([FromBody] Componente componente)
+        public async Task<ActionResult<ServiceResponse<Componente>>> Create([FromBody] CreateComponenteDto componente)
         {
             var response = await _componenteService.Create(componente);
             return Ok(response);
@@ -37,7 +38,7 @@ namespace Sibe.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ServiceResponse<Componente>>> Update(int id, [FromBody] Componente componente)
+        public async Task<ActionResult<ServiceResponse<Componente>>> Update(int id, [FromBody] UpdateComponenteDto componente)
         {
             var response = await _componenteService.Update(id, componente);
             return Ok(response);

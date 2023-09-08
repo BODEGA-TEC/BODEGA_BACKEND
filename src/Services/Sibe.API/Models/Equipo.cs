@@ -23,7 +23,7 @@ namespace Sibe.API.Models
 
         public string? Modelo { get; set; }
 
-        public string? Observaciones { get; set; }
+        public string Observaciones { get; set; } = string.Empty;
 
     }
 }

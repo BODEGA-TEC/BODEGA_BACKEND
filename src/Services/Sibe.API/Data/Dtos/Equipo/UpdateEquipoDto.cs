@@ -1,7 +1,4 @@
-﻿using Sibe.API.Models;
-using System.ComponentModel.DataAnnotations;
-
-namespace Sibe.API.Data.Dtos.Equipo
+﻿namespace Sibe.API.Data.Dtos.Equipo
 {
     public class UpdateEquipoDto
     {
@@ -20,7 +17,7 @@ namespace Sibe.API.Data.Dtos.Equipo
 
         public string? Modelo { get; set; }
 
-        public string? Observaciones { get; set; }
+        public string Observaciones { get; set; } = string.Empty;
 
     }
 }

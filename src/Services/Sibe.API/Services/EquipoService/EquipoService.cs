@@ -63,7 +63,7 @@ namespace Sibe.API.Services.EquipoService
                     Serie = equipoDto.Serie,
                     Categoria = categoriaResponse.Data,
                     Estado = estadoResponse.Data,
-                    Descripcion = equipoDto.Descripcion,
+                    Descripcion = equipoDto.Descripcion.ToUpper(),
                     Marca = equipoDto.Marca,
                     Modelo = equipoDto.Modelo,
                     Observaciones = equipoDto.Observaciones
@@ -142,7 +142,7 @@ namespace Sibe.API.Services.EquipoService
             return response;
         }
 
-        public async Task<ServiceResponse<Equipo>> Update(int id, UpdateEquipoDto equipo)
+        public async Task<ServiceResponse<Equipo>> Update(int id, UpdateEquipoDto equipoDto)
         {
             var response = new ServiceResponse<Equipo>();
 
@@ -154,17 +154,17 @@ namespace Sibe.API.Services.EquipoService
                     ?? throw new Exception(_message.NotFound);
 
                 // Actualizar equipo | Solamente datos que no son null
-                target.Activo = equipo.Activo ?? target.Activo;
-                target.Serie = equipo.Serie ?? target.Serie;
-                target.Descripcion = equipo.Descripcion ?? target.Descripcion;
-                target.Marca = equipo.Marca ?? target.Marca;
-                target.Modelo = equipo.Modelo ?? target.Modelo;
-                target.Observaciones = equipo.Observaciones ?? target.Observaciones;
+                target.Activo = equipoDto.Activo ?? target.Activo;
+                target.Serie = equipoDto.Serie ?? target.Serie;
+                target.Descripcion = equipoDto.Descripcion ?? target.Descripcion.ToUpper();
+                target.Marca = equipoDto.Marca ?? target.Marca;
+                target.Modelo = equipoDto.Modelo ?? target.Modelo;
+                target.Observaciones = equipoDto.Observaciones ?? target.Observaciones;
 
                 // Actualizar categoria
-                if (equipo.CategoriaId.HasValue)
+                if (equipoDto.CategoriaId.HasValue)
                 {
-                    var categoriaResponse = await _categoriaService.ReadById((int)equipo.CategoriaId);
+                    var categoriaResponse = await _categoriaService.ReadById((int)equipoDto.CategoriaId);
                     if (!categoriaResponse.Success)
                     {
                         response.SetError(categoriaResponse.Message);
@@ -174,9 +174,9 @@ namespace Sibe.API.Services.EquipoService
                 }
 
                 // Actualizar estado
-                if (equipo.EstadoId.HasValue)
+                if (equipoDto.EstadoId.HasValue)
                 {
-                    var estado = await _estadoService.ReadById((int)equipo.EstadoId);
+                    var estado = await _estadoService.ReadById((int)equipoDto.EstadoId);
                     if (!estado.Success)
                     {
                         response.SetError(estado.Message);

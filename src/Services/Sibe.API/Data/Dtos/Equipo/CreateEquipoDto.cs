@@ -1,8 +1,4 @@
-﻿using Sibe.API.Models;
-using Sibe.API.Models.Enums;
-using System.ComponentModel.DataAnnotations;
-
-namespace Sibe.API.Data.Dtos.Equipo
+﻿namespace Sibe.API.Data.Dtos.Equipo
 {
     public class CreateEquipoDto
     {
@@ -20,6 +16,6 @@ namespace Sibe.API.Data.Dtos.Equipo
 
         public string? Modelo { get; set; }
 
-        public string? Observaciones { get; set; }
+        public string Observaciones { get; set; } = string.Empty;
     }
 }

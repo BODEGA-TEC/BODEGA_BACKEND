@@ -2,9 +2,6 @@
 {
     public class CreateEquipoDto
     {
-        public string Activo { get; set; } = string.Empty!;
-
-        public string? Serie { get; set; }
 
         public int CategoriaId { get; set; }
 
@@ -12,10 +9,16 @@
 
         public string Descripcion { get; set; } = string.Empty!;
 
+        public string ActivoBodega { get; set; } = string.Empty!;
+
         public string? Marca { get; set; }
 
         public string? Modelo { get; set; }
 
-        public string Observaciones { get; set; } = string.Empty;
+        public string? ActivoTec { get; set; }
+
+        public string? Serie { get; set; }
+
+        public string? Observaciones { get; set; }
     }
 }

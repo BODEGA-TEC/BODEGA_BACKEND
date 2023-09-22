@@ -59,10 +59,12 @@ namespace Sibe.API.Services.ComponenteService
                 // Crear componente
                 var componente = new Componente
                 {
-                    Activo = componenteDto.Activo,
                     Categoria = categoriaResponse.Data,
                     Estado = estadoResponse.Data,
                     Descripcion = componenteDto.Descripcion.ToUpper(),
+                    Cantidad = componenteDto.Cantidad,
+                    ActivoBodega = componenteDto.ActivoBodega,
+                    ActivoTec = componenteDto.ActivoTec,
                     Observaciones = componenteDto.Observaciones
                 };
 
@@ -149,8 +151,10 @@ namespace Sibe.API.Services.ComponenteService
                     ?? throw new Exception(_message.NotFound);
 
                 // Actualizar componente | Solamente datos que no son null
-                target.Activo = componenteDto.Activo ?? target.Activo;
                 target.Descripcion = componenteDto.Descripcion ?? target.Descripcion.ToUpper();
+                target.ActivoBodega = componenteDto.ActivoBodega ?? target.ActivoBodega;
+                target.ActivoTec = componenteDto.ActivoTec ?? target.ActivoTec;
+                target.Cantidad = componenteDto.Cantidad ?? target.Cantidad;
                 target.Observaciones = componenteDto.Observaciones ?? target.Observaciones;
 
                 // Actualizar componente

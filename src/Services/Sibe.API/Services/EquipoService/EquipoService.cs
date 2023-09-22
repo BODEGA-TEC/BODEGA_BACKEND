@@ -59,7 +59,8 @@ namespace Sibe.API.Services.EquipoService
                 // Crear equipo
                 var equipo = new Equipo
                 {
-                    Activo = equipoDto.Activo,
+                    ActivoBodega = equipoDto.ActivoBodega,
+                    ActivoTec = equipoDto.ActivoTec,
                     Serie = equipoDto.Serie,
                     Categoria = categoriaResponse.Data,
                     Estado = estadoResponse.Data,
@@ -154,7 +155,8 @@ namespace Sibe.API.Services.EquipoService
                     ?? throw new Exception(_message.NotFound);
 
                 // Actualizar equipo | Solamente datos que no son null
-                target.Activo = equipoDto.Activo ?? target.Activo;
+                target.ActivoBodega = equipoDto.ActivoBodega ?? target.ActivoBodega;
+                target.ActivoTec = equipoDto.ActivoTec ?? target.ActivoTec;
                 target.Serie = equipoDto.Serie ?? target.Serie;
                 target.Descripcion = equipoDto.Descripcion ?? target.Descripcion.ToUpper();
                 target.Marca = equipoDto.Marca ?? target.Marca;

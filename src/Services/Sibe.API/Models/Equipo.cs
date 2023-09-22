@@ -7,22 +7,29 @@ namespace Sibe.API.Models
         [Key]
         public int Id { get; set; }
 
+        /* PROPIEDADES DE NAVEGACION */
+
         [Required]
         public Categoria Categoria { get; set; } = null!;
 
         public Estado Estado { get; set; } = null!;
 
-        public string Activo { get; set; } = string.Empty!;
-
-        public string? Serie { get; set; }
+        /* PROPIEDADES DE PROPIAS */
 
         [Required]
         public string Descripcion { get; set; } = string.Empty!;
+
+        [Required]
+        public string ActivoBodega { get; set; } = null!;
 
         public string? Marca { get; set; }
 
         public string? Modelo { get; set; }
 
-        public string Observaciones { get; set; } = string.Empty;
+        public string? ActivoTec { get; set; }
+
+        public string? Serie { get; set; }
+
+        public string? Observaciones { get; set; }
     }
 }

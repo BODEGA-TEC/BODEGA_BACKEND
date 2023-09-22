@@ -15,10 +15,11 @@ namespace Sibe.API.Controllers
             _EstadoService = EstadoService;
         }
 
-        [HttpPost("{desc}")]
-        public async Task<ActionResult<ServiceResponse<Estado>>> Create(string desc)
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<Estado>>> Create([FromBody] Estado estado)
         {
-            var response = await _EstadoService.Create(desc);
+            // No se utiliza estado.Id en esta acción.
+            var response = await _EstadoService.Create(estado.Descripcion);
             return Ok(response);
         }
 
@@ -36,10 +37,10 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{id}/{desc}")]
-        public async Task<ActionResult<ServiceResponse<Estado>>> Update(int id, string desc)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ServiceResponse<Estado>>> Update(int id, [FromBody] Estado estado)
         {
-            var response = await _EstadoService.Update(id, desc);
+            var response = await _EstadoService.Update(id, estado.Descripcion);
             return Ok(response);
         }
 

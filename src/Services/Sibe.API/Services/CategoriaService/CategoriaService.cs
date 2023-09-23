@@ -143,7 +143,7 @@ namespace Sibe.API.Services.CategoriaService
                     ?? throw new Exception(_message.NotFound);
 
                 // Actualizar categoría
-                target.Descripcion = categoria.Descripcion;
+                target.Nombre = categoria.Nombre;
                 target.Tipo = categoria.Tipo;
                 await _context.SaveChangesAsync();
 

@@ -8,7 +8,7 @@ namespace Sibe.API.Models
         public int Id { get; set; }
 
         [Required]
-        public Escuela Escuela { get; set; } = null!;
+        public Departamento Departamento { get; set; } = null!;
 
         [Required]
         public string Nombre { get; set; } = null!;

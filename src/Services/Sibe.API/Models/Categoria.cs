@@ -7,9 +7,11 @@ namespace Sibe.API.Models
     {
         [Key]
         public int Id { get; set; }
+
+
         public TipoCategoria Tipo { get; set; } = TipoCategoria.DESCONOCIDO;
 
-        [Required(ErrorMessage = "El nombre es obligatorio.")]
-        public string Descripcion { get; set; } = null!;
+        [Required]
+        public string Nombre { get; set; } = null!;
     }
 }

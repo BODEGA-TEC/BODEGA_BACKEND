@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Sibe.API.Models
 {
-    public class ComprobantePrestamo
+    public class PrestamoProfesor
     {
         [Key]
         public int Id { get; set; }
@@ -15,14 +15,16 @@ namespace Sibe.API.Models
         public TipoComprobantePrestamo Tipo { get; set; }
 
         [Required]
+        public string Descripcion { get; set; } = null!;
+
+        [Required]
         public Usuario Asistente { get; set; } = null!;
 
         [Required]
-        public string SolicitanteId { get; set; } = null!;
+        public Profesor Profesor { get; set; } = null!;
 
-        public bool EsProfesor { get; set; } = false;
+        public List<Componente> Componentes { get; set; } = new List<Componente>();
 
-        [Required]
-        public string Descripcion { get; set; } = null!;
+        public List<Equipo> Equipo { get; set; } = new List<Equipo>();
     }
 }

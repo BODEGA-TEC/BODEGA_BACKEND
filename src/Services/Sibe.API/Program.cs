@@ -20,7 +20,11 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MySqlConnection") ??
         throw new InvalidOperationException("MySqlConnection no se ha encontrado.");
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseMySql(connectionString, ServerVersion.Parse("8.0.29-mysql"),
+        mySqlOptions =>
+        {
+            mySqlOptions.EnableRetryOnFailure();
+        });
 });
 
 

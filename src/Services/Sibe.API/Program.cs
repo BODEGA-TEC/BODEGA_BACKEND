@@ -14,7 +14,7 @@ using Sibe.API.Services.UsuarioService;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar la configuración desde /Services/serviceMessages.json
+// Agregar la configuraciï¿½n desde /Services/serviceMessages.json
 builder.Configuration
     .SetBasePath(Path.Combine(AppContext.BaseDirectory, "Services"))
     .AddJsonFile("servicesMessages.json", optional: true, reloadOnChange: true);
@@ -47,10 +47,10 @@ builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwa
 // esto porque vamos a necesitar siempre el id del current user para cada operacion del crud
 builder.Services.AddHttpContextAccessor();
 
-// Agrega la autenticación JWT
+// Agrega la autenticaciï¿½n JWT
 builder.Services.AddSingleton(new JwtCredentialProvider(builder.Configuration));
 
-// Registra la autenticación JWT y pasa IConfiguration
+// Registra la autenticaciï¿½n JWT y pasa IConfiguration
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 // Inyeccion de servicios
@@ -62,6 +62,17 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 // Service to implement authentication middleware
 builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowLocalhost3000",
+            builder =>
+            {
+                builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+    });
 
 var app = builder.Build();
 
@@ -78,5 +89,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("AllowLocalhost3000"); // Usar la polÃ­tica de CORS
 
 app.Run();

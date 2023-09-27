@@ -5,6 +5,7 @@ using Sibe.API.Services.UsuarioService;
 using Sibe.API.Models.Entidades;
 using Sibe.API.Data.Dtos.Usuario;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace Sibe.API.Controllers
 {
@@ -16,6 +17,7 @@ namespace Sibe.API.Controllers
     /// </remarks>
     [ApiController]
     [Route("api/")]
+    [EnableCors("AllowLocalhost3000")]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;

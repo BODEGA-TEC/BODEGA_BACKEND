@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Data.Dtos.Equipo;
 using Sibe.API.Models;
@@ -9,6 +10,7 @@ namespace Sibe.API.Controllers
 {
     [ApiController]
     [Route("api/equipo")]
+    [EnableCors("AllowLocalhost3000")]
     public class EquipoController : ControllerBase
     {
         private readonly IEquipoService _equipoService;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Models;
 using Sibe.API.Models.Inventario;
@@ -9,6 +10,7 @@ namespace Sibe.API.Controllers
     [ApiController]
     [Route("api/estados")]
     [Authorize]
+    [EnableCors("AllowLocalhost3000")]
     public class EstadoController : ControllerBase
     {
         private readonly IEstadoService _estadoService;

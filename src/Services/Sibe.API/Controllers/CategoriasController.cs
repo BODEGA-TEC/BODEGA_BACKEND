@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Models;
 using Sibe.API.Models.Enums;
@@ -9,6 +10,7 @@ namespace Sibe.API.Controllers
 {
     [ApiController]
     [Route("api/categorias")]
+    [EnableCors("AllowLocalhost3000")]
     [Authorize]
     public class CategoriaController : ControllerBase
     {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Data.Dtos.Componente;
 using Sibe.API.Models;
@@ -9,6 +10,7 @@ namespace Sibe.API.Controllers
 {
     [ApiController]
     [Route("api/componentes")]
+    [EnableCors("AllowLocalhost3000")]
     public class ComponenteController : ControllerBase
     {
         private readonly IComponenteService _componenteService;

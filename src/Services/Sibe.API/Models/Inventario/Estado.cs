@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Sibe.API.Models
+namespace Sibe.API.Models.Inventario
 {
     public class Estado
     {

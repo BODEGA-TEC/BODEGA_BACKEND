@@ -1,4 +1,5 @@
 ﻿using Sibe.API.Models;
+using Sibe.API.Models.Inventario;
 
 namespace Sibe.API.Services.EstadoService
 {

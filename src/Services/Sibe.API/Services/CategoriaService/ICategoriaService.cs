@@ -1,5 +1,6 @@
 ﻿using Sibe.API.Models;
 using Sibe.API.Models.Enums;
+using Sibe.API.Models.Inventario;
 
 namespace Sibe.API.Services.CategoriaService
 {

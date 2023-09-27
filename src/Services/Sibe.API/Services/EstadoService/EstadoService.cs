@@ -1,30 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sibe.API.Data;
 using Sibe.API.Models;
+using Sibe.API.Models.Inventario;
 
 namespace Sibe.API.Services.EstadoService
 {
     public class EstadoService : IEstadoService
     {
         // Variables gloables
+        private readonly IConfigurationSection _messages;
         private readonly DataContext _context;
-        private readonly EstadoServiceMessages _message;
 
-        // Clase interna para gestionar los mensajes
-        private class EstadoServiceMessages
-        {
-            public readonly string NotFound = "Estado no encontrado.";
-            public readonly string CreateSuccess = "Estado creado con éxito.";
-            public readonly string ReadSuccess = "Estado(s) recuperado(s) con éxito.";
-            public readonly string Empty = "No se han registrado estados.";
-            public readonly string UpdatedSuccess = "Estado actualizado con éxito.";
-            public readonly string DeletedSuccess = "Estado eliminado con éxito.";
-        }
-
-        public EstadoService(DataContext context)
+        public EstadoService(IConfiguration configuration, DataContext context)
         {
             _context = context;
-            _message = new EstadoServiceMessages();
+            _messages = configuration.GetSection("EstadoService");
         }
 
         public async Task<ServiceResponse<Estado>> Create(string descripcion)
@@ -41,8 +31,7 @@ namespace Sibe.API.Services.EstadoService
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                response.Data = estado;
-                response.SetSuccess(_message.CreateSuccess);
+                response.SetSuccess(_messages["CreateSuccess"], estado);
             }
 
             catch (Exception ex)
@@ -63,14 +52,13 @@ namespace Sibe.API.Services.EstadoService
                 // Recuperar estados
                 var estados = await _context.Estado
                     .ToListAsync()
-                    ?? throw new Exception(_message.NotFound);
+                    ?? throw new Exception(_messages["NotFound"]);
 
                 // Configurar respuesta
-                response.Data = estados;
-                string message = estados.Count == 0
-                    ? _message.Empty
-                    : _message.ReadSuccess;
-                response.SetSuccess(message);
+                string? message = estados.Count == 0
+                    ? _messages["Empty"]
+                    : _messages["ReadSuccess"];
+                response.SetSuccess(message, estados);
             }
 
             catch (Exception ex)
@@ -91,11 +79,10 @@ namespace Sibe.API.Services.EstadoService
                 // Recuperar estado
                 var estado = await _context.Estado
                     .FindAsync(id)
-                    ?? throw new Exception(_message.NotFound);
+                    ?? throw new Exception(_messages["NotFound"]);
 
                 // Configurar respuesta
-                response.Data = estado;
-                response.SetSuccess(_message.ReadSuccess);
+                response.SetSuccess(_messages["ReadSuccess"], estado);
             }
 
             catch (Exception ex)
@@ -116,15 +103,14 @@ namespace Sibe.API.Services.EstadoService
                 // Recuperar estado
                 var target = await _context.Estado
                     .FindAsync(id)
-                    ?? throw new Exception(_message.NotFound);
+                    ?? throw new Exception(_messages["NotFound"]);
 
                 // Actualizar estado
                 target.Descripcion = descripcion;
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                response.Data = target;
-                response.SetSuccess(_message.UpdatedSuccess);
+                response.SetSuccess(_messages["UpdatedSuccess"], target);
             }
 
             catch (Exception ex)
@@ -145,14 +131,14 @@ namespace Sibe.API.Services.EstadoService
                 // Recuperar estado
                 var estadoExistente = await _context.Estado
                     .FindAsync(id)
-                    ?? throw new Exception(_message.NotFound);
+                    ?? throw new Exception(_messages["NotFound"]);
 
                 // Eliminar estado
                 _context.Estado.Remove(estadoExistente);
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                response.SetSuccess(_message.DeletedSuccess);
+                response.SetSuccess(_messages["DeletedSuccess"]);
             }
 
             catch (Exception ex)

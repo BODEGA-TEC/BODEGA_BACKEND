@@ -2,6 +2,7 @@
 using Sibe.API.Data;
 using Sibe.API.Data.Dtos.Componente;
 using Sibe.API.Models;
+using Sibe.API.Models.Inventario;
 using Sibe.API.Services.CategoriaService;
 using Sibe.API.Services.EstadoService;
 
@@ -10,28 +11,24 @@ namespace Sibe.API.Services.ComponenteService
     public class ComponenteService : IComponenteService
     {
         // Variables gloables
+        private readonly IConfigurationSection _messages;
         private readonly DataContext _context;
         private readonly IEstadoService _estadoService;
         private readonly ICategoriaService _categoriaService;
-        private readonly ComponenteServiceMessages _message;
 
-        // Clase interna para gestionar los mensajes
-        private class ComponenteServiceMessages
+        public ComponenteService(IConfiguration configuration, DataContext context, IEstadoService estadoService, ICategoriaService categoriaService)
         {
-            public readonly string NotFound = "Componente no encontrado.";
-            public readonly string CreateSuccess = "Componente creado con éxito.";
-            public readonly string ReadSuccess = "Componente(s) recuperado(s) con éxito.";
-            public readonly string Empty = "No se han registrado componentes.";
-            public readonly string UpdatedSuccess = "Componente actualizado con éxito.";
-            public readonly string DeletedSuccess = "Componente eliminado con éxito.";
-        }
-
-        public ComponenteService(DataContext context, IEstadoService estadoService, ICategoriaService categoriaService)
-        {
+            _messages = configuration.GetSection("ComponenteService");
             _context = context;
             _estadoService = estadoService;
             _categoriaService = categoriaService;
-            _message = new ComponenteServiceMessages();
+        }
+
+
+        private async Task IsActivoTecInUse(string? activoTec)
+        {
+            if (activoTec != null && await _context.Componente.AnyAsync(c => c.ActivoTec == activoTec))
+                throw new Exception(_messages["ActivoTecInUse"]);
         }
 
         public async Task<ServiceResponse<Componente>> Create(CreateComponenteDto componenteDto)
@@ -40,6 +37,9 @@ namespace Sibe.API.Services.ComponenteService
 
             try
             {
+                // Si el activo tec ya se encuentra registrado
+                await IsActivoTecInUse(componenteDto.ActivoTec);
+
                 // Recuperar categorias
                 var categoriaResponse = await _categoriaService.ReadById(componenteDto.CategoriaId);
                 if (!categoriaResponse.Success || categoriaResponse.Data == null)
@@ -72,8 +72,8 @@ namespace Sibe.API.Services.ComponenteService
                 _context.Componente.Add(componente);
                 await _context.SaveChangesAsync();
 
-                response.Data = componente;
-                response.SetSuccess(_message.CreateSuccess);
+                // Configurar respuesta
+                response.SetSuccess(_messages["CreateSuccess"], componente);
             }
 
             catch (Exception ex)
@@ -94,14 +94,13 @@ namespace Sibe.API.Services.ComponenteService
                 // Recuperar componentes
                 var componentes = await _context.Componente
                     .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
-                    .ToListAsync() ?? throw new Exception(_message.NotFound);
+                    .ToListAsync() ?? throw new Exception(_messages["NotFound"]);
 
                 // Configurar respuesta
-                response.Data = componentes;
-                string message = componentes.Count == 0
-                    ? _message.Empty
-                    : _message.ReadSuccess;
-                response.SetSuccess(message);
+                string? message = componentes.Count == 0
+                    ? _messages["Empty"]
+                    : _messages["ReadSuccess"];
+                response.SetSuccess(message, componentes);
             }
 
             catch (Exception ex)
@@ -123,11 +122,10 @@ namespace Sibe.API.Services.ComponenteService
                 var componente = await _context.Componente
                     .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
                     .FirstOrDefaultAsync(e => e.Id == id)
-                    ?? throw new Exception(_message.NotFound);
+                    ?? throw new Exception(_messages["NotFound"]);
 
                 // Configurar respuesta
-                response.Data = componente;
-                response.SetSuccess(_message.ReadSuccess);
+                response.SetSuccess(_messages["ReadSuccess"], componente);
             }
 
             catch (Exception ex)
@@ -148,7 +146,7 @@ namespace Sibe.API.Services.ComponenteService
                 // Recuperar componente
                 var target = await _context.Componente
                     .FindAsync(id)
-                    ?? throw new Exception(_message.NotFound);
+                    ?? throw new Exception(_messages["NotFound"]);
 
                 // Actualizar componente | Solamente datos que no son null
                 target.Descripcion = componenteDto.Descripcion ?? target.Descripcion.ToUpper();
@@ -186,8 +184,7 @@ namespace Sibe.API.Services.ComponenteService
 
                 // Configurar respuesta
                 var result = await ReadById(id);
-                response.Data = result.Data;
-                response.SetSuccess(_message.UpdatedSuccess);
+                response.SetSuccess(_messages["UpdatedSuccess"], result.Data);
             }
 
             catch (Exception ex)
@@ -208,14 +205,14 @@ namespace Sibe.API.Services.ComponenteService
                 // Recuperar componente
                 var componente = await _context.Componente
                     .FindAsync(id)
-                    ?? throw new Exception(_message.NotFound);
+                    ?? throw new Exception(_messages["NotFound"]);
 
                 // Eliminar componente
                 _context.Componente.Remove(componente);
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                response.SetSuccess(_message.DeletedSuccess);
+                response.SetSuccess(_messages["DeletedSuccess"]);
             }
 
             catch (Exception ex)

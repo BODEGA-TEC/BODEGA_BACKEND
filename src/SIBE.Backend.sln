@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{B6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sibe.API", "Services\Sibe.API\Sibe.API.csproj", "{BDC8DD89-020C-44BD-A0F3-8B81A6F15F6A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtAuthenticationHandler", "Services\JwtAuthenticationHandler\JwtAuthenticationHandler.csproj", "{6DCF3DA3-8DB0-436B-A5F7-4D351803B6B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +19,19 @@ Global
 		{BDC8DD89-020C-44BD-A0F3-8B81A6F15F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDC8DD89-020C-44BD-A0F3-8B81A6F15F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDC8DD89-020C-44BD-A0F3-8B81A6F15F6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DCF3DA3-8DB0-436B-A5F7-4D351803B6B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DCF3DA3-8DB0-436B-A5F7-4D351803B6B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DCF3DA3-8DB0-436B-A5F7-4D351803B6B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DCF3DA3-8DB0-436B-A5F7-4D351803B6B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BDC8DD89-020C-44BD-A0F3-8B81A6F15F6A} = {B6C1A3E7-63A0-4391-A6FF-CE0F24EE9747}
+		{6DCF3DA3-8DB0-436B-A5F7-4D351803B6B1} = {B6C1A3E7-63A0-4391-A6FF-CE0F24EE9747}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0E5365E4-1144-47F3-827B-729458B1EB8F}
 	EndGlobalSection
 EndGlobal

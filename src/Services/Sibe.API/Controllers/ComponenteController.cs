@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Data.Dtos.Componente;
 using Sibe.API.Models;
+using Sibe.API.Models.Inventario;
 using Sibe.API.Services.ComponenteService;
 
 namespace Sibe.API.Controllers
 {
-    [Route("api/componentes")]
     [ApiController]
+    [Route("api/componentes")]
     public class ComponenteController : ControllerBase
     {
         private readonly IComponenteService _componenteService;
@@ -16,6 +18,7 @@ namespace Sibe.API.Controllers
             _componenteService = componenteService;
         }
 
+        [Authorize]
         [HttpPost("")]
         public async Task<ActionResult<ServiceResponse<Componente>>> Create([FromBody] CreateComponenteDto componente)
         {
@@ -37,6 +40,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<ServiceResponse<Componente>>> Update(int id, [FromBody] UpdateComponenteDto componente)
         {
@@ -44,6 +48,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {

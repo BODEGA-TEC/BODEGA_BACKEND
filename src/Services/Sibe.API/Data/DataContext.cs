@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sibe.API.Models;
+using Sibe.API.Models.Comprobantes;
+using Sibe.API.Models.Entidades;
 using Sibe.API.Models.Enums;
+using Sibe.API.Models.Historicos;
+using Sibe.API.Models.Inventario;
 
 namespace Sibe.API.Data
 {
@@ -16,7 +19,8 @@ namespace Sibe.API.Data
             Equipo = Set<Equipo>();
             Departamento = Set<Departamento>();
             Estado = Set<Estado>();
-            HistorialEquipo = Set<HistorialEquipo>();
+            HistoricoEquipo = Set<HistoricoEquipo>();
+            HistoricoPrestamo = Set<HistoricoPrestamo>();
             Profesor = Set<Profesor>();
             Rol = Set<Rol>();
             Usuario = Set<Usuario>();
@@ -29,7 +33,8 @@ namespace Sibe.API.Data
         public DbSet<Equipo> Equipo { get; set; }
         public DbSet<Departamento> Departamento { get; set; }
         public DbSet<Estado> Estado { get; set; }
-        public DbSet<HistorialEquipo> HistorialEquipo { get; set; }
+        public DbSet<HistoricoEquipo> HistoricoEquipo { get; set; }
+        public DbSet<HistoricoPrestamo> HistoricoPrestamo { get; set; }
         public DbSet<Profesor> Profesor { get; set; }
         public DbSet<Rol> Rol { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
@@ -45,6 +50,20 @@ namespace Sibe.API.Data
 
             modelBuilder.Entity<Categoria>()
                 .HasIndex(c => c.Nombre)
+                .IsUnique();
+
+            modelBuilder.Entity<Componente>()
+                .HasIndex(c => c.ActivoBodega)
+                .IsUnique();
+            modelBuilder.Entity<Componente>()
+                .HasIndex(c => c.ActivoTec)
+                .IsUnique();
+
+            modelBuilder.Entity<Equipo>()
+                .HasIndex(e => e.ActivoBodega)
+                .IsUnique();
+            modelBuilder.Entity<Equipo>()
+                .HasIndex(e => e.ActivoTec)
                 .IsUnique();
 
             // Tablas de relacion para los comprobantes

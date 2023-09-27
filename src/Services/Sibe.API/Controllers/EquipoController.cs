@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Data.Dtos.Equipo;
 using Sibe.API.Models;
+using Sibe.API.Models.Inventario;
 using Sibe.API.Services.EquipoService;
 
 namespace Sibe.API.Controllers
 {
-    [Route("api/equipo")]
     [ApiController]
+    [Route("api/equipo")]
     public class EquipoController : ControllerBase
     {
         private readonly IEquipoService _equipoService;
@@ -37,6 +39,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<ServiceResponse<Equipo>>> Update(int id, [FromBody] UpdateEquipoDto equipo)
         {
@@ -44,6 +47,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {

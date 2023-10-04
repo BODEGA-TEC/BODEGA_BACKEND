@@ -34,6 +34,7 @@ namespace Sibe.API.Services.UsuarioService
 
             try
             {
+
                 // Si el carne ya se encuentra registrado
                 await IsCarneInUse(usuarioDto.Carne);
 
@@ -41,18 +42,18 @@ namespace Sibe.API.Services.UsuarioService
                 var rol = await _context.Rol.FindAsync(usuarioDto.RolId)
                     ?? throw new Exception(_messages["RoleNotFound"]);
 
-                // Crear hash
-                JwtCredentialProvider.CreatePasswordHash(usuarioDto.Clave, out byte[] passwordHash, out byte[] passwordSalt);
-
                 var usuario = new Usuario
                 {
-                    Carne = usuarioDto.Carne,
-                    Nombre = usuarioDto.Nombre,
-                    ClaveHash = passwordHash,
-                    ClaveSalt = passwordSalt,
-                    Correo = usuarioDto.Correo,
+                    Nombre = usuarioDto.Nombre.ToUpper(),
+                    Clave = usuarioDto.Clave, // Validar formato clave
+                    Correo = usuarioDto.Correo, // Validar formato correo
                     Rol = rol
                 };
+
+                // Crear y asignar clave hash salt
+                JwtCredentialProvider.CreatePasswordHash(usuarioDto.Clave, out byte[] passwordHash, out byte[] passwordSalt);
+                usuario.ClaveHash = passwordHash;
+                usuario.ClaveSalt = passwordSalt;
 
                 // Agregar usuario
                 _context.Usuario.Add(usuario);

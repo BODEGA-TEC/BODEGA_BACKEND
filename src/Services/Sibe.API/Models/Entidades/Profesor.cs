@@ -1,10 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Sibe.API.Utils;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.RegularExpressions;
 
 namespace Sibe.API.Models.Entidades
 {
     public class Profesor
     {
+        /* CONSTANTES */
+
+        private static readonly string emailRegexPattern = @"^[a-zA-Z0-9._%+-]+@itcr\.ac\.cr$";
+
+
+        /* ATRIBUTOS */
+
         [Key]
         public int Id { get; set; }
 
@@ -13,11 +22,7 @@ namespace Sibe.API.Models.Entidades
         public Departamento Departamento { get; set; } = null!;
 
         [Required]
-        public string Nombre
-        {
-            get { return _nombre; }
-            set { _nombre = value.ToUpper(); } // Convierte a mayúsculas antes de asignar
-        }
+        public string Nombre { get { return _nombre; } set { _nombre = value.ToUpper(); } }
 
         [Required]
         public string PrimerApellido { get; set; } = null!;
@@ -27,16 +32,26 @@ namespace Sibe.API.Models.Entidades
 
         [Required]
         [EmailAddress]
-        [RegularExpression(@"^[a-zA-Z0-9._%+-]+@itcr\.ac\.cr$", ErrorMessage = "El correo debe tener el dominio @itcr.ac.cr")]
-        public string Correo
-        {
-            get { return _correo; }
-            set { _correo = value.ToLower(); } // Convierte a minúsculas antes de asignar
-        }
+        public string Correo { get { return _correo; } set { SetValidCorreo(value); } }
+
+
+        /* VARIABLES AUXILIARES */
 
         [NotMapped]
-        private string _nombre = null!;
+        private string _nombre = string.Empty;
+
         [NotMapped]
-        private string _correo = null!;
+        private string _correo = string.Empty;
+
+
+        /* METODOS */
+
+        // Función para verificar y asignar un correo electrónico con formato válido.
+        private void SetValidCorreo(string correo)
+        {
+            RegexValidator.ValidateWithRegex(correo, emailRegexPattern, "El correo debe tener el dominio @itcr.ac.cr");
+            _correo = correo.ToLower(); // Convierte a minúsculas antes de asignar
+        }
+
     }
 }

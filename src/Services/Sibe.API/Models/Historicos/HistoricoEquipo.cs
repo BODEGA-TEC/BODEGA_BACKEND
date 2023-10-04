@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Sibe.API.Models.Comprobantes;
 using Sibe.API.Models.Inventario;
 using Sibe.API.Utils;
 
@@ -23,8 +23,8 @@ namespace Sibe.API.Models.Historicos
         [Required]
         public string Detalle { get; set; } = null!;
 
-        // Navegación a la entidad HistorialPrestamo que almacena el Id del comprobante correspondiente al tipo de prestamo.
-        public HistoricoPrestamo? HistorialPrestamo { get; set; } // En caso de que haya prestamo
+        // Navegación a la entidad Boleta que almacena el Id de la boleta correspondiente.
+        public BoletaPrestamo? Comprobante { get; set; } // En caso de que haya prestamo
     }
 }
 

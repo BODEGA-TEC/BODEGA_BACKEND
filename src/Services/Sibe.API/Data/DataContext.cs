@@ -14,13 +14,12 @@ namespace Sibe.API.Data
         {
             Categoria = Set<Categoria>();
             Componente = Set<Componente>();
-            PrestamoEstudiante = Set<PrestamoEstudiante>();
-            PrestamoProfesor = Set<PrestamoProfesor>();
+            PrestamoEstudiante = Set<BoletaPrestamoEstudiante>();
+            PrestamoProfesor = Set<BoletaPrestamoProfesor>();
             Equipo = Set<Equipo>();
             Departamento = Set<Departamento>();
             Estado = Set<Estado>();
             HistoricoEquipo = Set<HistoricoEquipo>();
-            HistoricoPrestamo = Set<HistoricoPrestamo>();
             Profesor = Set<Profesor>();
             Rol = Set<Rol>();
             Usuario = Set<Usuario>();
@@ -28,13 +27,12 @@ namespace Sibe.API.Data
 
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Componente> Componente { get; set; }
-        public DbSet<PrestamoEstudiante> PrestamoEstudiante { get; set; }
-        public DbSet<PrestamoProfesor> PrestamoProfesor { get; set; }
+        public DbSet<BoletaPrestamoEstudiante> PrestamoEstudiante { get; set; }
+        public DbSet<BoletaPrestamoProfesor> PrestamoProfesor { get; set; }
         public DbSet<Equipo> Equipo { get; set; }
         public DbSet<Departamento> Departamento { get; set; }
         public DbSet<Estado> Estado { get; set; }
         public DbSet<HistoricoEquipo> HistoricoEquipo { get; set; }
-        public DbSet<HistoricoPrestamo> HistoricoPrestamo { get; set; }
         public DbSet<Profesor> Profesor { get; set; }
         public DbSet<Rol> Rol { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
@@ -66,51 +64,16 @@ namespace Sibe.API.Data
                 .HasIndex(e => e.ActivoTec)
                 .IsUnique();
 
-            // Tablas de relacion para los comprobantes
-            modelBuilder.Entity<PrestamoEstudiante>()
-                .HasMany(pe => pe.Componentes) // lista de componentes prestados
+            // Configuración de las relaciones en las boletas
+            modelBuilder.Entity<BoletaPrestamoEstudiante>()
+                .HasOne(b => b.ProfesorAutorizador)
                 .WithMany()
-                .UsingEntity(j =>
-                {
-                    j.ToTable("PrestamoEstudianteComponente");
-                    j.Property<int>("PrestamoEstudianteId"); 
-                    j.Property<int>("ComponenteId"); 
-                    j.HasKey("PrestamoEstudianteId", "ComponenteId"); // Clave primaria compuesta
-                });
+                .HasForeignKey(b => b.ProfesorAutorizadorId);
 
-            modelBuilder.Entity<PrestamoEstudiante>()
-                .HasMany(pe => pe.Equipo) // Lista de equipo prestado
-                .WithMany() 
-                .UsingEntity(j =>
-                {
-                    j.ToTable("PrestamoEstudianteEquipo");
-                    j.Property<int>("PrestamoEstudianteId");
-                    j.Property<int>("EquipoId"); 
-                    j.HasKey("PrestamoEstudianteId", "EquipoId");
-                });
-
-            modelBuilder.Entity<PrestamoProfesor>()
-                .HasMany(pp => pp.Componentes) // Lista de componentes prestados
-                .WithMany() 
-                .UsingEntity(j =>
-                {
-                    j.ToTable("PrestamoProfesorComponente");
-                    j.Property<int>("PrestamoProfesorId"); 
-                    j.Property<int>("ComponenteId"); 
-                    j.HasKey("PrestamoProfesorId", "ComponenteId"); // Clave primaria compuesta
-                });
-
-            modelBuilder.Entity<PrestamoProfesor>()
-                .HasMany(pp => pp.Equipo) // Lista de equipo prestado
-                .WithMany() 
-                .UsingEntity(j =>
-                {
-                    j.ToTable("PrestamoProfesorEquipo");
-                    j.Property<int>("PrestamoProfesorId");
-                    j.Property<int>("EquipoId");
-                    j.HasKey("PrestamoProfesorId", "EquipoId"); // Clave primaria compuesta
-                });
-
+            modelBuilder.Entity<BoletaPrestamoProfesor>()
+                .HasOne(b => b.Profesor)
+                .WithMany()
+                .HasForeignKey(b => b.ProfesorId);
 
             // Roles iniciales
             modelBuilder.Entity<Rol>().HasData(
@@ -162,7 +125,7 @@ namespace Sibe.API.Data
             modelBuilder.Entity<Departamento>().HasData(
                 new Departamento { Id = 1, Nombre = "ESCUELA DE ELETRONICA" },
                 new Departamento { Id = 2, Nombre = "ESCUELA DE MECATRONICA" },
-                new Departamento { Id = 3, Nombre = "AREA ACADEMICA DE INGENIERIA EN COMPUTADORES" }                
+                new Departamento { Id = 3, Nombre = "ESCUELA DE COMPUTADORES" }                
             );
         }
     }

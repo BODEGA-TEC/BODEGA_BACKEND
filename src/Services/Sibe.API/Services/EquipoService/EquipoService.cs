@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Sibe.API.Data;
 using Sibe.API.Data.Dtos.Equipo;
 using Sibe.API.Models;
+using Sibe.API.Models.Historicos;
 using Sibe.API.Models.Inventario;
 using Sibe.API.Services.CategoriaService;
 using Sibe.API.Services.EstadoService;
@@ -31,51 +31,76 @@ namespace Sibe.API.Services.EquipoService
                 throw new Exception(_messages["ActivoTecInUse"]);
         }
 
-        public async Task<ServiceResponse<Equipo>> Create(CreateEquipoDto equipoDto)
+        public async Task<List<Equipo>> FetchAll()
         {
-            var response = new ServiceResponse<Equipo>();
+            // Recuperar equipo
+            return await _context.Equipo
+                .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
+                .Include(e => e.Estado)    // Incluye entidad relacionada Estado
+                .ToListAsync() ?? throw new Exception(_messages["NotFound"]);
+        }
+
+        public async Task<Equipo> FetchById(int id)
+        {
+            // Recuperar equipo
+            return await _context.Equipo
+                .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
+                .Include(e => e.Estado)    // Incluye entidad relacionada Estado
+                .FirstOrDefaultAsync(e => e.Id == id)
+                ?? throw new Exception(_messages["NotFound"]);
+        }
+
+
+        public async Task<ServiceResponse<List<Equipo>>> Create(CreateEquipoDto equipoDto)
+        {
+            var response = new ServiceResponse<List<Equipo>>();
 
             try
             {
                 // Si el activo tec ya se encuentra registrado
                 await IsActivoTecInUse(equipoDto.ActivoTec);
 
-                // Recuperar categorias
-                var categoriaResponse = await _categoriaService.ReadById(equipoDto.CategoriaId);
-                if (!categoriaResponse.Success || categoriaResponse.Data == null)
-                {
-                    response.SetError(categoriaResponse.Message);
-                    return response;
-                }
+                // Recuperar categoria
+                var categoria = await _categoriaService.FetchById(equipoDto.CategoriaId);
 
                 // Recuperar estado
-                var estadoResponse = await _estadoService.ReadById(equipoDto.EstadoId);
-                if (!estadoResponse.Success || estadoResponse.Data == null)
-                {
-                    response.SetError(estadoResponse.Message);
-                    return response;
-                }
-
+                var estado = await _estadoService.FetchById(equipoDto.EstadoId);
+                
                 // Crear equipo
                 var equipo = new Equipo
                 {
                     ActivoBodega = equipoDto.ActivoBodega,
                     ActivoTec = equipoDto.ActivoTec,
                     Serie = equipoDto.Serie,
-                    Categoria = categoriaResponse.Data,
-                    Estado = estadoResponse.Data,
+                    Categoria = categoria,
+                    Estado = estado,
                     Descripcion = equipoDto.Descripcion.ToUpper(),
                     Marca = equipoDto.Marca,
                     Modelo = equipoDto.Modelo,
                     Observaciones = equipoDto.Observaciones
                 };
 
-                // Agregar equipo
+                // Agregar equipo y registro histórico
                 _context.Equipo.Add(equipo);
+
+                // Accede al ID generado después de agregar el componente al contexto
+                //Utils.IdentifierHelper equipo.Id;
+
+
+                // Crear historico equipo
+                var historicoEquipo = new HistoricoEquipo
+                {
+                    Equipo = equipo,
+                    Estado = equipo.Estado,
+                    Detalle = "Equipo creado"
+                };
+
+                // Agregar registro histórico
+                _context.HistoricoEquipo.Add(historicoEquipo);
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                response.SetSuccess(_messages["CreateSuccess"], equipo);
+                response.SetSuccess(_messages["CreateSuccess"], await FetchAll());
             }
 
             catch (Exception ex)
@@ -92,12 +117,9 @@ namespace Sibe.API.Services.EquipoService
             var response = new ServiceResponse<List<Equipo>>();
 
             try
-            {
+            {   
                 // Recuperar equipo
-                var equipo = await _context.Equipo
-                    .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
-                    .Include(e => e.Estado)    // Incluye entidad relacionada Estado
-                    .ToListAsync() ?? throw new Exception(_messages["NotFound"]);
+                var equipo = await FetchAll();
 
                 // Configurar respuesta
                 string? message = equipo.Count == 0
@@ -122,11 +144,7 @@ namespace Sibe.API.Services.EquipoService
             try
             {
                 // Recuperar equipo
-                var equipo = await _context.Equipo
-                    .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
-                    .Include(e => e.Estado)    // Incluye entidad relacionada Estado
-                    .FirstOrDefaultAsync(e => e.Id == id)
-                    ?? throw new Exception(_messages["NotFound"]);
+                var equipo = await FetchById(id);
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["ReadSuccess"], equipo);
@@ -141,16 +159,14 @@ namespace Sibe.API.Services.EquipoService
             return response;
         }
 
-        public async Task<ServiceResponse<Equipo>> Update(int id, UpdateEquipoDto equipoDto)
+        public async Task<ServiceResponse<List<Equipo>>> Update(int id, UpdateEquipoDto equipoDto)
         {
-            var response = new ServiceResponse<Equipo>();
+            var response = new ServiceResponse<List<Equipo>>();
 
             try
             {
                 // Recuperar equipo
-                var target = await _context.Equipo
-                    .FindAsync(id)
-                    ?? throw new Exception(_messages["NotFound"]);
+                var target = await FetchById(id);
 
                 // Actualizar equipo | Solamente datos que no son null
                 target.ActivoBodega = equipoDto.ActivoBodega ?? target.ActivoBodega;
@@ -161,36 +177,30 @@ namespace Sibe.API.Services.EquipoService
                 target.Modelo = equipoDto.Modelo ?? target.Modelo;
                 target.Observaciones = equipoDto.Observaciones ?? target.Observaciones;
 
-                // Actualizar categoria
-                if (equipoDto.CategoriaId.HasValue)
-                {
-                    var categoriaResponse = await _categoriaService.ReadById((int)equipoDto.CategoriaId);
-                    if (!categoriaResponse.Success || categoriaResponse.Data == null)
-                    {
-                        response.SetError(categoriaResponse.Message);
-                        return response;
-                    }
-                    target.Categoria = categoriaResponse.Data;
-                }
+                // Actualizar categoría si se proporciona un ID válido
+                target.Categoria = equipoDto.CategoriaId.HasValue
+                    ? await _categoriaService.FetchById((int)equipoDto.CategoriaId)
+                    : target.Categoria;
 
-                // Actualizar estado
-                if (equipoDto.EstadoId.HasValue)
-                {
-                    var estadoResponse = await _estadoService.ReadById((int)equipoDto.EstadoId);
-                    if (!estadoResponse.Success || estadoResponse.Data == null)
-                    {
-                        response.SetError(estadoResponse.Message);
-                        return response;
-                    }
-                    target.Estado = estadoResponse.Data;
-                }
+                // Actualizar estado si se proporciona un ID válido
+                target.Estado = equipoDto.EstadoId.HasValue
+                    ? await _estadoService.FetchById((int)equipoDto.EstadoId)
+                    : target.Estado;
 
-                // Actualizar equipo
+                // Crear historico equipo
+                var historicoEquipo = new HistoricoEquipo
+                {
+                    Equipo = target,
+                    Estado = target.Estado,
+                    Detalle = "Equipo actualizado"
+                };
+
+                // Actualizar equipo y agregar registro histórico
+                _context.HistoricoEquipo.Add(historicoEquipo);
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                var result = await ReadById(id);
-                response.SetSuccess(_messages["UpdatedSuccess"], result.Data);
+                response.SetSuccess(_messages["UpdatedSuccess"], await FetchAll());
             }
 
             catch (Exception ex)
@@ -202,23 +212,84 @@ namespace Sibe.API.Services.EquipoService
             return response;
         }
 
-        public async Task<ServiceResponse<object>> Delete(int id)
+        public async Task<ServiceResponse<List<Equipo>>> Delete(int id)
         {
-            var response = new ServiceResponse<object>();
+            var response = new ServiceResponse<List<Equipo>>();
 
             try
             {
-                // Recuperar categoría
-                var equipo = await _context.Equipo
-                    .FindAsync(id)
-                    ?? throw new Exception(_messages["NotFound"]);
+                // Recuperar equipo
+                var target = await FetchById(id);
 
-                // Eliminar categoría
+                // Estado a Retirado
+                target.Estado = await _estadoService.FetchByNombre("RETIRADO");
+
+                // Crear historico equipo
+                var historicoEquipo = new HistoricoEquipo
+                {
+                    Equipo = target,
+                    Estado = target.Estado,
+                    Detalle = "Equipo actualizado"
+                };
+
+                await _context.SaveChangesAsync();
+
+                // Configurar respuesta
+                response.SetSuccess(_messages["DeletedSuccess"], await FetchAll());
+            }
+
+            catch (Exception ex)
+            {
+                // Configurar error
+                response.SetError(ex.Message);
+            }
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<List<Equipo>>> DeleteTemporal(int id)
+        {
+            var response = new ServiceResponse<List<Equipo>>();
+
+            try
+            {
+                // Recuperar equipo
+                var equipo = await FetchById(id);
+
+                // Eliminar equipo
                 _context.Equipo.Remove(equipo);
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                response.SetSuccess(_messages["DeletedSuccess"]);
+                response.SetSuccess(_messages["DeletedSuccess"], await FetchAll());
+            }
+
+            catch (Exception ex)
+            {
+                // Configurar error
+                response.SetError(ex.Message);
+            }
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<string>> GetBarcode(int id)
+        {
+            var response = new ServiceResponse<string>();
+
+            try
+            {
+                // Recuperar activoBodega
+                string activoBodega = await _context.Equipo
+                    .Where(e => e.Id == id)
+                    .Select(e => e.ActivoBodega)
+                    .FirstOrDefaultAsync()
+                    ?? throw new Exception(_messages["NotFound"]);
+
+                string barcode = Utils.UniqueIdentifierHelper.GenerateBarcode(activoBodega);
+
+                // Configurar respuesta
+                response.SetSuccess(_messages["GenerateBarCodeSuccess"], barcode);
             }
 
             catch (Exception ex)

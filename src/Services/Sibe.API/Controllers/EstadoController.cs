@@ -24,7 +24,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<Estado>>> Create([FromBody] Estado estado)
         {
             // No se utiliza estado.Id en esta acción.
-            var response = await _estadoService.Create(estado.Descripcion);
+            var response = await _estadoService.Create(estado.Nombre);
             return Ok(response);
         }
 
@@ -35,17 +35,10 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<Estado>>> ReadById(int id)
-        {
-            var response = await _estadoService.ReadById(id);
-            return Ok(response);
-        }
-
         [HttpPut("{id}")]
         public async Task<ActionResult<ServiceResponse<Estado>>> Update(int id, [FromBody] Estado estado)
         {
-            var response = await _estadoService.Update(id, estado.Descripcion);
+            var response = await _estadoService.Update(id, estado.Nombre);
             return Ok(response);
         }
 

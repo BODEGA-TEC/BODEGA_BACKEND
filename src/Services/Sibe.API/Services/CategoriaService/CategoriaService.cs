@@ -69,28 +69,24 @@ namespace Sibe.API.Services.CategoriaService
             return response;
         }
 
-        public async Task<ServiceResponse<Categoria>> ReadById(int id)
+        public async Task<Categoria> FetchById(int id)
         {
-            var response = new ServiceResponse<Categoria>();
+            // Recuperar categoría
+            var categoria = await _context.Categoria
+                .FindAsync(id)
+                ?? throw new Exception(_messages["NotFound"]);
 
-            try
-            {
-                // Recuperar categoría
-                var categoria = await _context.Categoria
-                    .FindAsync(id)
-                    ?? throw new Exception(_messages["NotFound"]);
+            return categoria;
+        }
 
-                // Configurar respuesta
-                response.SetSuccess(_messages["ReadSuccess"], categoria);
-            }
+        public async Task<Categoria> FetchByNombre(string nombre)
+        {
+            // Recuperar categoría
+            var categoria = await _context.Categoria
+                .FirstOrDefaultAsync(c => c.Nombre == nombre.ToUpper())
+                ?? throw new Exception(_messages["NotFound"]);
 
-            catch (Exception ex)
-            {
-                // Configurar error
-                response.SetError(ex.Message);
-            }
-
-            return response;
+            return categoria;
         }
 
         public async Task<ServiceResponse<List<Categoria>>> ReadByTipoCategoria(TipoCategoria tipo)

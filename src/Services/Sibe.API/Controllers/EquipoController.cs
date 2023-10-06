@@ -53,7 +53,14 @@ namespace Sibe.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {
-            var response = await _equipoService.Delete(id);
+            var response = await _equipoService.DeleteTemporal(id);
+            return Ok(response);
+        }
+
+        [HttpGet("{id}/codigo-barras")]
+        public async Task<ActionResult<ServiceResponse<List<Equipo>>>> GetBarcode(int id)
+        {
+            var response = await _equipoService.GetBarcode(id);
             return Ok(response);
         }
     }

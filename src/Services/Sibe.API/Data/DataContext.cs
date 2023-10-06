@@ -14,8 +14,10 @@ namespace Sibe.API.Data
         {
             Categoria = Set<Categoria>();
             Componente = Set<Componente>();
-            PrestamoEstudiante = Set<BoletaPrestamoEstudiante>();
-            PrestamoProfesor = Set<BoletaPrestamoProfesor>();
+            BoletaEquipo = Set<BoletaEquipo>();
+            BoletaComponente = Set<BoletaComponente>();
+            PrestamoEstudiante = Set<BoletaEstudiante>();
+            PrestamoProfesor = Set<BoletaProfesor>();
             Equipo = Set<Equipo>();
             Departamento = Set<Departamento>();
             Estado = Set<Estado>();
@@ -27,8 +29,10 @@ namespace Sibe.API.Data
 
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Componente> Componente { get; set; }
-        public DbSet<BoletaPrestamoEstudiante> PrestamoEstudiante { get; set; }
-        public DbSet<BoletaPrestamoProfesor> PrestamoProfesor { get; set; }
+        public DbSet<BoletaEquipo> BoletaEquipo { get; set; }
+        public DbSet<BoletaComponente> BoletaComponente { get; set; }
+        public DbSet<BoletaEstudiante> PrestamoEstudiante { get; set; }
+        public DbSet<BoletaProfesor> PrestamoProfesor { get; set; }
         public DbSet<Equipo> Equipo { get; set; }
         public DbSet<Departamento> Departamento { get; set; }
         public DbSet<Estado> Estado { get; set; }
@@ -64,16 +68,33 @@ namespace Sibe.API.Data
                 .HasIndex(e => e.ActivoTec)
                 .IsUnique();
 
-            // Configuración de las relaciones en las boletas
-            modelBuilder.Entity<BoletaPrestamoEstudiante>()
-                .HasOne(b => b.ProfesorAutorizador)
-                .WithMany()
-                .HasForeignKey(b => b.ProfesorAutorizadorId);
+            // Configurar la relación entre Boleta y Equipo
+            modelBuilder.Entity<BoletaEquipo>()
+                .HasKey(be => new { be.BoletaId, be.EquipoId });
 
-            modelBuilder.Entity<BoletaPrestamoProfesor>()
-                .HasOne(b => b.Profesor)
-                .WithMany()
-                .HasForeignKey(b => b.ProfesorId);
+            modelBuilder.Entity<BoletaEquipo>()
+                .HasOne(be => be.Boleta)
+                .WithMany(b => b.BoletaEquipo)
+                .HasForeignKey(be => be.BoletaId);
+
+            modelBuilder.Entity<BoletaEquipo>()
+                .HasOne(be => be.Equipo)
+                .WithMany(e => e.BoletasEquipo)
+                .HasForeignKey(be => be.EquipoId);
+
+            // Configurar la relación entre Boleta y Componente
+            modelBuilder.Entity<BoletaComponente>()
+                .HasKey(bc => new { bc.BoletaId, bc.ComponenteId });
+
+            modelBuilder.Entity<BoletaComponente>()
+                .HasOne(bc => bc.Boleta)
+                .WithMany(b => b.BoletaComponentes)
+                .HasForeignKey(bc => bc.BoletaId);
+
+            modelBuilder.Entity<BoletaComponente>()
+                .HasOne(bc => bc.Componente)
+                .WithMany(e => e.BoletasComponente)
+                .HasForeignKey(bc => bc.ComponenteId);
 
             // Roles iniciales
             modelBuilder.Entity<Rol>().HasData(
@@ -84,13 +105,13 @@ namespace Sibe.API.Data
 
             // Estados iniciales
             modelBuilder.Entity<Estado>().HasData(
-                new Estado { Id = 1, Descripcion = "DISPONIBLE" },
-                new Estado { Id = 2, Descripcion = "PRESTADO" },
-                new Estado { Id = 3, Descripcion = "AGOTADO" },
-                new Estado { Id = 4, Descripcion = "DAÑADO" },
-                new Estado { Id = 5, Descripcion = "EN REPARACION" },
-                new Estado { Id = 6, Descripcion = "RETIRADO" },
-                new Estado { Id = 7, Descripcion = "APARTADO" }
+                new Estado { Id = 1, Nombre = "DISPONIBLE", Descripcion = "El item está disponible en bodega y listo para ser prestado a los solicitantes." },
+                new Estado { Id = 2, Nombre = "PRESTADO", Descripcion = "El item ha sido entregado a un solicitante y está a la espera de ser devuelto." },
+                new Estado { Id = 3, Nombre = "AGOTADO", Descripcion = "No quedan componentes disponibles en bodega ya que todos han sido prestados." },
+                new Estado { Id = 4, Nombre = "DAÑADO", Descripcion = "El item está dañado y no puede ser prestado en su estado actual." },
+                new Estado { Id = 5, Nombre = "EN REPARACION", Descripcion = "El item se encuentra en mantenimiento y reparación." },
+                new Estado { Id = 6, Nombre = "RETIRADO", Descripcion = "El item ha sido retirado de la bodega, donado o descontinuado su uso." },
+                new Estado { Id = 7, Nombre = "APARTADO", Descripcion = "Un funcionario ha apartado el item y está reservado para su préstamo futuro." }
             );
 
             // Categorias iniciales

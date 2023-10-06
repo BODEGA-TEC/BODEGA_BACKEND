@@ -88,8 +88,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseCors("AllowLocalhost3000"); // Usar la política de CORS
+
 app.MapControllers();
 
-app.UseCors("AllowLocalhost3000"); // Usar la política de CORS
 
 app.Run();

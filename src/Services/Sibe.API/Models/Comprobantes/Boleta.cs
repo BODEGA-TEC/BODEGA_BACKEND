@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Sibe.API.Models.Comprobantes
 {
-    public class BoletaPrestamo
+    public class Boleta
     {
         [Key]
         public int Id { get; set; }
@@ -24,10 +24,10 @@ namespace Sibe.API.Models.Comprobantes
         [Required]
         public Usuario Asistente { get; set; } = null!;
 
-        // Navegación a la lista de componentes asociados a este comprobante de préstamo
-        public List<Componente> Componentes { get; set; } = new List<Componente>();
+        // Navegación al hash de componentes asociados a este comprobante de préstamo - cada componente se asocia solo una vez por eso el hash
+        public ICollection<BoletaComponente> BoletaComponentes { get; set; } = new HashSet<BoletaComponente>();
 
-        // Navegación a la lista de equipos asociados a este comprobante de préstamo
-        public List<Equipo> Equipo { get; set; } = new List<Equipo>();
+        // Navegación al hash de componentes asociados a este comprobante de préstamo - cada equipo se asocia solo una vez por eso el hash
+        public ICollection<BoletaEquipo> BoletaEquipo { get; set; } = new HashSet<BoletaEquipo>();
     }
 }

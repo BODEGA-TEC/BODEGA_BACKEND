@@ -1,4 +1,6 @@
-﻿using Sibe.API.Utils;
+﻿using Sibe.API.Models.Comprobantes;
+using Sibe.API.Models.Historicos;
+using Sibe.API.Utils;
 using System.ComponentModel.DataAnnotations;
 
 namespace Sibe.API.Models.Inventario
@@ -22,17 +24,23 @@ namespace Sibe.API.Models.Inventario
         [Required]
         public string Descripcion { get; set; } = string.Empty!;
 
-        [Required]
-        public string ActivoBodega { get; set; } = null!;
-
         public string? Marca { get; set; } = null;
 
         public string? Modelo { get; set; } = null;
+
+        [Required]
+        public string ActivoBodega { get; set; } = null!;
 
         public string? ActivoTec { get; set; }
 
         public string? Serie { get; set; }
 
         public string? Observaciones { get; set; }
+
+        // Navegación a la entidad Historico Equipo - tiene varios registros propios en la tabla historico
+        public ICollection<HistoricoEquipo>? HistoricoEquipo { get; set; } = new HashSet<HistoricoEquipo>();    // garantiza que no haya componentes duplicados en el historial
+
+        // Propiedad de navegación a Boleta - puede pertenecer a varias boletas pero solo una unica vez a cada una de ellas
+        public ICollection<BoletaEquipo>? BoletasEquipo { get; set; } = new HashSet<BoletaEquipo>();
     }
 }

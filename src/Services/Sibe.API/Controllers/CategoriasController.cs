@@ -11,7 +11,7 @@ namespace Sibe.API.Controllers
     [ApiController]
     [Route("api/categorias")]
     [EnableCors("AllowLocalhost3000")]
-    [Authorize]
+    //[Authorize]
     public class CategoriaController : ControllerBase
     {
         private readonly ICategoriaService _categoriaService;
@@ -32,13 +32,6 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<List<Categoria>>>> ReadAll()
         {
             var response = await _categoriaService.ReadAll();
-            return Ok(response);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<Categoria>>> ReadById(int id)
-        {
-            var response = await _categoriaService.ReadById(id);
             return Ok(response);
         }
 

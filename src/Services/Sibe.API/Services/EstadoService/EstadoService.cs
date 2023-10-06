@@ -24,7 +24,7 @@ namespace Sibe.API.Services.EstadoService
             try
             {
                 // Crear estado
-                var estado = new Estado { Descripcion = descripcion };
+                var estado = new Estado { Nombre = descripcion };
 
                 // Agregar estado
                 _context.Estado.Add(estado);
@@ -70,28 +70,24 @@ namespace Sibe.API.Services.EstadoService
             return response;
         }
 
-        public async Task<ServiceResponse<Estado>> ReadById(int id)
+        public async Task<Estado> FetchById(int id)
         {
-            var response = new ServiceResponse<Estado>();
+            // Recuperar estado
+            var estado = await _context.Estado
+                .FindAsync(id)
+                ?? throw new Exception(_messages["NotFound"]);
 
-            try
-            {
-                // Recuperar estado
-                var estado = await _context.Estado
-                    .FindAsync(id)
-                    ?? throw new Exception(_messages["NotFound"]);
+            return estado;
+        }
 
-                // Configurar respuesta
-                response.SetSuccess(_messages["ReadSuccess"], estado);
-            }
+        public async Task<Estado> FetchByNombre(string nombre)
+        {
+            // Recuperar estado
+            var estado = await _context.Estado
+                .FirstOrDefaultAsync(e => e.Nombre == nombre.ToUpper())
+                ?? throw new Exception(_messages["NotFound"]);
 
-            catch (Exception ex)
-            {
-                // Configurar error
-                response.SetError(ex.Message);
-            }
-
-            return response;
+            return estado;
         }
 
         public async Task<ServiceResponse<Estado>> Update(int id, string descripcion)
@@ -106,7 +102,7 @@ namespace Sibe.API.Services.EstadoService
                     ?? throw new Exception(_messages["NotFound"]);
 
                 // Actualizar estado
-                target.Descripcion = descripcion;
+                target.Nombre = descripcion;
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta

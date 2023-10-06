@@ -23,7 +23,8 @@
     "ReadSuccess": "Componente(s) recuperado(s) con éxito.",
     "Empty": "No se han registrado componentes.",
     "UpdatedSuccess": "Componente actualizado con éxito.",
-    "DeletedSuccess": "Componente eliminado con éxito."
+    "DeletedSuccess": "Componente eliminado con éxito.",
+    "GenerateBarCodeSuccess": "Codigo generado con éxito."
   },
   "EquipoService": {
     "NotFound": "Equipo no encontrado.",
@@ -33,7 +34,8 @@
     "ReadSuccess": "Equipo recuperado con éxito.",
     "Empty": "No se ha registrado equipo.",
     "UpdatedSuccess": "Equipo actualizado con éxito.",
-    "DeletedSuccess": "Equipo eliminado con éxito."
+    "DeletedSuccess": "Equipo eliminado con éxito.",
+    "GenerateBarCodeSuccess": "Codigo generado con éxito."
   },
   "UsuarioService": {
     "RegisterSuccess": "Se ha registrado exitosamente.",

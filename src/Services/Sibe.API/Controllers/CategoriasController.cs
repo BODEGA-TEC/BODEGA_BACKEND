@@ -11,7 +11,7 @@ namespace Sibe.API.Controllers
     [ApiController]
     [Route("api/categorias")]
     [EnableCors("AllowLocalhost3000")]
-    //[Authorize]
+//    //[Authorize]
     public class CategoriaController : ControllerBase
     {
         private readonly ICategoriaService _categoriaService;

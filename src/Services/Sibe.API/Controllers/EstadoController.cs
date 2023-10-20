@@ -9,7 +9,7 @@ namespace Sibe.API.Controllers
 {
     [ApiController]
     [Route("api/estados")]
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowLocalhost3000")]
     public class EstadoController : ControllerBase
     {

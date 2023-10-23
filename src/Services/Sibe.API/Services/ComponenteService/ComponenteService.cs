@@ -66,6 +66,9 @@ namespace Sibe.API.Services.ComponenteService
                 // Recuperar estado
                 var estado = await _estadoService.FetchById(componenteDto.EstadoId);
 
+                // Recuperar el id del componente a insertar
+                int scope_identity = _context.Componente.Max(c => c.Id) + 1;
+
                 // Crear componente
                 var componente = new Componente
                 {
@@ -73,7 +76,7 @@ namespace Sibe.API.Services.ComponenteService
                     Estado = estado,
                     Descripcion = componenteDto.Descripcion.ToUpper(),
                     Cantidad = componenteDto.Cantidad,
-                    ActivoBodega = componenteDto.ActivoBodega,
+                    ActivoBodega = Utils.UniqueIdentifierHelper.GenerateIdentifier("BC", scope_identity, 6),
                     ActivoTec = componenteDto.ActivoTec,
                     Observaciones = componenteDto.Observaciones
                 };
@@ -153,7 +156,6 @@ namespace Sibe.API.Services.ComponenteService
 
                 // Actualizar componente | Solamente datos que no son null
                 target.Descripcion = componenteDto.Descripcion ?? target.Descripcion.ToUpper();
-                target.ActivoBodega = componenteDto.ActivoBodega ?? target.ActivoBodega;
                 target.ActivoTec = componenteDto.ActivoTec ?? target.ActivoTec;
                 target.Cantidad = componenteDto.Cantidad ?? target.Cantidad;
                 target.Observaciones = componenteDto.Observaciones ?? target.Observaciones;

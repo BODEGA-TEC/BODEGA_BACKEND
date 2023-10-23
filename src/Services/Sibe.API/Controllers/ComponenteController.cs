@@ -20,7 +20,7 @@ namespace Sibe.API.Controllers
             _componenteService = componenteService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("")]
         public async Task<ActionResult<ServiceResponse<Componente>>> Create([FromBody] CreateComponenteDto componente)
         {
@@ -42,7 +42,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<ServiceResponse<Componente>>> Update(int id, [FromBody] UpdateComponenteDto componente)
         {
@@ -50,7 +50,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {

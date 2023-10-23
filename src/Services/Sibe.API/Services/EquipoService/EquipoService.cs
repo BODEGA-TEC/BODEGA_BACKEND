@@ -65,11 +65,14 @@ namespace Sibe.API.Services.EquipoService
 
                 // Recuperar estado
                 var estado = await _estadoService.FetchById(equipoDto.EstadoId);
-                
+
+                // Recuperar el id del equipo a insertar
+                int scope_identity = _context.Equipo.Max(c => c.Id) + 1;
+
                 // Crear equipo
                 var equipo = new Equipo
                 {
-                    ActivoBodega = equipoDto.ActivoBodega,
+                    ActivoBodega = Utils.UniqueIdentifierHelper.GenerateIdentifier("BE", scope_identity, 6),
                     ActivoTec = equipoDto.ActivoTec,
                     Serie = equipoDto.Serie,
                     Categoria = categoria,
@@ -169,7 +172,6 @@ namespace Sibe.API.Services.EquipoService
                 var target = await FetchById(id);
 
                 // Actualizar equipo | Solamente datos que no son null
-                target.ActivoBodega = equipoDto.ActivoBodega ?? target.ActivoBodega;
                 target.ActivoTec = equipoDto.ActivoTec ?? target.ActivoTec;
                 target.Serie = equipoDto.Serie ?? target.Serie;
                 target.Descripcion = equipoDto.Descripcion ?? target.Descripcion.ToUpper();

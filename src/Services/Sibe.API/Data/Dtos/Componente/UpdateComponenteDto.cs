@@ -8,8 +8,6 @@
 
         public string? Descripcion { get; set; }
 
-        public string? ActivoBodega { get; set; }
-
         public string? ActivoTec { get; set; }
 
         public int? Cantidad { get; set; }

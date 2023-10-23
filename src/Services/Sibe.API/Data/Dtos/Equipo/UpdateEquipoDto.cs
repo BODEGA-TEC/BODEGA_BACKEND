@@ -9,8 +9,6 @@
 
         public string? Descripcion { get; set; }
 
-        public string? ActivoBodega { get; set; }
-
         public string? Marca { get; set; }
 
         public string? Modelo { get; set; }

@@ -9,6 +9,8 @@
         public string Descripcion { get; set; } = string.Empty!;
 
         public int Cantidad { get; set; }
+
+        public string ActivoBodega { get; set; } = string.Empty!;
         
         public string? ActivoTec { get; set; }
 

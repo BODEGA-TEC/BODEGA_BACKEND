@@ -9,6 +9,8 @@
 
         public string Descripcion { get; set; } = string.Empty!;
 
+        public string ActivoBodega { get; set; } = string.Empty!;
+
         public string? Marca { get; set; }
 
         public string? Modelo { get; set; }

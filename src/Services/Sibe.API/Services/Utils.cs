@@ -37,15 +37,15 @@ namespace Sibe.API.Utils
     //[System.Runtime.Versioning.SupportedOSPlatform("linux")]
     public static class UniqueIdentifierHelper
     {
-        public static string GenerateIdentifier(string inputString, int digit, int paddingSize)
+        public static string GenerateIdentifier(int id, DateTime timestamp)
         {
-            // Formatear el dígito como una cadena con la cantidad de dígitos especificada, rellenando con ceros a la izquierda
-            string formattedDigit = digit.ToString("D" + paddingSize);
+            // Concatena el id y el timestamp como una cadena
+            string input = id.ToString() + timestamp.ToString("yyyyMMddHHmmss");
 
-            // Concatenar la cadena y el dígito formateado
-            string code = inputString.ToUpper() + formattedDigit;
+            // Toma los primeros 12 caracteres de la cadena resultante
+            string uniqueCode = input[..12];
 
-            return code;
+            return uniqueCode;
         }
 
         public static string GenerateBarcode(string data)

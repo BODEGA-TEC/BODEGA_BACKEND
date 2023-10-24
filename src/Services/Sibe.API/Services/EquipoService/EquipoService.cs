@@ -67,7 +67,7 @@ namespace Sibe.API.Services.EquipoService
                 var estado = await _estadoService.FetchById(equipoDto.EstadoId);
 
                 // Recuperar el id del equipo a insertar
-                int scope_identity = _context.Equipo.Max(c => c.Id) + 1;
+                int scope_identity = _context.Equipo.Any() ? _context.Equipo.Max(c => c.Id) + 1 : 1;
 
                 // Crear equipo
                 var equipo = new Equipo

@@ -67,7 +67,7 @@ namespace Sibe.API.Services.ComponenteService
                 var estado = await _estadoService.FetchById(componenteDto.EstadoId);
 
                 // Recuperar el id del componente a insertar
-                int scope_identity = _context.Componente.Max(c => c.Id) + 1;
+                int scope_identity = _context.Componente.Any() ? _context.Componente.Max(c => c.Id) + 1 : 1;
 
                 // Crear componente
                 var componente = new Componente

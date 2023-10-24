@@ -10,7 +10,7 @@ namespace Sibe.API.Controllers
 {
     [ApiController]
     [Route("api/componentes")]
-    [EnableCors("AllowLocalhost3000")]
+    [EnableCors("AllowLocalhost3000, AllowSpecificIP")]
     public class ComponenteController : ControllerBase
     {
         private readonly IComponenteService _componenteService;

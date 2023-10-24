@@ -17,7 +17,7 @@ namespace Sibe.API.Controllers
     /// </remarks>
     [ApiController]
     [Route("api/")]
-    [EnableCors("AllowLocalhost3000")]
+    [EnableCors("AllowLocalhost3000, AllowSpecificIP")]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;

@@ -74,6 +74,17 @@ builder.Services.AddCors(options =>
             });
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificIP",
+        builder =>
+        {
+            builder.WithOrigins("http://172.21.6.223:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

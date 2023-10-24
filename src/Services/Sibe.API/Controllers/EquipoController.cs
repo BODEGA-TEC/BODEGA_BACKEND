@@ -10,7 +10,7 @@ namespace Sibe.API.Controllers
 {
     [ApiController]
     [Route("api/equipo")]
-    [EnableCors("AllowLocalhost3000")]
+    [EnableCors("AllowLocalhost3000, AllowSpecificIP")]
     public class EquipoController : ControllerBase
     {
         private readonly IEquipoService _equipoService;

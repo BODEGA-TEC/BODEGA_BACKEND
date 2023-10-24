@@ -33,8 +33,8 @@ namespace Sibe.API.Data
         public DbSet<BoletaComponente> BoletaComponente { get; set; }
         public DbSet<BoletaEstudiante> PrestamoEstudiante { get; set; }
         public DbSet<BoletaProfesor> PrestamoProfesor { get; set; }
-        public DbSet<Equipo> Equipo { get; set; }
         public DbSet<Departamento> Departamento { get; set; }
+        public DbSet<Equipo> Equipo { get; set; }
         public DbSet<Estado> Estado { get; set; }
         public DbSet<HistoricoEquipo> HistoricoEquipo { get; set; }
         public DbSet<Profesor> Profesor { get; set; }

@@ -20,14 +20,14 @@ namespace Sibe.API.Controllers
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<ServiceResponse<Equipo>>> Create([FromBody] CreateEquipoDto equipo)
+        public async Task<ActionResult<ServiceResponse<ReadEquipoDto>>> Create([FromBody] CreateEquipoDto equipo)
         {
             var response = await _equipoService.Create(equipo);
             return Ok(response);
         }
 
         [HttpGet("")]
-        public async Task<ActionResult<ServiceResponse<List<Equipo>>>> ReadAll()
+        public async Task<ActionResult<ServiceResponse<List<ReadEquipoDto>>>> ReadAll()
         {
             var response = await _equipoService.ReadAll();
             return Ok(response);
@@ -42,7 +42,7 @@ namespace Sibe.API.Controllers
 
         //[Authorize]
         [HttpPut("{id}")]
-        public async Task<ActionResult<ServiceResponse<Equipo>>> Update(int id, [FromBody] UpdateEquipoDto equipo)
+        public async Task<ActionResult<ServiceResponse<ReadEquipoDto>>> Update(int id, [FromBody] UpdateEquipoDto equipo)
         {
             var response = await _equipoService.Update(id, equipo);
             return Ok(response);
@@ -52,15 +52,15 @@ namespace Sibe.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {
-            var response = await _equipoService.DeleteTemporal(id);
+            var response = await _equipoService.Delete(id);
             return Ok(response);
         }
 
-        [HttpGet("{id}/codigo-barras")]
-        public async Task<ActionResult<ServiceResponse<List<Equipo>>>> GetBarcode(int id)
-        {
-            var response = await _equipoService.GetBarcode(id);
-            return Ok(response);
-        }
+        //[HttpGet("{id}/codigo-barras")]
+        //public async Task<ActionResult<ServiceResponse<List<Equipo>>>> GetBarcode(int id)
+        //{
+        //    var response = await _equipoService.GetBarcode(id);
+        //    return Ok(response);
+        //}
     }
 }

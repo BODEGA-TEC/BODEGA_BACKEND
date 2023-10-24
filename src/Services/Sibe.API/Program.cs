@@ -53,6 +53,9 @@ builder.Services.AddSingleton(new JwtCredentialProvider(builder.Configuration));
 // Registra la autenticaci�n JWT y pasa IConfiguration
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
+// Registro del servicio automapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 // Inyeccion de servicios
 builder.Services.AddScoped<IEquipoService, EquipoService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
@@ -75,7 +78,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

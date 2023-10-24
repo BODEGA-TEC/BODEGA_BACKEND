@@ -1,4 +1,6 @@
-﻿namespace Sibe.API.Data.Dtos.Equipo
+﻿using Sibe.API.Models.Enums;
+
+namespace Sibe.API.Data.Dtos.Equipo
 {
     public class UpdateEquipoDto
     {
@@ -8,6 +10,10 @@
         public int? EstadoId { get; set; }
 
         public string? Descripcion { get; set; }
+
+        public Condicion? Condicion { get; set; }
+
+        public string? Estante { get; set; }
 
         public string? Marca { get; set; }
 

@@ -10,7 +10,6 @@ namespace Sibe.API.Controllers
     [ApiController]
     [Route("api/estados")]
     //[Authorize]
-    [EnableCors("AllowLocalhost3000, AllowSpecificIP")]
     public class EstadoController : ControllerBase
     {
         private readonly IEstadoService _estadoService;

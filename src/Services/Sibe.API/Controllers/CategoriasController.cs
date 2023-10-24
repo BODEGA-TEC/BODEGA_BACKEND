@@ -10,7 +10,6 @@ namespace Sibe.API.Controllers
 {
     [ApiController]
     [Route("api/categorias")]
-    [EnableCors("AllowLocalhost3000, AllowSpecificIP")]
 //    //[Authorize]
     public class CategoriaController : ControllerBase
     {

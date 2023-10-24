@@ -64,25 +64,12 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowLocalhost3000",
-            builder =>
-            {
-                builder.WithOrigins("http://localhost:3000")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
-    });
-
-builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificIP",
-        builder =>
-        {
-            builder.WithOrigins("http://172.21.6.223:3000")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
+    options.AddDefaultPolicy(policy => {
+        policy.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+    });
 });
 
 var app = builder.Build();
@@ -94,12 +81,12 @@ if (!app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors("AllowLocalhost3000"); // Usar la política de CORS
 
 app.MapControllers();
 

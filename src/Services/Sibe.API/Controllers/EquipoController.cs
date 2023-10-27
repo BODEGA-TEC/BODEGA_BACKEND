@@ -26,6 +26,13 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [HttpPost("multiple")]
+        public async Task<ActionResult<ServiceResponse<ReadEquipoDto>>> CreateMultiple([FromBody] List<CreateEquipoSpecialDto> equipo)
+        {
+            var response = await _equipoService.CreateMultiple(equipo);
+            return Ok(response);
+        }
+
         [HttpGet("")]
         public async Task<ActionResult<ServiceResponse<List<ReadEquipoDto>>>> ReadAll()
         {

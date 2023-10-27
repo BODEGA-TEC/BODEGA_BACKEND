@@ -23,17 +23,17 @@ namespace Sibe.API.Data.Dtos.Equipo
 
         public string Estante { get; set; } = string.Empty!;
 
-        public string? Marca { get; set; }
+        public string Marca { get; set; } = string.Empty;
 
-        public string? Modelo { get; set; }
+        public string Modelo { get; set; } = string.Empty;
 
         public string ActivoBodega { get; set; } = string.Empty!;
 
-        public string? ActivoTec { get; set; }
+        public string ActivoTec { get; set; } = string.Empty;
 
-        public string? Serie { get; set; }
+        public string Serie { get; set; } = string.Empty;
 
-        public string? Observaciones { get; set; }
+        public string Observaciones { get; set; } = string.Empty;
     }
 }
 

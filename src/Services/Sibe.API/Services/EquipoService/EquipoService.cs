@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Sibe.API.Data;
 using Sibe.API.Data.Dtos.Equipo;
 using Sibe.API.Models;
+using Sibe.API.Models.Enums;
 using Sibe.API.Models.Historicos;
 using Sibe.API.Models.Inventario;
 using Sibe.API.Services.CategoriaService;
@@ -110,6 +111,97 @@ namespace Sibe.API.Services.EquipoService
 
             return response;
         }
+
+        public async Task<ServiceResponse<object>> CreateMultiple(List<CreateEquipoSpecialDto> equiposDtoList)
+        {
+            var response = new ServiceResponse<object>();
+
+            try
+            {
+                foreach (var equipoDto in equiposDtoList)
+                {
+                    await CreateSpecial(equipoDto);
+                }
+
+                response.SetSuccess("Equipos creados exitosamente");
+            }
+            catch (Exception ex)
+            {
+                // Configura un error general si ocurre una excepción inesperada
+                response.SetError(ex.Message);
+            }
+
+            return response;
+        }
+
+        private async Task<bool> CreateSpecial(CreateEquipoSpecialDto equipoDto)
+        {
+            try
+            {
+                // Verificar si la categoría existe; si no existe, créala
+                var categoria = _context.Categoria
+                    .FirstOrDefault(e => e.Nombre == equipoDto.Categoria);
+
+                if (categoria == null)
+                {
+                    categoria = new Categoria
+                    {
+                        Tipo = TipoCategoria.EQUIPO,
+                        Nombre = equipoDto.Categoria.ToUpper()
+                    };
+
+                    await _categoriaService.Create(categoria);
+                    await _context.SaveChangesAsync();
+                }
+
+                // Recuperar estado
+                var estado = _context.Estado
+                    .FirstOrDefault(e => e.Nombre == equipoDto.Estado)??await _estadoService.FetchById(1);
+
+                // Recuperar el id del equipo a insertar
+                int scope_identity = _context.Equipo.Any() ? _context.Equipo.Max(c => c.Id) + 1 : 1;
+
+                // Crear equipo
+                var equipo = new Equipo
+                {
+                    Categoria = categoria,
+                    Estado = estado,
+                    Descripcion = equipoDto.Descripcion.ToUpper(),
+                    Condicion = equipoDto.Condicion,
+                    Estante = equipoDto.Estante.ToUpper(),
+                    Marca = equipoDto.Marca,
+                    Modelo = equipoDto.Modelo,
+                    ActivoBodega = Utils.UniqueIdentifierHelper.GenerateIdentifier("BE", scope_identity, 6),
+                    ActivoTec = equipoDto.ActivoTec,
+                    Serie = equipoDto.Serie,
+                    Observaciones = equipoDto.Observaciones
+                };
+
+                // Agregar equipo y registro histórico
+                _context.Equipo.Add(equipo);
+
+                // Crear historico equipo
+                var historicoEquipo = new HistoricoEquipo
+                {
+                    Equipo = equipo,
+                    Estado = equipo.Estado,
+                    Detalle = "Equipo creado"
+                };
+
+                // Agregar registro histórico
+                _context.HistoricoEquipo.Add(historicoEquipo);
+                await _context.SaveChangesAsync();
+
+                // La creación fue exitosa
+                return true;
+            }
+            catch (Exception)
+            {
+                // La creación falló, puedes agregar registro de errores o manejar la excepción
+                return false;
+            }
+        }
+
 
         public async Task<ServiceResponse<List<ReadEquipoDto>>> ReadAll()
         {

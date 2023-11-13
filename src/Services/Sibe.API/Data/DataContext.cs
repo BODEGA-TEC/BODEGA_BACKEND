@@ -117,29 +117,29 @@ namespace Sibe.API.Data
             // Categorias iniciales
             modelBuilder.Entity<Categoria>().HasData(
                 // COMPONENTE
-                new Categoria { Id = 1, Nombre = "TTL", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 2, Nombre = "OPERACIONALES", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 3, Nombre = "RESISTENCIAS", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 4, Nombre = "POTENCIOMETROS", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 5, Nombre = "CAPACITORES", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 6, Nombre = "PRECISION", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 7, Nombre = "CRISTALES", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 8, Nombre = "CMOS", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 9, Nombre = "BASES", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 10, Nombre = "TECLADO HEXADECIMAL", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 11, Nombre = "LCD", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 12, Nombre = "OSCILOSCOPIO MINI", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 13, Nombre = "CABLE WIRE WRAP", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 14, Nombre = "PUERTO SERIAL", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 15, Nombre = "DISIPADOR", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 16, Nombre = "SENSORES", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 17, Nombre = "TRANSISTORES/DIODOS", Tipo = TipoCategoria.COMPONENTE },
-                new Categoria { Id = 18, Nombre = "ADC/DAC", Tipo = TipoCategoria.COMPONENTE },
+                new Categoria { Id = 1, Nombre = "TTL", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 2, Nombre = "OPERACIONALES", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 3, Nombre = "RESISTENCIAS", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 4, Nombre = "POTENCIOMETROS", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 5, Nombre = "CAPACITORES", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 6, Nombre = "PRECISION", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 7, Nombre = "CRISTALES", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 8, Nombre = "CMOS", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 9, Nombre = "BASES", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 10, Nombre = "TECLADO HEXADECIMAL", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 11, Nombre = "LCD", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 12, Nombre = "OSCILOSCOPIO MINI", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 13, Nombre = "CABLE WIRE WRAP", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 14, Nombre = "PUERTO SERIAL", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 15, Nombre = "DISIPADOR", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 16, Nombre = "SENSORES", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 17, Nombre = "TRANSISTORES/DIODOS", Tipo = TipoActivo.COMPONENTE },
+                new Categoria { Id = 18, Nombre = "ADC/DAC", Tipo = TipoActivo.COMPONENTE },
                 // EQUIPO
-                new Categoria { Id = 19, Nombre = "MULTIMETRO", Tipo = TipoCategoria.EQUIPO },
-                new Categoria { Id = 20, Nombre = "GENERADOR FUNCIONES", Tipo = TipoCategoria.EQUIPO },
-                new Categoria { Id = 21, Nombre = "FUENTE", Tipo = TipoCategoria.EQUIPO },
-                new Categoria { Id = 22, Nombre = "MONITOR", Tipo = TipoCategoria.EQUIPO }
+                new Categoria { Id = 19, Nombre = "MULTIMETRO", Tipo = TipoActivo.EQUIPO },
+                new Categoria { Id = 20, Nombre = "GENERADOR FUNCIONES", Tipo = TipoActivo.EQUIPO },
+                new Categoria { Id = 21, Nombre = "FUENTE", Tipo = TipoActivo.EQUIPO },
+                new Categoria { Id = 22, Nombre = "MONITOR", Tipo = TipoActivo.EQUIPO }
             );
 
             // Escuelas inicales

@@ -28,6 +28,9 @@ namespace Sibe.API.Models.Inventario
         public int Cantidad { get; set; }
 
         [Required]
+        public string Estante { get; set; } = string.Empty!;
+
+        [Required]
         public string ActivoBodega { get; set; } = null!;
 
         public string? ActivoTec { get; set; }

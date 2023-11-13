@@ -8,7 +8,7 @@ namespace Sibe.API.Models.Inventario
         [Key]
         public int Id { get; set; }
 
-        public TipoCategoria Tipo { get; set; } = TipoCategoria.DESCONOCIDO;
+        public TipoActivo Tipo { get; set; } = TipoActivo.DESCONOCIDO;
 
         [Required]
         public string Nombre { get; set; } = null!;

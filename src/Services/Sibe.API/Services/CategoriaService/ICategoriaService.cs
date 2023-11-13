@@ -10,7 +10,7 @@ namespace Sibe.API.Services.CategoriaService
 
         Task<ServiceResponse<Categoria>> Create(Categoria categoria);
         Task<ServiceResponse<List<Categoria>>> ReadAll();
-        Task<ServiceResponse<List<Categoria>>> ReadByTipoCategoria(TipoCategoria tipo);
+        Task<ServiceResponse<List<Categoria>>> ReadByTipoActivo(TipoActivo tipo);
         Task<ServiceResponse<Categoria>> Update(int id, Categoria categoria);
         Task<ServiceResponse<object>> Delete(int id);
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sibe.API.Data;
 using Sibe.API.Models;
+using Sibe.API.Models.Enums;
 using Sibe.API.Models.Inventario;
 
 namespace Sibe.API.Services.EstadoService
@@ -43,24 +44,61 @@ namespace Sibe.API.Services.EstadoService
             return response;
         }
 
-        public async Task<ServiceResponse<List<Estado>>> ReadAll()
+        //public async Task<ServiceResponse<List<Estado>>> ReadAll()
+        //{
+        //    var response = new ServiceResponse<List<Estado>>();
+
+        //    try
+        //    {
+        //        // Recuperar estados
+        //        var estados = await _context.Estado
+        //            .ToListAsync()
+        //            ?? throw new Exception(_messages["NotFound"]);
+
+        //        // Configurar respuesta
+        //        string? message = estados.Count == 0
+        //            ? _messages["Empty"]
+        //            : _messages["ReadSuccess"];
+        //        response.SetSuccess(message, estados);
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        // Configurar error
+        //        response.SetError(ex.Message);
+        //    }
+
+        //    return response;
+        //}
+
+        public async Task<ServiceResponse<List<Estado>>> ReadByTipoActivo(TipoActivo tipo)
         {
             var response = new ServiceResponse<List<Estado>>();
 
             try
             {
                 // Recuperar estados
-                var estados = await _context.Estado
-                    .ToListAsync()
-                    ?? throw new Exception(_messages["NotFound"]);
+                var estados = await _context.Estado.ToListAsync() ?? throw new Exception(_messages["NotFound"]);
+
+                // Filtrar estados según el tipo de activo
+                if (tipo == TipoActivo.EQUIPO)
+                {
+                    estados = estados.Where(e => new[]
+                        {"DISPONIBLE", "DAÑADO", "PRESTADO", "APARTADO", "EN REPARACION", "RETIRADO"}
+                        .Contains(e.Nombre.ToUpper()))
+                        .ToList();
+                }
+                else if (tipo == TipoActivo.COMPONENTE)
+                {
+                    estados = estados.Where(e => new[] { "DISPONIBLE", "DAÑADO", "AGOTADO" }
+                        .Contains(e.Nombre.ToUpper()))
+                        .ToList();
+                }
 
                 // Configurar respuesta
-                string? message = estados.Count == 0
-                    ? _messages["Empty"]
-                    : _messages["ReadSuccess"];
+                string? message = estados.Count == 0 ? _messages["Empty"] : _messages["ReadSuccess"];
                 response.SetSuccess(message, estados);
             }
-
             catch (Exception ex)
             {
                 // Configurar error

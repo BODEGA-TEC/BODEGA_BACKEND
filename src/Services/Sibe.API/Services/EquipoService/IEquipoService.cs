@@ -13,7 +13,5 @@ namespace Sibe.API.Services.EquipoService
         Task<ServiceResponse<Equipo>> ReadById(int id);
         Task<ServiceResponse<ReadEquipoDto>> Update(int id, UpdateEquipoDto equipoDto);
         Task<ServiceResponse<object>> Delete(int id);
-        //Task<ServiceResponse<object>> DeleteTemporal(int id);
-        //Task<ServiceResponse<string>> GetBarcode(int id);
     }
 }

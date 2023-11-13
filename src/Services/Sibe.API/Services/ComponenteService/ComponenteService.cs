@@ -197,42 +197,8 @@ namespace Sibe.API.Services.ComponenteService
             return response;
         }
 
+
         public async Task<ServiceResponse<List<Componente>>> Delete(int id)
-        {
-            var response = new ServiceResponse<List<Componente>>();
-
-            try
-            {
-                // Recuperar componente
-                var target = await FetchById(id);
-
-                // Estado a DAÑADO
-                target.Estado = await _estadoService.FetchByNombre("DAÑADO");
-
-                //// Crear historico equipo
-                //var historicoEquipo = new HistoricoEquipo
-                //{
-                //    Equipo = target,
-                //    Estado = target.Estado,
-                //    Detalle = "Componente actualizado"
-                //};
-
-                await _context.SaveChangesAsync();
-
-                // Configurar respuesta
-                response.SetSuccess(_messages["DeletedSuccess"], await FetchAll());
-            }
-
-            catch (Exception ex)
-            {
-                // Configurar error
-                response.SetError(ex.Message);
-            }
-
-            return response;
-        }
-
-        public async Task<ServiceResponse<List<Componente>>> DeleteTemporal(int id)
         {
             var response = new ServiceResponse<List<Componente>>();
 

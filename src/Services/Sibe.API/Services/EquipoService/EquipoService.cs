@@ -146,7 +146,7 @@ namespace Sibe.API.Services.EquipoService
                 {
                     categoria = new Categoria
                     {
-                        Tipo = TipoCategoria.EQUIPO,
+                        Tipo = TipoActivo.EQUIPO,
                         Nombre = equipoDto.Categoria.ToUpper()
                     };
 
@@ -341,68 +341,5 @@ namespace Sibe.API.Services.EquipoService
 
             return response;
         }
-
-        //public async Task<ServiceResponse<object>> DeleteTemporal(int id)
-        //{
-        //    var response = new ServiceResponse<object>();
-
-        //    try
-        //    {
-        //        // Recuperar equipo
-        //        var target = await FetchById(id);
-
-        //        // Estado a Retirado
-        //        target.Estado = await _estadoService.FetchByNombre("RETIRADO");
-
-        //        // Crear historico equipo
-        //        var historicoEquipo = new HistoricoEquipo
-        //        {
-        //            Equipo = target,
-        //            Estado = target.Estado,
-        //            Detalle = "Equipo actualizado"
-        //        };
-
-        //        await _context.SaveChangesAsync();
-
-        //        // Configurar respuesta
-        //        response.SetSuccess(_messages["DeletedSuccess"]);
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        // Configurar error
-        //        response.SetError(ex.Message);
-        //    }
-
-        //    return response;
-        //}
-
-        //public async Task<ServiceResponse<string>> GetBarcode(int id)
-        //{
-        //    var response = new ServiceResponse<string>();
-
-        //    try
-        //    {
-        //        // Recuperar activoBodega
-        //        string activoBodega = await _context.Equipo
-        //            .Where(e => e.Id == id)
-        //            .Select(e => e.ActivoBodega)
-        //            .FirstOrDefaultAsync()
-        //            ?? throw new Exception(_messages["NotFound"]);
-
-        //        string barcode = Utils.UniqueIdentifierHelper.GenerateBarcode(activoBodega);
-
-        //        // Configurar respuesta
-        //        response.SetSuccess(_messages["GenerateBarCodeSuccess"], barcode);
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        // Configurar error
-        //        response.SetError(ex.Message);
-        //    }
-
-        //    return response;
-        //}
     }
 }

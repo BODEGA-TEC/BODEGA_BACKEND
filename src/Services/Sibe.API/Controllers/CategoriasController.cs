@@ -35,16 +35,16 @@ namespace Sibe.API.Controllers
         }
 
         [HttpGet("equipo")]
-        public async Task<ActionResult<ServiceResponse<Categoria>>> ReadByTipoCategoriaEquipo()
+        public async Task<ActionResult<ServiceResponse<Categoria>>> ReadByTipoActivoEquipo()
         {
-            var response = await _categoriaService.ReadByTipoCategoria(TipoCategoria.EQUIPO);
+            var response = await _categoriaService.ReadByTipoActivo(TipoActivo.EQUIPO);
             return Ok(response);
         }
 
         [HttpGet("componentes")]
-        public async Task<ActionResult<ServiceResponse<Categoria>>> ReadByTipoCategoriaComponentes()
+        public async Task<ActionResult<ServiceResponse<Categoria>>> ReadByTipoActivoComponentes()
         {
-            var response = await _categoriaService.ReadByTipoCategoria(TipoCategoria.COMPONENTE);
+            var response = await _categoriaService.ReadByTipoActivo(TipoActivo.COMPONENTE);
             return Ok(response);
         }
 

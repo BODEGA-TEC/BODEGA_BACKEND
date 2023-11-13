@@ -89,7 +89,7 @@ namespace Sibe.API.Services.CategoriaService
             return categoria;
         }
 
-        public async Task<ServiceResponse<List<Categoria>>> ReadByTipoCategoria(TipoCategoria tipo)
+        public async Task<ServiceResponse<List<Categoria>>> ReadByTipoActivo(TipoActivo tipo)
         {
             var response = new ServiceResponse<List<Categoria>>();
 

@@ -11,6 +11,5 @@ namespace Sibe.API.Services.ComponenteService
         Task<ServiceResponse<Componente>> ReadById(int id);
         Task<ServiceResponse<List<Componente>>> Update(int id, UpdateComponenteDto componente);
         Task<ServiceResponse<List<Componente>>> Delete(int id);
-        Task<ServiceResponse<List<Componente>>> DeleteTemporal(int id);
     }
 }

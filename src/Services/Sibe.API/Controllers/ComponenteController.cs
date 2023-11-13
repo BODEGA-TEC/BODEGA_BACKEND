@@ -48,5 +48,13 @@ namespace Sibe.API.Controllers
             var response = await _componenteService.Update(id, componente);
             return Ok(response);
         }
+
+        //[Authorize]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
+        {
+            var response = await _componenteService.Delete(id);
+            return Ok(response);
+        }
     }
 }

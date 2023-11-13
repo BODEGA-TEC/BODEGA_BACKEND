@@ -1,4 +1,5 @@
 ﻿using Sibe.API.Models.Comprobantes;
+using Sibe.API.Models.Enums;
 using Sibe.API.Models.Historicos;
 using Sibe.API.Utils;
 using System.ComponentModel.DataAnnotations;
@@ -28,12 +29,17 @@ namespace Sibe.API.Models.Inventario
         public int Cantidad { get; set; }
 
         [Required]
+        public Condicion Condicion { get; set; }
+
+        [Required]
         public string Estante { get; set; } = string.Empty!;
 
         [Required]
         public string ActivoBodega { get; set; } = null!;
 
-        public string? ActivoTec { get; set; }
+        public string? Modelo { get; set; }
+
+        //public string? ActivoTec { get; set; }
 
         public string? Observaciones { get; set; }
 

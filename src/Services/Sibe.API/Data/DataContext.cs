@@ -22,6 +22,7 @@ namespace Sibe.API.Data
             Departamento = Set<Departamento>();
             Estado = Set<Estado>();
             HistoricoEquipo = Set<HistoricoEquipo>();
+            HistoricoComponente = Set<HistoricoComponente>();
             Profesor = Set<Profesor>();
             Rol = Set<Rol>();
             Usuario = Set<Usuario>();
@@ -37,6 +38,7 @@ namespace Sibe.API.Data
         public DbSet<Equipo> Equipo { get; set; }
         public DbSet<Estado> Estado { get; set; }
         public DbSet<HistoricoEquipo> HistoricoEquipo { get; set; }
+        public DbSet<HistoricoComponente> HistoricoComponente { get; set; }
         public DbSet<Profesor> Profesor { get; set; }
         public DbSet<Rol> Rol { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
@@ -57,9 +59,9 @@ namespace Sibe.API.Data
             modelBuilder.Entity<Componente>()
                 .HasIndex(c => c.ActivoBodega)
                 .IsUnique();
-            modelBuilder.Entity<Componente>()
-                .HasIndex(c => c.ActivoTec)
-                .IsUnique();
+            //modelBuilder.Entity<Componente>()
+            //    .HasIndex(c => c.ActivoTec)
+            //    .IsUnique();
 
             modelBuilder.Entity<Equipo>()
                 .HasIndex(e => e.ActivoBodega)

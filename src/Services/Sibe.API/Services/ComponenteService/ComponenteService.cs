@@ -1,11 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 using Sibe.API.Data;
 using Sibe.API.Data.Dtos.Componente;
+using Sibe.API.Data.Dtos.Equipo;
 using Sibe.API.Models;
 using Sibe.API.Models.Historicos;
 using Sibe.API.Models.Inventario;
 using Sibe.API.Services.CategoriaService;
 using Sibe.API.Services.EstadoService;
+using System.ComponentModel;
 
 namespace Sibe.API.Services.ComponenteService
 {
@@ -14,32 +18,25 @@ namespace Sibe.API.Services.ComponenteService
         // Variables gloables
         private readonly IConfigurationSection _messages;
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
         private readonly IEstadoService _estadoService;
         private readonly ICategoriaService _categoriaService;
 
-        public ComponenteService(IConfiguration configuration, DataContext context, IEstadoService estadoService, ICategoriaService categoriaService)
+        public ComponenteService(IConfiguration configuration, DataContext context, IMapper mapper, IEstadoService estadoService, ICategoriaService categoriaService)
         {
             _messages = configuration.GetSection("ComponenteService");
             _context = context;
+            _mapper = mapper;
             _estadoService = estadoService;
             _categoriaService = categoriaService;
         }
 
 
-        private async Task IsActivoTecInUse(string? activoTec)
-        {
-            if (activoTec != null && await _context.Componente.AnyAsync(c => c.ActivoTec == activoTec))
-                throw new Exception(_messages["ActivoTecInUse"]);
-        }
-
-        public async Task<List<Componente>> FetchAll()
-        {
-            // Recuperar equipo
-            return await _context.Componente
-                .Include(c => c.Categoria) // Incluye entidad relacionada Categoria
-                .Include(c => c.Estado)    // Incluye entidad relacionada Estado
-                .ToListAsync() ?? throw new Exception(_messages["NotFound"]);
-        }
+        //private async Task IsActivoTecInUse(string? activoTec)
+        //{
+        //    if (activoTec != null && await _context.Componente.AnyAsync(c => c.ActivoTec == activoTec))
+        //        throw new Exception(_messages["ActivoTecInUse"]);
+        //}
 
         public async Task<Componente> FetchById(int id)
         {
@@ -51,14 +48,14 @@ namespace Sibe.API.Services.ComponenteService
                 ?? throw new Exception(_messages["NotFound"]);
         }
 
-        public async Task<ServiceResponse<List<Componente>>> Create(CreateComponenteDto componenteDto)
+        public async Task<ServiceResponse<ReadComponenteDto>> Create(CreateComponenteDto componenteDto)
         {
-            var response = new ServiceResponse<List<Componente>>();
+            var response = new ServiceResponse<ReadComponenteDto>();
 
             try
             {
                 // Si el activo tec ya se encuentra registrado
-                await IsActivoTecInUse(componenteDto.ActivoTec);
+                //await IsActivoTecInUse(componenteDto.ActivoTec);
 
                 // Recuperar categoria
                 var categoria = await _categoriaService.FetchById(componenteDto.CategoriaId);
@@ -76,8 +73,11 @@ namespace Sibe.API.Services.ComponenteService
                     Estado = estado,
                     Descripcion = componenteDto.Descripcion.ToUpper(),
                     Cantidad = componenteDto.Cantidad,
+                    Condicion = componenteDto.Condicion,
+                    Estante = componenteDto.Estante.ToUpper(),
+                    Modelo = componenteDto.Modelo,
                     ActivoBodega = Utils.UniqueIdentifierHelper.GenerateIdentifier("BC", scope_identity, 6),
-                    ActivoTec = componenteDto.ActivoTec,
+                    //ActivoTec = componenteDto.ActivoTec,
                     Observaciones = componenteDto.Observaciones
                 };
 
@@ -85,8 +85,24 @@ namespace Sibe.API.Services.ComponenteService
                 _context.Componente.Add(componente);
                 await _context.SaveChangesAsync();
 
+                // Crear historico componentes
+                var historicoComponente = new HistoricoComponente
+                {
+                    Componente = componente,
+                    CantidadDisponible = componente.Cantidad,
+                    CantidadModificada = 0, // Todos los componentes siguen disponibles.
+                    Detalle = "Registrado"
+                };
+
+                // Agregar registro histórico
+                _context.HistoricoComponente.Add(historicoComponente);
+                await _context.SaveChangesAsync();
+
+                // Map a Dto
+                ReadComponenteDto entityDto = _mapper.Map<ReadComponenteDto>(componente);
+
                 // Configurar respuesta
-                response.SetSuccess(_messages["CreateSuccess"], await FetchAll());
+                response.SetSuccess(_messages["CreateSuccess"], entityDto);
             }
 
             catch (Exception ex)
@@ -98,20 +114,28 @@ namespace Sibe.API.Services.ComponenteService
             return response;
         }
 
-        public async Task<ServiceResponse<List<Componente>>> ReadAll()
+        public async Task<ServiceResponse<List<ReadComponenteDto>>> ReadAll()
         {
-            var response = new ServiceResponse<List<Componente>>();
+            var response = new ServiceResponse<List<ReadComponenteDto>>();
 
             try
             {
                 // Recuperar componentes
-                var componentes = await FetchAll();
+                var componentes = await _context.Componente
+                    .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
+                    .Include(e => e.Estado)    // Incluye entidad relacionada Estado
+                    .ToListAsync() ?? throw new Exception(_messages["NotFound"]);
+
+                // Map a Dto
+                List<ReadComponenteDto> componenteDto = _mapper.Map<List<ReadComponenteDto>>(componentes);
 
                 // Configurar respuesta
-                string? message = componentes.Count == 0
+                string? message = componenteDto.Count == 0
                     ? _messages["Empty"]
                     : _messages["ReadSuccess"];
-                response.SetSuccess(message, componentes);
+
+                // Configurar respuesta
+                response.SetSuccess(message, componenteDto);
             }
 
             catch (Exception ex)
@@ -145,19 +169,25 @@ namespace Sibe.API.Services.ComponenteService
             return response;
         }
 
-        public async Task<ServiceResponse<List<Componente>>> Update(int id, UpdateComponenteDto componenteDto)
+        public async Task<ServiceResponse<ReadComponenteDto>> Update(int id, UpdateComponenteDto componenteDto)
         {
-            var response = new ServiceResponse<List<Componente>>();
+            var response = new ServiceResponse<ReadComponenteDto>();
 
             try
             {
                 // Recuperar componente
                 var target = await FetchById(id);
 
+                // Para tener un historial de la diferencia de la cantidad que habia antes.
+                int modificado = componenteDto.Cantidad.HasValue ? componenteDto.Cantidad.Value - target.Cantidad : 0;
+
                 // Actualizar componente | Solamente datos que no son null
                 target.Descripcion = componenteDto.Descripcion ?? target.Descripcion.ToUpper();
-                target.ActivoTec = componenteDto.ActivoTec ?? target.ActivoTec;
+                //target.ActivoTec = componenteDto.ActivoTec ?? target.ActivoTec;
                 target.Cantidad = componenteDto.Cantidad ?? target.Cantidad;
+                target.Condicion = componenteDto.Condicion ?? target.Condicion;
+                target.Estante = componenteDto.Estante ?? target.Estante.ToUpper();
+                target.Modelo = componenteDto.Modelo ?? target.Modelo;
                 target.Observaciones = componenteDto.Observaciones ?? target.Observaciones;
 
                 // Actualizar categoría si se proporciona un ID válido
@@ -170,22 +200,24 @@ namespace Sibe.API.Services.ComponenteService
                     ? await _estadoService.FetchById((int)componenteDto.EstadoId)
                     : target.Estado;
 
-                //// Crear historico equipo
-                //var historicoEquipo = new HistoricoEquipo
-                //{
-                //    Equipo = target,
-                //    Estado = target.Estado,
-                //    Detalle = "Equipo actualizado"
-                //};
+                // Crear historico componentes
+                var historicoComponente = new HistoricoComponente
+                {
+                    Componente = target,
+                    CantidadDisponible = target.Cantidad,
+                    CantidadModificada = modificado,
+                    Detalle = "Actualizado"
+                };
 
-                //// Actualizar equipo y agregar registro histórico
-                //_context.HistoricoComponente.Add(historicoComponente);
-
-                // Actualizar componente
+                // Actualizar componente y agregar registro histórico
+                _context.HistoricoComponente.Add(historicoComponente);
                 await _context.SaveChangesAsync();
 
+                // Map a Dto
+                ReadComponenteDto entityDto = _mapper.Map<ReadComponenteDto>(target);
+
                 // Configurar respuesta
-                response.SetSuccess(_messages["UpdatedSuccess"], await FetchAll());
+                response.SetSuccess(_messages["UpdatedSuccess"], entityDto);
             }
 
             catch (Exception ex)
@@ -198,9 +230,9 @@ namespace Sibe.API.Services.ComponenteService
         }
 
 
-        public async Task<ServiceResponse<List<Componente>>> Delete(int id)
+        public async Task<ServiceResponse<object>> Delete(int id)
         {
-            var response = new ServiceResponse<List<Componente>>();
+            var response = new ServiceResponse<object>();
 
             try
             {
@@ -212,7 +244,7 @@ namespace Sibe.API.Services.ComponenteService
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                response.SetSuccess(_messages["DeletedSuccess"], await FetchAll());
+                response.SetSuccess(_messages["DeletedSuccess"]);
             }
 
             catch (Exception ex)

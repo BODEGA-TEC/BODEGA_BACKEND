@@ -4,7 +4,6 @@ namespace Sibe.API.Data.Dtos.Equipo
 {
     public class UpdateEquipoDto
     {
-
         public int? CategoriaId { get; set; }
 
         public int? EstadoId { get; set; }

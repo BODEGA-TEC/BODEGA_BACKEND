@@ -21,7 +21,7 @@ def getCategoria(tipo, categoria):
     cursor = connection.cursor()
     
     # Mapea el tipo a un entero
-    tipo = 1 if tipo.lower() == 'componente' else 2
+    tipo = 1 if tipo.lower() == 'equipo' else 2
 
     # Verifica si la categoría ya existe en la base de datos
     query = "SELECT Id FROM Categoria WHERE Tipo = %s AND Nombre = %s"

@@ -42,7 +42,7 @@ def getCategoria(tipo, categoria):
 def getActivoBodega(table_name):
     cursor = connection.cursor()
     
-    # Obtener el ultimo Id de la tabla especificada
+    # Obtener ultimo Id de la tabla especificada
     query = f"SELECT MAX(Id) FROM {table_name.capitalize()}"
     cursor.execute(query)
     max_id = cursor.fetchone()[0]

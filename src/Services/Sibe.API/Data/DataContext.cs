@@ -53,21 +53,15 @@ namespace Sibe.API.Data
                 .IsUnique();
 
             modelBuilder.Entity<Categoria>()
-                .HasIndex(c => c.Nombre)
+                .HasIndex(c => new { c.Tipo, c.Nombre })
                 .IsUnique();
 
             modelBuilder.Entity<Componente>()
                 .HasIndex(c => c.ActivoBodega)
                 .IsUnique();
-            //modelBuilder.Entity<Componente>()
-            //    .HasIndex(c => c.ActivoTec)
-            //    .IsUnique();
 
             modelBuilder.Entity<Equipo>()
                 .HasIndex(e => e.ActivoBodega)
-                .IsUnique();
-            modelBuilder.Entity<Equipo>()
-                .HasIndex(e => e.ActivoTec)
                 .IsUnique();
 
             // Configurar la relación entre Boleta y Equipo

@@ -10,7 +10,6 @@ namespace Sibe.API.Services.EstadoService
 
         Task<ServiceResponse<Estado>> Create(string estado);
         Task<ServiceResponse<List<Estado>>> ReadByTipoActivo(TipoActivo tipo);
-        //Task<ServiceResponse<List<Estado>>> ReadAll();
         Task<ServiceResponse<Estado>> Update(int id, string estado);
         Task<ServiceResponse<object>> Delete(int id);
 

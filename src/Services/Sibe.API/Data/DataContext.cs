@@ -95,7 +95,7 @@ namespace Sibe.API.Data
             // Roles iniciales
             modelBuilder.Entity<Rol>().HasData(
                 new Rol { Id = 1, Nombre = "ADMINISTRADOR", Descripcion = "Administra usuarios y gestiona información sensible." },
-                new Rol { Id = 2, Nombre = "DESARROLLADOR", Descripcion = "Desarrollo y mantenimiento del sistema." },
+                new Rol { Id = 2, Nombre = "PROFESOR", Descripcion = "Desarrollo y mantenimiento del sistema." },
                 new Rol { Id = 3, Nombre = "ASISTENTE", Descripcion = "Asistencia y tareas administrativas." }
             );
 

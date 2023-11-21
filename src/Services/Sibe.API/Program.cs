@@ -68,17 +68,22 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy => {
-        policy.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins(
+            "http://172.21.6.223:8080",  // Producción y Staging
+            "http://localhost:3000"      // Local
+        )
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
     });
 });
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

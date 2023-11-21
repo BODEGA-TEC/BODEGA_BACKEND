@@ -40,7 +40,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<ServiceResponse<ReadEquipoDto>>> Update(int id, [FromBody] UpdateEquipoDto equipo)
         {
@@ -48,7 +48,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        //[Authorize]
+        [Authorize(Roles = "ADMINISTRADOR")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {

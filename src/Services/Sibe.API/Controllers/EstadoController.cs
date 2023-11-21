@@ -28,13 +28,6 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        //[HttpGet("")]
-        //public async Task<ActionResult<ServiceResponse<List<Estado>>>> ReadAll()
-        //{
-        //    var response = await _estadoService.ReadAll();
-        //    return Ok(response);
-        //}
-
         [HttpGet("equipo")]
         public async Task<ActionResult<ServiceResponse<Categoria>>> ReadByTipoActivoEquipo()
         {

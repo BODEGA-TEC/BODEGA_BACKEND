@@ -6,17 +6,10 @@ using Sibe.API.Models.Inventario;
 
 namespace Sibe.API.Services.EstadoService
 {
-    public class EstadoService : IEstadoService
+    public class EstadoService(IConfiguration configuration, DataContext context) : IEstadoService
     {
         // Variables gloables
-        private readonly IConfigurationSection _messages;
-        private readonly DataContext _context;
-
-        public EstadoService(IConfiguration configuration, DataContext context)
-        {
-            _context = context;
-            _messages = configuration.GetSection("EstadoService");
-        }
+        private readonly IConfigurationSection _messages = configuration.GetSection("EstadoService");
 
         public async Task<ServiceResponse<Estado>> Create(string descripcion)
         {
@@ -28,8 +21,8 @@ namespace Sibe.API.Services.EstadoService
                 var estado = new Estado { Nombre = descripcion };
 
                 // Agregar estado
-                _context.Estado.Add(estado);
-                await _context.SaveChangesAsync();
+                context.Estado.Add(estado);
+                await context.SaveChangesAsync();
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["CreateSuccess"], estado);
@@ -44,32 +37,6 @@ namespace Sibe.API.Services.EstadoService
             return response;
         }
 
-        //public async Task<ServiceResponse<List<Estado>>> ReadAll()
-        //{
-        //    var response = new ServiceResponse<List<Estado>>();
-
-        //    try
-        //    {
-        //        // Recuperar estados
-        //        var estados = await _context.Estado
-        //            .ToListAsync()
-        //            ?? throw new Exception(_messages["NotFound"]);
-
-        //        // Configurar respuesta
-        //        string? message = estados.Count == 0
-        //            ? _messages["Empty"]
-        //            : _messages["ReadSuccess"];
-        //        response.SetSuccess(message, estados);
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        // Configurar error
-        //        response.SetError(ex.Message);
-        //    }
-
-        //    return response;
-        //}
 
         public async Task<ServiceResponse<List<Estado>>> ReadByTipoActivo(TipoActivo tipo)
         {
@@ -78,7 +45,7 @@ namespace Sibe.API.Services.EstadoService
             try
             {
                 // Recuperar estados
-                var estados = await _context.Estado.ToListAsync() ?? throw new Exception(_messages["NotFound"]);
+                var estados = await context.Estado.ToListAsync() ?? throw new Exception(_messages["NotFound"]);
 
                 // Filtrar estados según el tipo de activo
                 if (tipo == TipoActivo.EQUIPO)
@@ -111,7 +78,7 @@ namespace Sibe.API.Services.EstadoService
         public async Task<Estado> FetchById(int id)
         {
             // Recuperar estado
-            var estado = await _context.Estado
+            var estado = await context.Estado
                 .FindAsync(id)
                 ?? throw new Exception(_messages["NotFound"]);
 
@@ -121,7 +88,7 @@ namespace Sibe.API.Services.EstadoService
         public async Task<Estado> FetchByNombre(string nombre)
         {
             // Recuperar estado
-            var estado = await _context.Estado
+            var estado = await context.Estado
                 .FirstOrDefaultAsync(e => e.Nombre == nombre.ToUpper())
                 ?? throw new Exception(_messages["NotFound"]);
 
@@ -135,13 +102,13 @@ namespace Sibe.API.Services.EstadoService
             try
             {
                 // Recuperar estado
-                var target = await _context.Estado
+                var target = await context.Estado
                     .FindAsync(id)
                     ?? throw new Exception(_messages["NotFound"]);
 
                 // Actualizar estado
                 target.Nombre = descripcion;
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["UpdatedSuccess"], target);
@@ -163,13 +130,13 @@ namespace Sibe.API.Services.EstadoService
             try
             {
                 // Recuperar estado
-                var estadoExistente = await _context.Estado
+                var estadoExistente = await context.Estado
                     .FindAsync(id)
                     ?? throw new Exception(_messages["NotFound"]);
 
                 // Eliminar estado
-                _context.Estado.Remove(estadoExistente);
-                await _context.SaveChangesAsync();
+                context.Estado.Remove(estadoExistente);
+                await context.SaveChangesAsync();
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["DeletedSuccess"]);

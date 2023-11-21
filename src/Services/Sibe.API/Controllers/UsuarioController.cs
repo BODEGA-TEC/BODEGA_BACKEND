@@ -31,7 +31,7 @@ namespace Sibe.API.Controllers
         /// <param name="request">Datos del nuevo usuario a ser registrado.</param>
         /// <returns>ActionResult<ServiceResponse<int>> Objeto que encapsula el resultado de la operación, incluyendo el ID del usuario registrado.</returns>
         [HttpPost("register")]
-        [Authorize(Roles= "ADMINISTRADOR")]
+        //[Authorize(Roles= "ADMINISTRADOR")]
         public async Task<ActionResult<ServiceResponse<object>>> Register(RegisterUsuarioDto request)
         {
             var response = await _usuarioService.Register(request);

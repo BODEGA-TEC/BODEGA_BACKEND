@@ -1,0 +1,50 @@
+CATEGORIA,ESTADO,CONDICION,MODELO,DESCRIPCION,OBSERVACIONES,CANTIDAD,ESTANTE
+ttl,DISPONIBLE,BUENO,74374,Octal Transparent Latch w/ Three-State Outputs,,106,A1
+ttl,DISPONIBLE,BUENO,74390,Dual 4-bit Decade counter,,64,A1
+ttl,DISPONIBLE,BUENO,74574,Octal D-Type Triggered Flip-Flop w/Three State Outputs,,69,A1
+ttl,DISPONIBLE,BUENO,74641,Octal Bus Transceiver Open-Collector,,7,A1
+ttl,DISPONIBLE,BUENO,74C901,Hex Inverting TTL Buffer,,6,A1
+ttl,DISPONIBLE,BUENO,74C923,20-Key Encoder,,5,A1
+ttl,DISPONIBLE,BUENO,74HC4052N,Dul 4-Channel analog multiplexer/ demultiplexer,,3,A1
+ttl,DISPONIBLE,BUENO,MC68HC908GP32CP,EE Prom,,3,A1
+ttl,DISPONIBLE,BUENO,DV339,,,49,A1
+ttl,DISPONIBLE,BUENO,SN74LSI60AN,,,49,A1
+ttl,DISPONIBLE,BUENO,74240,Octal 3-STATE Buffer/Line Driver/Line Receiver,,5,A1
+ttl,DISPONIBLE,BUENO,7485,4-bit Magnitude Comparator,,24,A1
+ttl,DISPONIBLE,BUENO,CD4051,Single 8-Channel Analog Multiplexer/Demultiplexer,,14,A1
+ttl,DISPONIBLE,BUENO,74645,Octal Bus Transceiver three-state,,4,A1
+ttl,DISPONIBLE,BUENO,74C903,Hex inverting CMOS buffer,,13,A1
+ttl,DISPONIBLE,BUENO,74C925,4-digit counters w/multiplexed 7*segment output drivers,,19,A1
+ttl,DISPONIBLE,BUENO,74373,octal transparent latch w/three-state outputs,,134,A1
+ttl,DISPONIBLE,BUENO,74534,octal register w/inverting three- state outputs,,13,A1
+ttl,DISPONIBLE,BUENO,74595,8-bit shift register with output latches,,15,A1
+ttl,DISPONIBLE,BUENO,74670,4 by 4 register file w/ three-state outputs,,7,A1
+operaciones,DISPONIBLE,BUENO,74C906,hex open drain n-channel buffers,,10,A1
+operaciones,DISPONIBLE,BUENO,74573,octal D-type latch w/three-state outputs,,12,A1
+operaciones,DISPONIBLE,BUENO,74629,dual voltaje-controlled oscilator,,15,A1
+operaciones,DISPONIBLE,BUENO,74C922,16-key encoder,,0,A1
+operaciones,DISPONIBLE,BUENO,Tip31,,,1,A1
+operaciones,DISPONIBLE,BUENO,Tip32C,Epitaxial Planar PNP Transistor,,6,A1
+operaciones,DISPONIBLE,BUENO,74C926,4-digit counters w multiplexed 7- segment output drivers,,6,A1
+operaciones,DISPONIBLE,BUENO,MC68HC908JK3CP,Microcontrollers,,8,A1
+operaciones,DISPONIBLE,BUENO,Memorias 714119NBH,,,22,A1
+operaciones,DISPONIBLE,BUENO,Memorias D8751H,,,6,A1
+operaciones,DISPONIBLE,BUENO,MC68HC908JL3CP,Microcontroller,,14,A1
+operaciones,DISPONIBLE,BUENO,74688,8-bit magnitude camparator (equality detector),,47,A1
+operaciones,DISPONIBLE,BUENO,74393,dual 4-bit binary counter,,57,A1
+operaciones,DISPONIBLE,BUENO,74HC574N,"octal D-type flip-flop, positive edge-trigger, 3-state",,14,A1
+operaciones,DISPONIBLE,BUENO,Cables BNC-BNC,CAJA PRESTAMO PROFESORES,,72,A1
+operaciones,DISPONIBLE,BUENO,DM74LS83AN,4-bit binary full adder,,170,A1
+operaciones,DISPONIBLE,BUENO,7485,4-bit magnitude comparator,,192,A1
+operaciones,DISPONIBLE,BUENO,7486,Quad 2-input exclusive-OR (XOR),,152,A1
+operaciones,DISPONIBLE,BUENO,7490,Decade Counter (separate divide-by-2 and divide-by-5 sections),,144,A1
+operaciones,DISPONIBLE,BUENO,7491,"8-bit shift register, serial in, serial out, gated input",,20,A1
+operaciones,DISPONIBLE,BUENO,7492,Divide-by-12 counter (separate divide-by-2 and divide-by-6 sections),,107,A1
+operaciones,DISPONIBLE,BUENO,7493,4-bit binary counter (separate divide-by-2 and divide-by-8 sections),,70,A1
+operaciones,DISPONIBLE,BUENO,7495,"4-bti shift register, parallel in, parallel out, serial input bidirectional",,114,A1
+operaciones,DISPONIBLE,BUENO,7496,5 bit parallel-In/Out Shift Reg,,16,A1
+operaciones,DISPONIBLE,BUENO,74107,Dual J-K Negatice-edge-triggered Flip-Flop w/clear,,9,A1
+operaciones,DISPONIBLE,BUENO,7497,Synchronous 6-bit binary rate mult,,26,A1
+operaciones,DISPONIBLE,BUENO,74109,Dual J-Not-K Positive-edge-triggered Flip-Flop w/clear and preset,,35,A1
+operaciones,DISPONIBLE,BUENO,74103,Flip Flops J-K Negative edge triggered,,29,A1
+operaciones,DISPONIBLE,BUENO,74112,Dual J-K Negative-edge-triggered Flip-Flop w/clear and preset,,5,A1

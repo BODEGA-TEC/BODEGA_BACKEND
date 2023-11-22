@@ -1,0 +1,12 @@
+﻿using System.Text.Json.Serialization;
+
+namespace Sibe.API.Models.Enums
+{
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+
+    public enum TipoComprobantePrestamo
+    {
+        PRESTAMO = 1,
+        DEVOLUCION = 2,
+    }
+}

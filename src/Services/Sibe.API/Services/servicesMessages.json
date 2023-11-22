@@ -1,0 +1,48 @@
+{
+  "EstadoService": {
+    "NotFound": "Estado no encontrado.",
+    "CreateSuccess": "Estado creado con éxito.",
+    "ReadSuccess": "Estado(s) recuperado(s) con éxito.",
+    "Empty": "No se han registrado estados.",
+    "UpdatedSuccess": "Estado actualizado con éxito.",
+    "DeletedSuccess": "Estado eliminado con éxito."
+  },
+  "CategoriaService": {
+    "NotFound": "Categoría no encontrada.",
+    "CreateSuccess": "Categoría creada con éxito.",
+    "ReadSuccess": "Categoría(s) recuperada(s) con éxito.",
+    "Empty": "No se han registrado categorías.",
+    "UpdatedSuccess": "Categoría actualizada con éxito.",
+    "DeletedSuccess": "Categoría eliminada con éxito."
+  },
+  "ComponenteService": {
+    "NotFound": "Componente no encontrado.",
+    "ActivoBodegaInUse": "El activo bodega ya se encuentra registrado.",
+    "ActivoTecInUse": "El activo TEC ya se encuentra registrado.",
+    "CreateSuccess": "Componente creado con éxito.",
+    "ReadSuccess": "Componente(s) recuperado(s) con éxito.",
+    "Empty": "No se han registrado componentes.",
+    "UpdatedSuccess": "Componente actualizado con éxito.",
+    "DeletedSuccess": "Componente eliminado con éxito.",
+    "GenerateBarCodeSuccess": "Codigo generado con éxito."
+  },
+  "EquipoService": {
+    "NotFound": "Equipo no encontrado.",
+    "ActivoBodegaInUse": "El activo bodega ya se encuentra registrado.",
+    "ActivoTecInUse": "El activo TEC ya se encuentra registrado.",
+    "CreateSuccess": "Equipo creado con éxito.",
+    "ReadSuccess": "Equipo recuperado con éxito.",
+    "Empty": "No se ha registrado equipo.",
+    "UpdatedSuccess": "Equipo actualizado con éxito.",
+    "DeletedSuccess": "Equipo eliminado con éxito.",
+    "GenerateBarCodeSuccess": "Codigo generado con éxito."
+  },
+  "UsuarioService": {
+    "RegisterSuccess": "Se ha registrado exitosamente.",
+    "LoginSuccess": "Se ha iniciado sesión correctamente.",
+    "RoleNotFound": "No se ha encontrado el rol.",
+    "CarneInUse": "Este carné ya se encuentra registrado.",
+    "InvalidCredentials": "Carné o contraseña inválido(s)."
+  }
+
+}

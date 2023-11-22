@@ -1,2 +1,38 @@
-node_modules/**/*
-.env
+# .NET build files
+**/bin/
+**/obj/
+
+**/.vs/
+*.suo
+*.user
+*.userprefs
+*.vscode
+*.nuget.props
+*.nuget.targets
+*.nuget.cache
+[Tt]est[Rr]esult*/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+**/build/
+**/ios/Flutter/App.framework/
+**/ios/Flutter/Flutter.framework/
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Pods/
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/lib/generated_*
+**/macos/Flutter/App.framework/
+**/web/assets/
+**/web/packages/
+
+# Logs and databases
+*.log
+*.sqlite
+**/*.dbmdl
+db/.data/db/binlog.000006
+
+# OS generated files
+.DS_Store
+Thumbs.db

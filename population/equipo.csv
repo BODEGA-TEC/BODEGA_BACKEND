@@ -1,0 +1,463 @@
+ACTIVOTEC,ESTANTE,ESTADO,CATEGORIA,DESCRIPCION,CONDICION,MARCA,MODELO,SERIE,CANTIDAD,OBSERVACIONES
+3629,E,DISPONIBLE,televisor/monitor,Coby LCD con adaptador de 12V,BUENO,Coby,,,1,"Pantalla con control remoto, cable de alimentacion, cable VGA,  Cable A/V"
+3693,E,DISPONIBLE,televisor/monitor,Coby LCD con adaptador de 12V,BUENO,Coby,,,1,"Pantalla con control remoto, cable de alimentacion, cable VGA,  Cable A/V"
+4615,E,DISPONIBLE,televisor/monitor,Coby LCD con adaptador de 12V,BUENO,Coby,,,1,"Pantalla con control remoto, cable de alimentacion, cable VGA,  Cable A/V"
+4620,E,DISPONIBLE,televisor/monitor,Coby LCD con adaptador de 12V,BUENO,Coby,,,1,"Pantalla con control remoto, cable de alimentacion, cable VGA,  Cable A/V"
+6008,E,DISPONIBLE,otros,Caja National Instruments,BUENO,"National 
+Instruments",,,1,
+7999,A5,DISPONIBLE,otros,Estacion de soldadura ERSA T-25,BUENO,ERSA,T-25,,1,
+9109,E,DISPONIBLE,otros,hps Wechselstrommotor,BUENO,hps,,,2,
+10859,E,DISPONIBLE,otros,Banco Capacitivo System Technik,BUENO,System Technik,,,1,
+24138,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+24139,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+24140,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+24142,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+24143,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+24144,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+24146,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+24149,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+24150,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+24151,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+24152,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics 2205,BUENO,Tektronics,2205,,1,
+26678,F,DISPONIBLE,osciloscopio,Osciloscopio Goldstar OS-9040D,BUENO,Goldstar,OS-9040D,,1,
+26680,F,DISPONIBLE,osciloscopio,Osciloscopio Goldstar OS-9040D,BUENO,Goldstar,OS-9040D,,1,
+26688,F,DISPONIBLE,osciloscopio,Osciloscopio Goldstar OS-9040D,BUENO,Goldstar,OS-9040D,,1,
+28032,F,DISPONIBLE,otros,Allen Bradley 1305 Adjustable Frequency AC Drive (Series C),BUENO,Allen Bradley,1305,,1,
+29289,F,DISPONIBLE,osciloscopio,Osciloscopio Goldstar OS-5020P,BUENO,Goldstar,OS-5020P,,1,
+29292,F,DISPONIBLE,osciloscopio,Osciloscopio Goldstar OS-5020P,BUENO,Goldstar,OS-5020P,,1,
+29293,F,DISPONIBLE,osciloscopio,Osciloscopio Goldstar OS-5020P,BUENO,Goldstar,OS-5020P,,1,
+32752,E,DISPONIBLE,otros,LN starter starter SO3212-6B,BUENO,Lucas-Nülle,SO3212-6B,,1,
+32755,E,DISPONIBLE,otros,Load resistor Belastungwiderstand S03212-6M,BUENO,,S03212-6M,,1,
+35525,F,DISPONIBLE,otros,iET Decade resistance substituter,BUENO,iET Labs Inc,,,1,
+37990,E,DISPONIBLE,televisor/monitor,Dell,BUENO,Dell,,,1,
+37992,E,DISPONIBLE,televisor/monitor,Dell,BUENO,Dell,,,1,
+40199,E,DISPONIBLE,televisor/monitor,Dell,BUENO,Dell,,,1,
+60017,A5,DISPONIBLE,kit de desarrollo,FPGA Board,BUENO,National Instruments,,,1,"Viene con cable fuente, cable usb y disco."
+60018,A5,DISPONIBLE,kit de desarrollo,FPGA Board,BUENO,National Instruments,,,1,"Viene con cable fuente, cable usb y disco."
+60019,A5,DISPONIBLE,kit de desarrollo,FPGA Board,BUENO,National Instruments,,,1,Viene con cable fuente y cable usb.
+60020,A5,DISPONIBLE,kit de desarrollo,FPGA Board,BUENO,National Instruments,,,1,"Viene con cable fuente, cable usb y disco."
+76445,A3,DISPONIBLE,otros,Dinamómetro,BUENO,,,,1,
+76446,A3,DISPONIBLE,otros,Báscula,BUENO,,,,1,
+78249,A5,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,"Viene con las puntas, una pila redonda de 1.5 V y una pila cuadrada de 9V (sin manual)"
+78252,A5,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,"Viene con las puntas, una pila redonda de 1.5 V y una pila cuadrada de 9V (con manual)"
+78252,A5,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,"Viene con las puntas, una pila redonda de 1.5 V y una pila cuadrada de 9V"
+78256,A5,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,"Viene con las puntas, una pila redonda de 1.5 V y una pila cuadrada de 9V (con manual)"
+78256,A5,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,"Viene con las puntas, una pila redonda de 1.5 V y una pila cuadrada de 9V"
+86,E,DISPONIBLE,televisor/monitor,Coby LCD con adaptador de 12V,BUENO,Coby,,,1,"Pantalla con control remoto, cable de alimentacion, cable VGA,  Cable A/V"
+78252,A5,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,Viene con las puntas de multímetro pero sin pilas. El activo 78255 viene tachado y se señala como correcto el 78252 (hay dos con el mismo activo).
+78252,A5,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,Viene con las puntas de multímetro pero sin pilas. El activo 78255 viene tachado y se señala como correcto el 78252 (hay dos con el mismo activo).
+AD590,E,DISPONIBLE,otros,Heat-Current Sensor,BUENO,,,,15,
+AI-1075,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics TDS 340A,BUENO,Tektronics,TDS 340A,,1,
+AI-1096,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics TDS 340A,BUENO,Tektronics,TDS 340A,,1,
+AI-1170,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics TDS 340A,BUENO,Tektronics,TDS 340A,,1,
+AI-1174,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics TDS 340A,BUENO,Tektronics,TDS 340A,,1,
+AI-1188,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics TDS 340A,BUENO,Tektronics,TDS 340A,,1,
+AI-1305,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics TDS 340A,BUENO,Tektronics,TDS 340A,,1,
+AI-1311,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics TDS 340A,BUENO,Tektronics,TDS 340A,,1,
+AI-1312,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics TDS 340A,BUENO,Tektronics,TDS 340A,,1,
+AI-1381,A5,DISPONIBLE,otros,Lutron DI-6200 Insulation Tester,BUENO,Lutron,DI-6200,,1,Está marcado con diferentes activos
+AI-1383,A5,DISPONIBLE,otros,Lutron DI-6200 Insulation Tester,BUENO,Lutron,DI-6200,,1,Está marcado con diferentes activos
+AI-1404,F,DISPONIBLE,osciloscopio,Osciloscopio Tektronics TDS 340A,BUENO,Tektronics,TDS 340A,,1,
+SP-002421,A5,DISPONIBLE,wattimetro,Wattimetro Analogico SEW,BUENO,SEW-EURODRIVE,2030-12,,1,120 V y 5 A (Relación: 5.25)
+SP-002422,A5,DISPONIBLE,wattimetro,Wattimetro Analogico SEW,BUENO,SEW-EURODRIVE,2030-12,,1,
+SP-002423,A5,DISPONIBLE,wattimetro,Wattimetro Analogico SEW,BUENO,SEW-EURODRIVE,2030-12,,1,
+SP-002469,F,DISPONIBLE,analizador,HP 1664A Logic Analyzer,BUENO,HP,1664A,,1,
+SP-002470,F,DISPONIBLE,analizador,HP 1664A Logic Analyzer,BUENO,HP,1664A,,1,
+SP-002471,F,DISPONIBLE,analizador,HP 1664A Logic Analyzer,BUENO,HP,1664A,,1,
+SP-003242,A5,DISPONIBLE,wattimetro,Wattimetro Analogico SEW,BUENO,SEW-EURODRIVE,2030-12,,1,
+SP-003546,A5,DISPONIBLE,wattimetro,Wattimetro Analogico SEW,BUENO,SEW-EURODRIVE,2030-12,,1,
+6969,B,DISPONIBLE,otros,Set de llaves corofijas Homak NA,BUENO,Homak,NA,,1,"10 llaves de 
+diferente tamaño"
+24247,D,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8045G,BUENO,GW Instek,GDM-8045G,,1,
+24249,D,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8045G,BUENO,GW Instek,GDM-8045G,,1,
+24250,D,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8045G,BUENO,GW Instek,GDM-8045G,,1,
+24251,D,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8045G,BUENO,GW Instek,GDM-8045G,,1,
+24254,D,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8045G,BUENO,GW Instek,GDM-8045G,,1,
+24255,D,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8045G,BUENO,GW Instek,GDM-8045G,,1,
+24256,D,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8045G,BUENO,GW Instek,GDM-8045G,,1,
+24258,D,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8045G,BUENO,GW Instek,GDM-8045G,,1,
+24260,D,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8045G,BUENO,GW Instek,GDM-8045G,,1,
+24261,D,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8045G,BUENO,GW Instek,GDM-8045G,,1,
+26649,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3235,BUENO,Escort,EGC-3235,,1,
+26650,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3232,BUENO,Escort,EGC-3232,,1,
+26652,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3234,BUENO,Escort,EGC-3234,,1,
+26653,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3240,BUENO,Escort,EGC-3240,,1,
+26654,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3239,BUENO,Escort,EGC-3239,,1,
+26655,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3238,BUENO,Escort,EGC-3238,,1,
+26656,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3236,BUENO,Escort,EGC-3236,,1,
+26657,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3237,BUENO,Escort,EGC-3237,,1,
+26658,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3233,BUENO,Escort,EGC-3233,,1,
+26659,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3231,BUENO,Escort,EGC-3231,,1,
+26660,D,DISPONIBLE,generador de funciones,Generador de Funciones Escort EGC-3230,BUENO,Escort,EGC-3230,,1,
+29294,D,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-306,BUENO,Goldstar,GP-306,,1,
+29295,D,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-311,BUENO,Goldstar,GP-311,,1,
+29297,D,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-309,BUENO,Goldstar,GP-309,,1,
+29299,D,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-308,BUENO,Goldstar,GP-308,,1,
+29651,D,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-305,BUENO,Goldstar,GP-305,,1,
+29652,D,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-307,BUENO,Goldstar,GP-307,,1,
+29655,D,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-310,BUENO,Goldstar,GP-310,,1,
+29657,D,DISPONIBLE,generador de funciones,Generador de Funciones Goldstar FG-20025,BUENO,Goldstar,FG-20025,,1,
+29658,D,DISPONIBLE,generador de funciones,Generador de Funciones Goldstar FG-20021,BUENO,Goldstar,FG-20021,,1,
+29659,D,DISPONIBLE,generador de funciones,Generador de Funciones Goldstar FG-20023,BUENO,Goldstar,FG-20023,,1,
+29662,D,DISPONIBLE,generador de funciones,Generador de Funciones Goldstar FG-20022,BUENO,Goldstar,FG-20022,,1,
+29663,D,DISPONIBLE,generador de funciones,Generador de Funciones Goldstar FG-20026,BUENO,Goldstar,FG-20026,,1,
+29664,D,DISPONIBLE,generador de funciones,Generador de Funciones Goldstar FG-20027,BUENO,Goldstar,FG-20027,,1,
+29665,D,DISPONIBLE,generador de funciones,Generador de Funciones Goldstar FG-20020,BUENO,Goldstar,FG-20020,,1,
+29666,D,DISPONIBLE,generador de funciones,Generador de Funciones Goldstar FG-20024,BUENO,Goldstar,FG-20024,,1,
+35498,D,DISPONIBLE,osciloscopio,Osciloscopio Multimetro Digital Tektronik TDS 3012,BUENO,Tektronik,TDS 3012,,1,Trae tapa
+35501,C,DISPONIBLE,otros,Fuente de carga activa FAGTO FA-2300,BUENO,FAGTO,FA-2300,,1,
+35504,C,DISPONIBLE,multimetro,Multimetro Digital Agilent 34401A,BUENO,Agilent,34401A,,1,
+35507,B,DISPONIBLE,lcr,LCR Zentech 100,BUENO,Zentech,100,,1,
+35509,E,DISPONIBLE,otros,Universal Counter Agilent 53131A,BUENO,Agilent,53131A,,1,
+39264,D,DISPONIBLE,osciloscopio,Osciloscopio Agilent DSO3062A,BUENO,Agilent,DSO3062A,,1,
+39266,D,DISPONIBLE,osciloscopio,Osciloscopio Agilent DSO3062A,BUENO,Agilent,DSO3062A,,1,
+39267,D,DISPONIBLE,osciloscopio,Osciloscopio Agilent DSO3062A,BUENO,Agilent,DSO3062A,,1,
+39268,D,DISPONIBLE,osciloscopio,Osciloscopio Agilent DSO3062A,BUENO,Agilent,DSO3062A,,1,
+39269,D,DISPONIBLE,osciloscopio,Osciloscopio Agilent DSO3062A,BUENO,Agilent,DSO3062A,,1,
+39270,D,DISPONIBLE,osciloscopio,Osciloscopio Agilent DSO3062A,BUENO,Agilent,DSO3062A,,1,
+39273,D,DISPONIBLE,osciloscopio,Osciloscopio Agilent DSO3062A,BUENO,Agilent,DSO3062A,,1,
+39274,D,DISPONIBLE,osciloscopio,Osciloscopio Agilent DSO3062A,BUENO,Agilent ,DSO3062A,,1,
+39275,D,DISPONIBLE,osciloscopio,Agilent DSO3062A,BUENO,Agilent ,DSO3062A,,1,
+39276,D,DISPONIBLE,osciloscopio,Agilent DSO3062A,BUENO,Agilent ,DSO3062A,,1,
+48401,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1084,BUENO,EZ Digital,DS-1084,,1,
+48402,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1087,BUENO,EZ Digital,DS-1087,,1,
+48403,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1082,BUENO,EZ Digital,DS-1082,,1,
+48404,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1086,BUENO,EZ Digital,DS-1086,,1,
+48405,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1083,BUENO,EZ Digital,DS-1083,,1,
+48406,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1088,BUENO,EZ Digital,DS-1088,,1,
+48407,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1085,BUENO,EZ Digital,DS-1085,,1,
+48408,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1090,BUENO,EZ Digital,DS-1090,,1,
+48409,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1080,BUENO,EZ Digital,DS-1080,,1,
+48410,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1089,BUENO,EZ Digital,DS-1089,,1,
+48416,D,DISPONIBLE,osciloscopio,Osciloscopio EZ DS-1081,BUENO,EZ Digital,DS-1081,,1,
+48417,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ DM-441B,BUENO,EZ Digital,DM-441B,,1,
+48418,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ DM-441B,BUENO,EZ Digital,DM-441B,,1,
+48420,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ DM-441B,BUENO,EZ Digital,DM-441B,,1,
+48421,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ DM-441B,BUENO,EZ Digital,DM-441B,,1,
+48422,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ DM-441B,BUENO,EZ Digital,DM-441B,,1,
+48423,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ DM-441B,BUENO,EZ Digital,DM-441B,,1,
+48424,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ DM-441B,BUENO,EZ Digital,DM-441B,,1,
+48426,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ DM-441B,BUENO,EZ Digital,DM-441B,,1,
+48428,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48429,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48430,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48431,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48432,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48433,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48434,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48435,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48436,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48437,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48438,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ FG-7005C,BUENO,EZ Digital,FG-7005C,,1,
+48727,C,DISPONIBLE,generador de funciones,Generador de Funciones EZ DM-441B,BUENO,EZ Digital,DM-441B,,1,
+49576,B,DISPONIBLE,elvis,NI Elvis II 1/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+52463,B,DISPONIBLE,elvis,NI Elvis II 3/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+52471,B,DISPONIBLE,elvis,NI Elvis II 2/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+54893,B,DISPONIBLE,elvis,NI Elvis II 5/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+54894,B,DISPONIBLE,elvis,NI Elvis II 6/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+54895,B,DISPONIBLE,elvis,NI Elvis II 7/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+54896,B,DISPONIBLE,elvis,NI Elvis II 8/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+54897,B,DISPONIBLE,elvis,NI Elvis II 9/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+54898,B,DISPONIBLE,elvis,NI Elvis II 10/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+54899,B,DISPONIBLE,elvis,NI Elvis II 11/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+54901,B,DISPONIBLE,elvis,NI Elvis II 13/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+54902,B,DISPONIBLE,elvis,NI Elvis II 14/14,BUENO,"National 
+Instruments",NI Elvis II,,1,
+57042,C,DISPONIBLE,otros,Extech 407026 Heavy Duty Light Meter with PC Interface,BUENO,Extech,407026,,1,"La caja tiene el fotómetro, calibrador y manual"
+58640,C,DISPONIBLE,multimetro,Multimetro Digital Agilent 34405A,BUENO,Agilent,34405A,,1,
+58659,B,DISPONIBLE,generador de funciones,Generador de Funciones Agilent 33210A,BUENO,Agilent,33210A,,1,
+58698,D,DISPONIBLE,osciloscopio,Osciloscopio Tektronik TDS1012C-EDU,BUENO,Tektronik,TDS1012C-EDU,,1,
+60006,B,DISPONIBLE,elvis,NI Elvis II 1/5,BUENO,"National 
+Instruments",NI Elvis II,,1,
+60013,B,DISPONIBLE,elvis,NI Elvis II 2/5,BUENO,"National 
+Instruments",NI Elvis II,,1,
+60015,B,DISPONIBLE,elvis,NI Elvis II 4/5,BUENO,"National 
+Instruments",NI Elvis II,,1,
+60016,B,DISPONIBLE,elvis,NI Elvis II 5/5,BUENO,"National 
+Instruments",NI Elvis II,,1,
+60308,C,DISPONIBLE,kit de desarrollo,NI myDAQ 1/24 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Trae manual, myDAQ, cable USB tipo A, base protobord con batería, cable de audio y multímetro, conector de tornillo (765788-01) y desatornillador."
+60309,C,DISPONIBLE,kit de desarrollo,NI myDAQ 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Trae manual, myDAQ, cable USB tipo A, base protoboard, cable de audio y desatornillador. No tiene batería, conector de tornillo y puntas de multímetro. "
+60315,C,DISPONIBLE,kit de desarrollo,NI myDAQ  8/24 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Trae manual, myDAQ, cable USB tipo A, base protoboard, cable de audio y multímetro, conector de tornillo (765788-01) y desatornillador. Falta la batería."
+60317,C,DISPONIBLE,kit de desarrollo,NI myDAQ 10/24 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Trae manual, myDAQ, cable USB tipo A, base protoboard, cable de audio y multímetro y desatornillador. Falta la batería y conector de tornillo"
+60319,C,DISPONIBLE,kit de desarrollo,NI myDAQ 12/24 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Trae manual, myDAQ, cable USB tipo A, base protoboard, cable de audio y multímetro, conector de tornillo (765788-01) y desatornillador. Falta la batería."
+60320,C,DISPONIBLE,kit de desarrollo,NI myDAQ 13/24 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Trae manual, myDAQ, cable USB tipo A, base protoboard, cable de audio y multímetro, conector de tornillo (765788-01). Falta la batería y desatornillador."
+60321,C,DISPONIBLE,kit de desarrollo,NI myDAQ 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Trae módulo base, base protoboard sin batería, 2 cables de punta de multímetro, 1 cable USB tipo A, 1 desatornillador, 1 conector de tornillo (765788-01) y 1 cable de audio. Falta el DVD con software."
+60324,C,DISPONIBLE,kit de desarrollo,NI myDAQ 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Trae manual, myDAQ, cable USB tipo A, base protoboard, cable de audio y multímetroy desatornillador. Falta la batería y conector de tornillo."
+60325,C,DISPONIBLE,kit de desarrollo,NI myDAQ 17/24 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Faltan puntas de multímetro, batería, trae manual, myDAQ, cable USB tipo A, base protoboard, cable de audio, conector de tornillo (765788-01) y desatornillador. "
+60326,C,DISPONIBLE,kit de desarrollo,NI myDAQ 18/24 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Trae manual, myDAQ, cable USB tipo A, base protoboard, cable de audio y multímetro, conector de tornillo (765788-01) y desatornillador. Falta la batería"
+60327,C,DISPONIBLE,kit de desarrollo,NI myDAQ 19/24 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"No se presta a estudiantes. Trae manual, myDAQ, cable USB tipo A, base protoboard, cable de audio y multímetro, conector de tornillo (765788-01) y desatornillador. Falta la batería."
+60329,C,DISPONIBLE,kit de desarrollo,NI myDAQ 21/24 195509F-01L,BUENO,National Instruments,195509E-01L,,1,"Trae manual, myDAQ, cable USB tipo A, base protoboard, cable de audio y multímetro, conector de tornillo (765788-01) y desatornillador. Falta la batería."
+69213,D,DISPONIBLE,osciloscopio,Agilent DSO1002A,BUENO,Agilent ,DSO1002A,,1,
+70327,D,DISPONIBLE,osciloscopio,Agilent DSO1002A,BUENO,Agilent ,DSO1002A,,1,
+70329,D,DISPONIBLE,osciloscopio,Agilent DSO1002A,BUENO,Agilent ,DSO1002A,,1,
+70331,D,DISPONIBLE,osciloscopio,Agilent DSO1002A,BUENO,Agilent ,DSO1002A,,1,
+70334,D,DISPONIBLE,osciloscopio,Agilent DSO1002A,BUENO,Agilent ,DSO1002A,,1,
+78247,B,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,"falta lagarto 
+negro"
+78248,B,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,
+78250,B,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,
+78251,B,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,
+78253,B,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,"faltan puntas 
+y lagartos"
+78254,B,DISPONIBLE,multimetro,"Multimetro 
+Analogico (VOM) Simpson 270 Series 5",BUENO,Simpson,270-5,,1,
+78310,E,DISPONIBLE,lcr,Keysight E4980AL Precision LCR Meter  ,BUENO,Keysight,E4980AL,,1,Buen estado
+78372,E,DISPONIBLE,multimetro,Multimetro Digital Keysight 34461A,BUENO,Keysight,34461A,,1,Buen estado
+82356,D3,DISPONIBLE,mobiliario,Estante Metálico,BUENO,,,,1,Estante desarmado
+82362,D3,DISPONIBLE,mobiliario,Estante Metálico,BUENO,,,,1,Estante desarmado
+82920,D3,DISPONIBLE,mobiliario,Estante Metálico,BUENO,,,,1,Estante desarmado
+84932,B,DISPONIBLE,elvis,NI Elvis II 15,BUENO,"National 
+Instruments",NI Elvis II,,1,
+84934,B,DISPONIBLE,elvis,NI Elvis II 16,BUENO,"National 
+Instruments",NI Elvis II,,1,
+98677,D,DISPONIBLE,osciloscopio,Osciloscopio GW Instek GDS-1202B,BUENO,GW Instek,GDS-1202B,,1,
+98678,D,DISPONIBLE,osciloscopio,Osciloscopio GW Instek GDS-1202B,BUENO,GW Instek,GDS-1202B,,1,
+98682,B,DISPONIBLE,generador de funciones,Generador de Funciones GW Instek AFG-2225,BUENO,GW Instek,AFG-2225,,1,
+98717,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPE-2323,BUENO,GW Instek,GPE-2323,,1,
+99678,C,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8341,BUENO,GW Instek,GDM-8341,,1,
+99679,C,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8341,BUENO,GW Instek,GDM-8341,,1,
+99680,C,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8341,BUENO,GW Instek,GDM-8341,,1,
+99681,C,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8341,BUENO,GW Instek,GDM-8341,,1,
+99682,C,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8341,BUENO,GW Instek,GDM-8341,,1,
+99683,C,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8341,BUENO,GW Instek,GDM-8341,,1,
+99695,C,DISPONIBLE,multimetro,Multimetro Digital GW Instek GDM-8341,BUENO,GW Instek,GDM-8341,,1,
+99714,D,DISPONIBLE,osciloscopio,Osciloscopio GW Instek GDS-1202B,BUENO,GW Instek,GDS-1202B,,1,
+99715,D,DISPONIBLE,osciloscopio,Osciloscopio GW Instek GDS-1202B,BUENO,GW Instek,GDS-1202B,,1,
+99716,D,DISPONIBLE,osciloscopio,Osciloscopio GW Instek GDS-1202B,BUENO,GW Instek,GDS-1202B,,1,
+99717,D,DISPONIBLE,osciloscopio,Osciloscopio GW Instek GDS-1202B,BUENO,GW Instek,GDS-1202B,,1,
+99718,D,DISPONIBLE,osciloscopio,Osciloscopio GW Instek GDS-1202B,BUENO,GW Instek,GDS-1202B,,1,
+99790,D,DISPONIBLE,osciloscopio,Osciloscopio GW Instek GDS-1202B,BUENO,GW Instek,GDS-1202B,,1,
+99821,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPE-2323,BUENO,GW Instek,GPE-2323,,1,
+99822,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPE-2323,BUENO,GW Instek,GPE-2323,,1,
+99823,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPE-2323,BUENO,GW Instek,GPE-2323,,1,
+99824,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPE-2323,BUENO,GW Instek,GPE-2323,,1,
+99825,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPE-2323,BUENO,GW Instek,GPE-2323,,1,
+99826,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPE-2323,BUENO,GW Instek,GPE-2323,,1,
+99858,B,DISPONIBLE,generador de funciones,Generador de Funciones Hantek HDG3000B,BUENO,Hantek,HDG3000B,,1,Color gris y negro
+99859,B,DISPONIBLE,generador de funciones,Generador de Funciones Hantek HDG3000B,BUENO,Hantek,HDG3000B,,1,
+99860,B,DISPONIBLE,generador de funciones,Generador de Funciones Hantek HDG3000B,BUENO,Hantek,HDG3000B,,1,
+99861,B,DISPONIBLE,generador de funciones,Generador de Funciones Hantek HDG3000B,BUENO,Hantek,HDG3000B,,1,
+99862,B,DISPONIBLE,generador de funciones,Generador de Funciones Hantek HDG3000B,BUENO,Hantek,HDG3000B,,1,
+99863,B,DISPONIBLE,generador de funciones,Generador de Funciones Hantek HDG3000B,BUENO,Hantek,HDG3000B,,1,
+2E - 02,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan FPGA,BUENO,Xilinx,Spartan,,1,"Placa, 1 adaptador y cable alimentacion y 1 2R32"
+2E - 09,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan FPGA,BUENO,Xilinx,Spartan,,1,"Placa, 1 adaptador y cable alimentacion y 1 2R32"
+2E -19,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan FPGA,BUENO,Xilinx,Spartan,,1,"Placa, 1 adaptador y cable alimentacion y 1 2R32"
+2G-17,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan FPGA,BUENO,Xilinx,Spartan,,1,"Placa, 1 adaptador y cable alimentacion y 1 2R32"
+AC-90001,E,DISPONIBLE,protoboard,Protoboard KI AC-9007,BUENO,King Instrument Electronics,AC-9007,,1,Buen estado
+AI-0932,MUEBLE EMPOTRADO PARTE SUPERIOR,DISPONIBLE,otros,ViewSonic Projector,BUENO,ViewSonic,,,1,"CON CABLE DE ALIMENTACIÓN, VGA Y CONTROL SIN BATERIAS, ADEMAS DE ESTUCHE"
+AI-0977,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,Le faltan un botón
+AI-0981,D,DISPONIBLE,multimetro,Multimetro Digital Tektronik CDM258,BUENO,Tektronik,CDM258,,1,
+AI-1006,D,DISPONIBLE,multimetro,Multimetro Digital Tektronik CDM250,BUENO,Tektronik,CDM250,,1,
+AI-1058,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,
+AI-1059,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,Le faltan 2 botones
+AI-1061,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,
+AI-1066,D,DISPONIBLE,multimetro,Multimetro Digital Tektronik CDM257,BUENO,Tektronik,CDM257,,1,
+AI-1067,D,DISPONIBLE,multimetro,Multimetro Digital Tektronik CDM254,BUENO,Tektronik,CDM254,,1,
+AI-1146,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,Le falta el botón de encendido
+AI-1179,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,
+AI-1185,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,
+AI-1241,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,
+AI-1270,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,Le falta un botón
+AI-1273,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,
+AI-1274,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,
+AI-1275,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,
+AI-1276,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,
+AI-1280,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,Le falta un botón frontal
+AI-1281,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,Le faltan el boton de encendido
+AI-1416,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,Le falta un botón frontal
+AI-1417,D,DISPONIBLE,multimetro,Multimetro Digital Tektronik CDM256,BUENO,Tektronik,CDM256,,1,
+AI-1420,C,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804B,BUENO,King Instrument Electronics,DM-6804B,,1,
+AI-1424,D,DISPONIBLE,multimetro,Multimetro Digital Tektronik CDM255,BUENO,Tektronik,CDM255,,1,
+AI-1425,D,DISPONIBLE,multimetro,Multimetro Digital Tektronik CDM250,BUENO,Tektronik,CDM250,,1,
+C050619,E,DISPONIBLE,kit de desarrollo,Digilent D2-SB,BUENO,Digilent,D2-SB,,1,"Placa, 1 cable jtag a paralelo, y alimentacion "
+c050674,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan Digilent D2-SB,BUENO,Xilinx,Spartan,,1,"Digital I/O 5, cargadr y cable macho paraleo"
+D00 1401,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan FPGA,BUENO,Xilinx,Spartan,,1,"Placa, 1 adaptador y cable alimentacion "
+D001316,E,DISPONIBLE,kit de desarrollo,Digilent D2-SB,BUENO,Digilent,D2-SB,,1,Placa y alimentacion
+D001318,E,DISPONIBLE,kit de desarrollo,Digilent D2-SB,BUENO,Digilent,D2-SB,,1,"Placa, 1 cable jtag a paralelo, y alimentacion "
+D039301,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable usb a jtag, cable jtag a paralelo y alimentacion"
+d039303,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable usb a jtag y alimentacion"
+D039306,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable usb a jtag, cable jtag a paralelo y alimentacion"
+D0393063,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable usb a jtag, cable jtag a paralelo y alimentacion"
+D039312,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,Placa y cable paralelo a jtag
+D039321,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable jtag a paralelo y alimentacion"
+D039338,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable jtag a paralelo y alimentacion"
+D039340,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable jtag a paralelo y alimentacion"
+D039345,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable usb a jtag, cable jtag a paralelo y alimentacion"
+D039351,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,Placa y alimentacion
+D039354,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable usb a jtag, cable jtag a paralelo y alimentacion"
+D039360,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable jtag a paralelo "
+D039364,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"Placa, cable usb a jtag y alimentacion"
+D039368,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,Placa y cable paralelo a jtag
+D039399,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan 3 FPGA,BUENO,Xilinx,Spartan 3,,1,"2 placas, cable jtag a paralelo y alimentacion"
+D059024,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3-1000,BUENO,Digilent,Spartan 3-1000,,1,placa y C-MOD C2(DIGILENT)
+D059026,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3-1000,BUENO,Digilent,Spartan 3-1000,,1,"placa, 1 cable usb a jtag, y alimentacion"
+D067867,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3-1000,BUENO,Digilent,Spartan 3-1000,,1,"placa,  1 cable usb a jtag, 1 cable jtag a paralelo y alimentacion"
+D067868,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3-1000,BUENO,Digilent,Spartan 3-1000,,1,"placa, 1 cable jtag a paralelo y alimentacion"
+D067947,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3-1000,BUENO,Digilent,Spartan 3-1000,,1,"placa, 1 cable usb a jtag y alimentacion"
+D067954,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3-1000,BUENO,Digilent,Spartan 3-1000,,1,placa y 2 cables jtag a paralelo
+D067956,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3-1000,BUENO,Digilent,Spartan 3-1000,,1,"placa, 1 cable usb a jtag y alimentacion"
+D067957,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3-1000,BUENO,Digilent,Spartan 3-1000,,1,"placa, 1 cable usb a jtag y alimentacion"
+D079962,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3E-Starter,BUENO,Digilent,Spartan 3E-Starter,,1,"placa, usb a A, y alimentacion "
+D079964,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3E-Starter,BUENO,Digilent,Spartan 3E-Starter,,1,"placa, 1 cable jtag a paralelo, y alimentacion "
+D079978,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3E-Starter,BUENO,Digilent,Spartan 3E-Starter,,1,placa y alimentacion
+D079979,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3E-Starter,BUENO,Digilent,Spartan 3E-Starter,,1,"placa, usb a A, y alimentacion "
+D080017,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3E-Starter,BUENO,Digilent,Spartan 3E-Starter,,1,"placa, usb a A, y alimentacion "
+D080018,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3E-Starter,BUENO,Digilent,Spartan 3E-Starter,,1,"placa, usb a A, y alimentacion "
+D080022,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3E-Starter,BUENO,Digilent,Spartan 3E-Starter,,1,"placa, usb a A, y alimentacion "
+D080031,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3E-Starter,BUENO,Digilent,Spartan 3E-Starter,,1,"placa, usb a A, y alimentacion "
+D080034,E,DISPONIBLE,kit de desarrollo,Digilent Spartan 3E-Starter,BUENO,Digilent,Spartan 3E-Starter,,1,"placa, usb a A, y alimentacion "
+D381890,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Plástico de caja dañado
+D381891,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Plástico de caja dañado
+D381892,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Plástico de caja dañado
+D381896,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Plástico de caja dañado
+D390535,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,BUENO,Digilent,Nexys 2,,1,Buen estado
+D390541,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,BUENO,Digilent,Nexys 2,,1,Plástico de caja dañado
+D390542,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,BUENO,Digilent,Nexys 2,,1,Plástico de caja dañado
+D390543,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,BUENO,Digilent,Nexys 2,,1,Plástico de caja dañado
+D390548,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,BUENO,Digilent,Nexys 2,,1,Plástico de caja dañado
+D390552,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,BUENO,Digilent,Nexys 2,,1,Sin plástico
+D390553,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,BUENO,Digilent,Nexys 2,,1,Plástico de caja dañado
+D390578,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,BUENO,Digilent,Nexys 2,,1,Plástico de caja dañado
+D439956,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Plástico de caja dañado
+D439970,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Plástico de caja dañado
+D439975,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Plástico de caja dañado
+D439977,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Plástico de caja dañado
+D440182,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Plástico de caja dañado
+D440183,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Caja desgastada
+D481721,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Caja Quebrada
+D482755,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Caja desgastada
+D482780,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 3 FPGA,BUENO,Digilent,Nexys 3,,1,Plástico de caja dañado
+D592737,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 4 FPGA,BUENO,Digilent,Nexys 4,,1,Caja Dañada
+D663147,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 4 FPGA,BUENO,Digilent,Nexys 4,,1,Caja dañada
+D80 020,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan-3E Starter Kit,BUENO,Xilinx,Spartan-3E,,1,"Cable de alimentacion, placa y cable usb A"
+DAA7676,E,DISPONIBLE,kit de desarrollo,Digilent Nexys A7 FPGA,BUENO,Digilent,Nexys A7,,1,
+sp 002963,E,DISPONIBLE,protoboard,Protoboard KI AC-9001,BUENO,King Instrument Electronics,AC-9001,,1,
+sp 5347-3,E,DISPONIBLE,protoboard,Protoboard KI AC-9002,BUENO,King Instrument Electronics,AC-9002,,1,
+sp 5347-4,E,DISPONIBLE,protoboard,Protoboard KI AC-9003,BUENO,King Instrument Electronics,AC-9003,,1,
+sp 5347-5,E,DISPONIBLE,protoboard,Protoboard KI AC-9004,BUENO,King Instrument Electronics,AC-9004,,1,
+sp 5747-7,E,DISPONIBLE,protoboard,Protoboard KI AC-9005,BUENO,King Instrument Electronics,AC-9005,,1,
+SP-002223,B,DISPONIBLE,lcr,LCR Zentech 100,BUENO,Zentech,100,,1,
+SP-002224,B,DISPONIBLE,lcr,LCR Zentech 100,BUENO,Zentech,100,,1,
+SP-002309,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,"Le falta un 
+botón"
+SP-002318,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,
+SP-002350,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,
+SP-002355,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,
+SP-002383,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,
+SP-002431,B,DISPONIBLE,lcr,LCR Zentech 100,BUENO,Zentech,100,,1,
+SP-002493,C,DISPONIBLE,otros,LEAP Electronic ICT-6C Digital IC Tester,BUENO,LEAP Electronic,ICT-6C,,1,
+SP-002507,D,DISPONIBLE,otros,KI-3020A Semiconductor Curve Tracer,BUENO,King Instrument Electronics,KI-3020A,,1,
+SP-002508,D,DISPONIBLE,otros,KI-3020A Semiconductor Curve Tracer,BUENO,King Instrument Electronics,KI-3020A,,1,
+SP-002510,D,DISPONIBLE,otros,KI-3020A Semiconductor Curve Tracer,BUENO,King Instrument Electronics,KI-3020A,,1,
+SP-002549,D,DISPONIBLE,multimetro,Multimetro Digital Tektronik CDM250,BUENO,Tektronik,CDM250,,1,
+SP-002550,B,DISPONIBLE,lcr,LCR Zentech 100,BUENO,Zentech,100,,1,
+SP-002572,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,
+SP-002584,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,"Le falta un 
+botón"
+SP-002599,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,
+SP-002610,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,"Le falta un 
+botón"
+SP-003235,B,DISPONIBLE,lcr,LCR Zentech 100,BUENO,Zentech,100,,1,
+SP-003239,D,DISPONIBLE,multimetro,Multimetro Digital Tektronik CDM250,BUENO,Tektronik,CDM250,,1,
+SP-005282,B,DISPONIBLE,lcr,LCR Zentech 100,BUENO,Zentech,100,,1,
+SP-005306,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,
+SP-005324,B,DISPONIBLE,generador de funciones,Generador de Funciones KI FG-2512B,BUENO,King Instrument Electronics,FG-2512B,,1,"Le falta un 
+botón"
+SP-5200,D,DISPONIBLE,otros,Leap Electronic Handy Series Digital IC Tester,BUENO,Leap Electronic,Handy Series,,1,
+26690,C,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-303,DAÑADO,Goldstar,GP-303,,1,"Mango roto, cara frontal fracturada, cable de alimentación no modular descarapelado"
+35491,E,DISPONIBLE,otros,SAMAR Decade Inductor,DAÑADO,SAMAR,,,1,
+35503,E,DISPONIBLE,generador de funciones,Generador de Señales Agilent 33120A,DAÑADO,Agilent,33120A,,1,Patilla de soporte quebrada
+69212,E,DISPONIBLE,osciloscopio,Osciloscopio Agilent DSO1002A,DAÑADO,Agilent,DSO1002A,,1,No funciona
+70330,E,DISPONIBLE,osciloscopio,Osciloscopio Agilent DSO1002A,DAÑADO,Agilent,DSO1002A,,1,Perilla de canal 1 defectuosa
+78364,E,DISPONIBLE,multimetro,Multimetro Digital Keysight 34461A,DAÑADO,Keysight,34461A,,1,Dañado
+78388,E,DISPONIBLE,generador de funciones,Generador de Señales Keysight 33210A,DAÑADO,Keysight,33210A,,1,No genera salidas
+AI-1236,E,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804E,DAÑADO,King Instrument Electronics,DM-6804E,,1,Impreciso en medición de resistencias
+AI-1240,E,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804E,DAÑADO,King Instrument Electronics,DM-6804E,,1,No prende
+AI-1272,E,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804E,DAÑADO,King Instrument Electronics,DM-6804E,,1,Impreciso en medición de resistencias
+D390534,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,DAÑADO,Digilent,Nexys 2,,1,"Sin cable, caja dañada"
+D390536,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,DAÑADO,Digilent,Nexys 2,,1,"Sin portada, sin cable"
+D390539,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,DAÑADO,Digilent,Nexys 2,,1,Sin cable
+D390544,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,DAÑADO,Digilent,Nexys 2,,1,Sin cable
+D390550,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,DAÑADO,Digilent,Nexys 2,,1,Sin cable
+D390556,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 2 FPGA,DAÑADO,Digilent,Nexys 2,,1,"Plástico de caja dañado, sin cable"
+D592476,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 4 FPGA,DAÑADO,Digilent,Nexys 4,,1,"Switch malo, plástico de caja dañado"
+D592819,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 4 FPGA,DAÑADO,Digilent,Nexys 4,,1,"Cable Dañado, plástico dañado "
+D663893,E,DISPONIBLE,kit de desarrollo,Digilent Nexys 4 FPGA,DAÑADO,Digilent,Nexys 4,,1,"Switch dañado, plástico de caja dañado"
+D764520,E,DISPONIBLE,otros,Diligent Zedboard,DAÑADO,Digilent,,,1,Puerto dañado
+DB164FB,E,DISPONIBLE,kit de desarrollo,Digilent Basys 3 FPGA,DAÑADO,Digilent,Basys 3,,1,Interruptor dañado
+QJ23E,E,DISPONIBLE,otros,Wheatstone Bridge,DAÑADO,,,,1,
+SP-002301,E,DISPONIBLE,generador de funciones,Generador de Señales Ki FG-2512B,DAÑADO,King Instrument Electronics,FG-2512B,,1,No se puede configurar una frecuencia
+SP-002307,E,DISPONIBLE,fuente dc,Fuente DC Ki DPS-1303DF,DAÑADO,King Instrument Electronics,DPS-1303DF,,1,Daño en el display
+SP-002379,E,DISPONIBLE,generador de funciones,Generador de Señales Ki FG-2512B,DAÑADO,King Instrument Electronics,FG-2512B,,1,El boton de encendido aveces falla
+SP-002571,E,DISPONIBLE,multimetro,Multimetro Digital KI DM-6804E,DAÑADO,King Instrument Electronics,DM-6804E,,1,No mide voltaje
+SP-003222,E,DISPONIBLE,fuente dc,Fuente DC Ki DPS-1303DF,DAÑADO,King Instrument Electronics,DPS-1303DF,,1,No sirve display derecho
+SP-002353,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,DAÑADO,King Instrument Electronics,DPS-1303DF,,1,
+24688,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPR-30200,REGULAR,GW Instek,GPR-30200,,1,
+24690,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPR-30200,REGULAR,GW Instek,GPR-30200,,1,
+24698,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPR-30200,REGULAR,GW Instek,GPR-30200,,1,
+24699,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPR-30200,REGULAR,GW Instek,GPR-30200,,1,
+24701,C,DISPONIBLE,fuente dc,Fuente DC GW Instek GPR-30200,REGULAR,GW Instek,GPR-30200,,1,
+26693,C,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-304,REGULAR,Goldstar,GP-303,,1,
+26696,C,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-305,REGULAR,Goldstar,GP-303,,1,
+26697,C,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-306,REGULAR,Goldstar,GP-303,,1,
+26699,C,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-307,REGULAR,Goldstar,GP-303,,1,
+26701,C,DISPONIBLE,fuente dc,Fuente DC Goldstar GP-308,REGULAR,Goldstar,GP-303,,1,
+28210,C,DISPONIBLE,otros,Tacometro RHEINTACHO A3-2000,REGULAR,RHEINTACHO,A3-2000,,1,
+48439,C,DISPONIBLE,fuente dc,Fuente DC Regulada EZ GP-1303TP,REGULAR,EZ Digital,GP-1303TP,,1,pintura oxidada
+48440,C,DISPONIBLE,fuente dc,Fuente DC Regulada EZ GP-1303TP,REGULAR,EZ Digital,GP-1303TP,,1,
+48441,C,DISPONIBLE,fuente dc,Fuente DC Regulada EZ GP-1303TP,REGULAR,EZ Digital,GP-1303TP,,1,
+48442,C,DISPONIBLE,fuente dc,Fuente DC Regulada EZ GP-1303TP,REGULAR,EZ Digital,GP-1303TP,,1,
+48443,C,DISPONIBLE,fuente dc,Fuente DC Regulada EZ GP-1303TP,REGULAR,EZ Digital,GP-1303TP,,1,pintura oxidada
+48444,C,DISPONIBLE,fuente dc,Fuente DC Regulada EZ GP-1303TP,REGULAR,EZ Digital,GP-1303TP,,1,pintura oxidada
+48446,C,DISPONIBLE,fuente dc,Fuente DC Regulada EZ GP-1303TP,REGULAR,EZ Digital,GP-1303TP,,1,
+48447,C,DISPONIBLE,fuente dc,Fuente DC Regulada EZ GP-1303TP,REGULAR,EZ Digital,GP-1303TP,,1,La pantalla está pegada con tape
+48449,C,DISPONIBLE,fuente dc,Fuente DC Regulada EZ GP-1303TP,REGULAR,EZ Digital,GP-1303TP,,1,
+873477,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+873490,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+873491,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+873502,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+873504,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+2F - 8,E,DISPONIBLE,kit de desarrollo,Xilinx Spartan FPGA,REGULAR,Xilinx,Spartan,,1,"Placa, 1 adaptador y cable alimentacion y 1 2R32"
+AI-1053,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+AI-1263,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002303,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002320,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002330,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002339,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002344,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002360,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,La fuente del lado derecho no regula voltaje
+SP-002380,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002432,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002433,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002443,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002459,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002460,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-002570,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-003223,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-003224,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-003236,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-003237,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,
+SP-005524,C,DISPONIBLE,fuente dc,Fuente Dual DC KI DPS-1303DF,REGULAR,King Instrument Electronics,DPS-1303DF,,1,

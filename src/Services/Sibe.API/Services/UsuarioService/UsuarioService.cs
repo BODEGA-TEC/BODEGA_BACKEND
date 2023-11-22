@@ -44,7 +44,7 @@ namespace Sibe.API.Services.UsuarioService
 
                 var usuario = new Usuario
                 {
-                    Carne = usuarioDto.Carne,
+                    //Carne = usuarioDto.Carne,
                     Nombre = usuarioDto.Nombre.ToUpper(),
                     Clave = usuarioDto.Clave, // Validar formato clave
                     Correo = usuarioDto.Correo, // Validar formato correo

@@ -74,9 +74,9 @@ namespace Sibe.API.Services.UsuarioService
             return response;
         }
 
-        public async Task<ServiceResponse<string>> Login(string carne, string clave)
+        public async Task<ServiceResponse<Dictionary<string, object>>> Login(string carne, string clave)
         {
-            var response = new ServiceResponse<string>();
+            var response = new ServiceResponse<Dictionary<string, object>>();
 
             try
             {
@@ -95,7 +95,16 @@ namespace Sibe.API.Services.UsuarioService
                 var token = _jwtCredentialProvider.CreateToken(usuario.Carne, usuario.Nombre, usuario.Rol.Nombre);
 
                 // Configurar respuesta
-                response.SetSuccess(_messages["LoginSucess"], token);
+                var loginResponse = new Dictionary<string, object>
+                {
+                    { "user", usuario.Nombre },
+                    { "roles", new List<int> { usuario.Rol.Id} },
+                    { "token", token }
+                };
+
+
+                // Configurar respuesta
+                response.SetSuccess(_messages["LoginSucess"], loginResponse);
                 _logger.LogInformation("Inicio de sesión exitoso: {Usuario.Nombre}", usuario.Nombre);
             }
 

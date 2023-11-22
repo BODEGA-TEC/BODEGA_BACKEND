@@ -11,14 +11,27 @@ using Sibe.API.Services.EstadoService;
 
 namespace Sibe.API.Services.EquipoService
 {
-    public class EquipoService(IConfiguration configuration, DataContext context, IMapper mapper, IEstadoService estadoService, ICategoriaService categoriaService) : IEquipoService
+    public class EquipoService : IEquipoService
     {
         // Variables gloables
-        private readonly IConfigurationSection _messages = configuration.GetSection("EquipoService");
+        private readonly IConfigurationSection _messages;
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
+        private readonly IEstadoService _estadoService;
+        private readonly ICategoriaService _categoriaService;
+
+        public EquipoService(IConfiguration configuration, DataContext context, IMapper mapper, IEstadoService estadoService, ICategoriaService categoriaService)
+        {
+            _messages = configuration.GetSection("EquipoService");
+            _context = context;
+            _mapper = mapper;
+            _estadoService = estadoService;
+            _categoriaService = categoriaService;
+        }
 
         private async Task IsActivoTecInUse(string? activoTec)
         {
-            if (activoTec != null && await context.Equipo.AnyAsync(e => e.ActivoTec == activoTec))
+            if (activoTec != null && await _context.Equipo.AnyAsync(e => e.ActivoTec == activoTec))
                 throw new Exception(_messages["ActivoTecInUse"]);
         }
 
@@ -26,7 +39,7 @@ namespace Sibe.API.Services.EquipoService
         public async Task<Equipo> FetchById(int id)
         {
             // Recuperar equipo
-            return await context.Equipo
+            return await _context.Equipo
                 .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
                 .Include(e => e.Estado)    // Incluye entidad relacionada Estado
                 .FirstOrDefaultAsync(e => e.Id == id)
@@ -44,13 +57,13 @@ namespace Sibe.API.Services.EquipoService
                 await IsActivoTecInUse(equipoDto.ActivoTec);
 
                 // Recuperar categoria
-                var categoria = await categoriaService.FetchById(equipoDto.CategoriaId);
+                var categoria = await _categoriaService.FetchById(equipoDto.CategoriaId);
 
                 // Recuperar estado
-                var estado = await estadoService.FetchById(equipoDto.EstadoId);
+                var estado = await _estadoService.FetchById(equipoDto.EstadoId);
 
                 // Recuperar el id del equipo a insertar
-                int scope_identity = context.Equipo.Any() ? context.Equipo.Max(c => c.Id) + 1 : 1;
+                int scope_identity = _context.Equipo.Any() ? _context.Equipo.Max(c => c.Id) + 1 : 1;
 
                 // Crear equipo
                 var equipo = new Equipo
@@ -69,7 +82,7 @@ namespace Sibe.API.Services.EquipoService
                 };
 
                 // Agregar equipo y registro histórico
-                context.Equipo.Add(equipo);
+                _context.Equipo.Add(equipo);
 
                 // Crear historico equipo
                 var historicoEquipo = new HistoricoEquipo
@@ -80,11 +93,11 @@ namespace Sibe.API.Services.EquipoService
                 };
 
                 // Agregar registro histórico
-                context.HistoricoEquipo.Add(historicoEquipo);
-                await context.SaveChangesAsync();
+                _context.HistoricoEquipo.Add(historicoEquipo);
+                await _context.SaveChangesAsync();
 
                 // Map a Dto
-                ReadEquipoDto entityDto = mapper.Map<ReadEquipoDto>(equipo);
+                ReadEquipoDto entityDto = _mapper.Map<ReadEquipoDto>(equipo);
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["CreateSuccess"], entityDto);
@@ -104,15 +117,15 @@ namespace Sibe.API.Services.EquipoService
             var response = new ServiceResponse<List<ReadEquipoDto>>();
 
             try
-            {   
+            {
                 // Recuperar equipo
-                var equipo = await context.Equipo
+                var equipo = await _context.Equipo
                     .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
                     .Include(e => e.Estado)    // Incluye entidad relacionada Estado
                     .ToListAsync() ?? throw new Exception(_messages["NotFound"]);
 
                 // Map a Dto
-                List<ReadEquipoDto> equipoDto = mapper.Map<List<ReadEquipoDto>>(equipo);
+                List<ReadEquipoDto> equipoDto = _mapper.Map<List<ReadEquipoDto>>(equipo);
 
                 // Configurar respuesta
                 string? message = equipoDto.Count == 0
@@ -175,12 +188,12 @@ namespace Sibe.API.Services.EquipoService
 
                 // Actualizar categoría si se proporciona un ID válido
                 target.Categoria = equipoDto.CategoriaId.HasValue
-                    ? await categoriaService.FetchById((int)equipoDto.CategoriaId)
+                    ? await _categoriaService.FetchById((int)equipoDto.CategoriaId)
                     : target.Categoria;
 
                 // Actualizar estado si se proporciona un ID válido
                 target.Estado = equipoDto.EstadoId.HasValue
-                    ? await estadoService.FetchById((int)equipoDto.EstadoId)
+                    ? await _estadoService.FetchById((int)equipoDto.EstadoId)
                     : target.Estado;
 
                 // Crear historico equipo
@@ -192,11 +205,11 @@ namespace Sibe.API.Services.EquipoService
                 };
 
                 // Actualizar equipo y agregar registro histórico
-                context.HistoricoEquipo.Add(historicoEquipo);
-                await context.SaveChangesAsync();
+                _context.HistoricoEquipo.Add(historicoEquipo);
+                await _context.SaveChangesAsync();
 
                 // Map a Dto
-                ReadEquipoDto entityDto = mapper.Map<ReadEquipoDto>(target);
+                ReadEquipoDto entityDto = _mapper.Map<ReadEquipoDto>(target);
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["UpdatedSuccess"], entityDto);
@@ -222,8 +235,8 @@ namespace Sibe.API.Services.EquipoService
                 var equipo = await FetchById(id);
 
                 // Eliminar equipo
-                context.Equipo.Remove(equipo);
-                await context.SaveChangesAsync();
+                _context.Equipo.Remove(equipo);
+                await _context.SaveChangesAsync();
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["DeletedSuccess"]);

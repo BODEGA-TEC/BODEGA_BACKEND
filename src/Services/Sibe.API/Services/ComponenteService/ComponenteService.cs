@@ -13,15 +13,35 @@ using System.ComponentModel;
 
 namespace Sibe.API.Services.ComponenteService
 {
-    public class ComponenteService(IConfiguration configuration, DataContext context, IMapper mapper, IEstadoService estadoService, ICategoriaService categoriaService) : IComponenteService
+    public class ComponenteService : IComponenteService
     {
         // Variables gloables
-        private readonly IConfigurationSection _messages = configuration.GetSection("ComponenteService");
+        private readonly IConfigurationSection _messages;
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
+        private readonly IEstadoService _estadoService;
+        private readonly ICategoriaService _categoriaService;
+
+        public ComponenteService(IConfiguration configuration, DataContext context, IMapper mapper, IEstadoService estadoService, ICategoriaService categoriaService)
+        {
+            _messages = configuration.GetSection("ComponenteService");
+            _context = context;
+            _mapper = mapper;
+            _estadoService = estadoService;
+            _categoriaService = categoriaService;
+        }
+
+
+        //private async Task IsActivoTecInUse(string? activoTec)
+        //{
+        //    if (activoTec != null && await _context.Componente.AnyAsync(c => c.ActivoTec == activoTec))
+        //        throw new Exception(_messages["ActivoTecInUse"]);
+        //}
 
         public async Task<Componente> FetchById(int id)
         {
             // Recuperar equipo
-            return await context.Componente
+            return await _context.Componente
                 .Include(c => c.Categoria) // Incluye entidad relacionada Categoria
                 .Include(c => c.Estado)    // Incluye entidad relacionada Estado
                 .FirstOrDefaultAsync(c => c.Id == id)
@@ -38,13 +58,13 @@ namespace Sibe.API.Services.ComponenteService
                 //await IsActivoTecInUse(componenteDto.ActivoTec);
 
                 // Recuperar categoria
-                var categoria = await categoriaService.FetchById(componenteDto.CategoriaId);
+                var categoria = await _categoriaService.FetchById(componenteDto.CategoriaId);
 
                 // Recuperar estado
-                var estado = await estadoService.FetchById(componenteDto.EstadoId);
+                var estado = await _estadoService.FetchById(componenteDto.EstadoId);
 
                 // Recuperar el id del componente a insertar
-                int scope_identity = context.Componente.Any() ? context.Componente.Max(c => c.Id) + 1 : 1;
+                int scope_identity = _context.Componente.Any() ? _context.Componente.Max(c => c.Id) + 1 : 1;
 
                 // Crear componente
                 var componente = new Componente
@@ -62,8 +82,8 @@ namespace Sibe.API.Services.ComponenteService
                 };
 
                 // Agregar componente
-                context.Componente.Add(componente);
-                await context.SaveChangesAsync();
+                _context.Componente.Add(componente);
+                await _context.SaveChangesAsync();
 
                 // Crear historico componentes
                 var historicoComponente = new HistoricoComponente
@@ -75,11 +95,11 @@ namespace Sibe.API.Services.ComponenteService
                 };
 
                 // Agregar registro histórico
-                context.HistoricoComponente.Add(historicoComponente);
-                await context.SaveChangesAsync();
+                _context.HistoricoComponente.Add(historicoComponente);
+                await _context.SaveChangesAsync();
 
                 // Map a Dto
-                ReadComponenteDto entityDto = mapper.Map<ReadComponenteDto>(componente);
+                ReadComponenteDto entityDto = _mapper.Map<ReadComponenteDto>(componente);
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["CreateSuccess"], entityDto);
@@ -101,13 +121,13 @@ namespace Sibe.API.Services.ComponenteService
             try
             {
                 // Recuperar componentes
-                var componentes = await context.Componente
+                var componentes = await _context.Componente
                     .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
                     .Include(e => e.Estado)    // Incluye entidad relacionada Estado
                     .ToListAsync() ?? throw new Exception(_messages["NotFound"]);
 
                 // Map a Dto
-                List<ReadComponenteDto> componenteDto = mapper.Map<List<ReadComponenteDto>>(componentes);
+                List<ReadComponenteDto> componenteDto = _mapper.Map<List<ReadComponenteDto>>(componentes);
 
                 // Configurar respuesta
                 string? message = componenteDto.Count == 0
@@ -172,12 +192,12 @@ namespace Sibe.API.Services.ComponenteService
 
                 // Actualizar categoría si se proporciona un ID válido
                 target.Categoria = componenteDto.CategoriaId.HasValue
-                    ? await categoriaService.FetchById((int)componenteDto.CategoriaId)
+                    ? await _categoriaService.FetchById((int)componenteDto.CategoriaId)
                     : target.Categoria;
 
                 // Actualizar estado si se proporciona un ID válido
                 target.Estado = componenteDto.EstadoId.HasValue
-                    ? await estadoService.FetchById((int)componenteDto.EstadoId)
+                    ? await _estadoService.FetchById((int)componenteDto.EstadoId)
                     : target.Estado;
 
                 // Crear historico componentes
@@ -190,11 +210,11 @@ namespace Sibe.API.Services.ComponenteService
                 };
 
                 // Actualizar componente y agregar registro histórico
-                context.HistoricoComponente.Add(historicoComponente);
-                await context.SaveChangesAsync();
+                _context.HistoricoComponente.Add(historicoComponente);
+                await _context.SaveChangesAsync();
 
                 // Map a Dto
-                ReadComponenteDto entityDto = mapper.Map<ReadComponenteDto>(target);
+                ReadComponenteDto entityDto = _mapper.Map<ReadComponenteDto>(target);
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["UpdatedSuccess"], entityDto);
@@ -220,8 +240,8 @@ namespace Sibe.API.Services.ComponenteService
                 var componente = await FetchById(id);
 
                 // Eliminar componente
-                context.Componente.Remove(componente);
-                await context.SaveChangesAsync();
+                _context.Componente.Remove(componente);
+                await _context.SaveChangesAsync();
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["DeletedSuccess"]);

@@ -6,11 +6,18 @@ using Sibe.API.Models.Inventario;
 
 namespace Sibe.API.Services.CategoriaService
 {
-    public class CategoriaService(IConfiguration configuration, DataContext context) : ICategoriaService
+    public class CategoriaService : ICategoriaService
     {
 
         // Variables gloables
-        private readonly IConfigurationSection _messages = configuration.GetSection("CategoriaService");
+        private readonly IConfigurationSection _messages;
+        private readonly DataContext _context;
+
+        public CategoriaService(IConfiguration configuration, DataContext context)
+        {
+            _context = context;
+            _messages = configuration.GetSection("CategoriaService");
+        }
 
         public async Task<ServiceResponse<Categoria>> Create(Categoria categoria)
         {
@@ -19,8 +26,8 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Agregar categoría
-                context.Categoria.Add(categoria);
-                await context.SaveChangesAsync();
+                _context.Categoria.Add(categoria);
+                await _context.SaveChangesAsync();
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["CreateSuccess"], categoria);
@@ -42,7 +49,7 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Recuperar categorías
-                var categorias = await context.Categoria
+                var categorias = await _context.Categoria
                     .ToListAsync()
                     ?? throw new Exception(_messages["NotFound"]);
 
@@ -65,7 +72,7 @@ namespace Sibe.API.Services.CategoriaService
         public async Task<Categoria> FetchById(int id)
         {
             // Recuperar categoría
-            var categoria = await context.Categoria
+            var categoria = await _context.Categoria
                 .FindAsync(id)
                 ?? throw new Exception(_messages["NotFound"]);
 
@@ -75,7 +82,7 @@ namespace Sibe.API.Services.CategoriaService
         public async Task<Categoria> FetchByNombre(string nombre)
         {
             // Recuperar categoría
-            var categoria = await context.Categoria
+            var categoria = await _context.Categoria
                 .FirstOrDefaultAsync(c => c.Nombre == nombre.ToUpper())
                 ?? throw new Exception(_messages["NotFound"]);
 
@@ -89,7 +96,7 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Recuperar categorías
-                var categorias = await context.Categoria
+                var categorias = await _context.Categoria
                     .Where(c => c.Tipo == tipo)
                     .ToListAsync()
                     ?? throw new Exception(_messages["NotFound"]);
@@ -114,14 +121,14 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Recuperar categoría
-                var target = await context.Categoria
+                var target = await _context.Categoria
                     .FindAsync(id)
                     ?? throw new Exception(_messages["NotFound"]);
 
                 // Actualizar categoría
                 target.Nombre = categoria.Nombre;
                 target.Tipo = categoria.Tipo;
-                await context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["UpdatedSuccess"], target);
@@ -143,13 +150,13 @@ namespace Sibe.API.Services.CategoriaService
             try
             {
                 // Recuperar categoría
-                var categoria = await context.Categoria
+                var categoria = await _context.Categoria
                     .FindAsync(id)
                     ?? throw new Exception(_messages["NotFound"]);
 
                 // Eliminar categoría
-                context.Categoria.Remove(categoria);
-                await context.SaveChangesAsync();
+                _context.Categoria.Remove(categoria);
+                await _context.SaveChangesAsync();
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["DeletedSuccess"]);

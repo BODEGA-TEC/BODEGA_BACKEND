@@ -36,7 +36,7 @@ namespace Sibe.API.Services.UsuarioService
             {
 
                 // Si el carne ya se encuentra registrado
-                await IsCarneInUse(usuarioDto.Carne);
+                //await IsCarneInUse(usuarioDto.Carne);
 
                 // Recuperar rol
                 var rol = await _context.Rol.FindAsync(usuarioDto.RolId)
@@ -44,7 +44,7 @@ namespace Sibe.API.Services.UsuarioService
 
                 var usuario = new Usuario
                 {
-                    //Carne = usuarioDto.Carne,
+                    Carne = usuarioDto.Carne,
                     Nombre = usuarioDto.Nombre.ToUpper(),
                     Clave = usuarioDto.Clave, // Validar formato clave
                     Correo = usuarioDto.Correo, // Validar formato correo

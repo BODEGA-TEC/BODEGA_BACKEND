@@ -47,7 +47,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<string>>> Login(LoginUsuarioDto request)
         {
             var response = await _usuarioService.Login(request.Carne, request.Clave);
-            return response.Success ? Ok(response) : Unauthorized(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
     }
 }

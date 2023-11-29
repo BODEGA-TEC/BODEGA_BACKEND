@@ -26,7 +26,10 @@ namespace Sibe.API.Models.Inventario
         public string Descripcion { get; set; } = string.Empty!;
 
         [Required]
-        public int Cantidad { get; set; }
+        public int CantidadTotal { get; set; }
+
+        [Required]
+        public int CantidadDisponible { get; set; }
 
         [Required]
         public Condicion Condicion { get; set; }
@@ -37,9 +40,7 @@ namespace Sibe.API.Models.Inventario
         [Required]
         public string ActivoBodega { get; set; } = null!;
 
-        public string? Modelo { get; set; }
-
-        //public string? ActivoTec { get; set; }
+        public string? NoParte { get; set; }
 
         public string? Observaciones { get; set; }
 

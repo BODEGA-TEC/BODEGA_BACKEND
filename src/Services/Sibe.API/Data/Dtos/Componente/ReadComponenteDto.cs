@@ -14,13 +14,15 @@ namespace Sibe.API.Data.Dtos.Componente
 
         public string Descripcion { get; set; } = string.Empty!;
 
-        public int Cantidad { get; set; }
+        public int CantidadTotal { get; set; }
+
+        public int CantidadDisponible { get; set; }
 
         public Condicion Condicion { get; set; }
 
         public string Estante { get; set; } = string.Empty!;
 
-        public string Modelo { get; set; } = string.Empty;
+        public string NoParte { get; set; } = string.Empty;
 
         public string ActivoBodega { get; set; } = string.Empty!;
 

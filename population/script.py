@@ -1,8 +1,15 @@
 # pip install mysql-connector-python
 # pip install pytz
+#pip install openpyxl
+
 import csv
 import mysql.connector
 from datetime import datetime, timezone, timedelta
+import pytz
+import openpyxl
+from openpyxl.utils import get_column_letter
+from openpyxl import load_workbook
+from datetime import datetime
 import pytz
 
 # Diccionario de condiciones
@@ -58,90 +65,90 @@ def getActivoBodega(table_name):
     return code
 
 
-def process_equipo(file_path):
-    with open(file_path, 'r', newline='', encoding='latin-1') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        headers = next(csv_reader)
+def process_equipo():
+    wb = openpyxl.load_workbook(filename)
+    sheet = wb['equipo']
+    headers = [cell.value for cell in sheet[1]]
 
-        # Encabezados esperados
-        expected_headers = ['CATEGORIA', 'ESTADO', 'DESCRIPCION', 'MARCA', 'MODELO', 'ACTIVOTEC',  'SERIE', 'OBSERVACIONES', 'CONDICION', 'ESTANTE', 'CANTIDAD']
+    # Encabezados esperados
+    expected_headers = ['CATEGORIA', 'ESTADO', 'DESCRIPCION', 'MARCA', 'MODELO', 'ACTIVOTEC',  'SERIE', 'OBSERVACIONES', 'CONDICION', 'ESTANTE', 'CANTIDAD']
+        
+    # Asegurarse de que todos los encabezados esperados estén presentes
+    if all(header in headers for header in expected_headers):
+        for row in sheet.iter_rows(min_row=2, values_only=True):
 
-        # Asegurarse de que todos los encabezados esperados estén presentes
-        if all(header in headers for header in expected_headers):
-            for row in csv_reader:
-                # Asigna los valores a variables según los encabezados dinámicamente, debe ser el mismo orden que el de expected headers
-                categoria, estado, descripcion, marca, modelo, activoTec, serie, observaciones, condicion, estante, cantidad = (
-                    row[headers.index(header)] for header in expected_headers
-                )
+            # Asigna los valores a variables según los encabezados dinámicamente, debe ser el mismo orden que el de expected headers
+            categoria, estado, descripcion, marca, modelo, activoTec, serie, observaciones, condicion, estante, cantidad = (
+                row[headers.index(header)] for header in expected_headers
+            )
 
-                # Insertar a dB
-                cursor = connection.cursor()
-                for _ in range(int(cantidad)):
-                    
-                    # Id, CategoriaId, EstadoId, FechaRegistro, Descripcion, Marca, Modelo, ActivoBodega, ActivoTec, Serie, Observaciones, Condicion, Estante
-                    values = (
-                        getCategoria("equipo", categoria.upper()),              # CategoriaId
-                        estado_dict.get(estado.upper(), 1),                     # EstadoId: DISPONIBLE por defecto
-                        datetime.now(pytz.timezone('America/Costa_Rica')),      # FechaRegistro
-                        descripcion.upper(),                                    # Descripcion
-                        None if marca.strip() == '' else marca,                 # Marca
-                        None if modelo.strip() == '' else modelo,               # Modelo
-                        getActivoBodega("equipo"),                              # ActivoBodega
-                        activoTec.upper().replace(" ", "").replace("'", "-"),   # ActivoTec: Muchos ponen "'" en vez de "-"
-                        None if serie.strip() == '' else serie,                 # Serie
-                        None if observaciones.strip() == '' else observaciones, # Observaciones
-                        condicion_dict.get(condicion.upper(), 1),               # Condicion: Convierte la condición a mayúsculas y asigna por defecto "BUENO" si no es válida
-                        estante.upper(),                                        # Estante
-                    )
-
-                    query = """
-                        INSERT INTO Equipo (CategoriaId, EstadoId, FechaRegistro, Descripcion, Marca, Modelo, ActivoBodega, ActivoTec, Serie, Observaciones, Condicion, Estante)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    """
-                    cursor.execute(query, values)
-                    connection.commit()
-    
-    print("[DONE] Equipo")
-
-def process_componentes(file_path):
-    with open(file_path, 'r', newline='', encoding='latin-1') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        headers = next(csv_reader)
-
-        # Encabezados esperados
-        expected_headers = ['CATEGORIA', 'ESTADO', 'DESCRIPCION', 'CANTIDAD', 'OBSERVACIONES', 'CONDICION', 'ESTANTE', 'MODELO']
-
-        # Asegurarse de que todos los encabezados esperados estén presentes
-        if all(header in headers for header in expected_headers):
-            for row in csv_reader:
-                # Asigna los valores a variables según los encabezados dinámicamente, debe ser el mismo orden que el de expected headers
-                categoria, estado, descripcion, cantidad, observaciones, condicion, estante, modelo= (
-                    row[headers.index(header)] for header in expected_headers
-                )
-
-                # Insertar a dB
-                cursor = connection.cursor()
-                    
-                # Id, CategoriaId, EstadoId, FechaRegistro, Descripcion, Cantidad, ActivoBodega, Observaciones, Estante, Condicion, Modelo
-                values = (
-                    getCategoria("componente", categoria.upper()),          # CategoriaId
-                    estado_dict.get(estado.upper(), 1),                     # EstadoId: DISPONIBLE por defecto
-                    datetime.now(pytz.timezone('America/Costa_Rica')),      # FechaRegistro
-                    '?' if descripcion.strip() == '' else descripcion,      # Descripcion
-                    cantidad,                                               # Cantidad
-                    getActivoBodega("componente"),                          # ActivoBodega
-                    None if observaciones.strip() == '' else observaciones, # Observaciones
-                    estante.upper(),                                        # Estante
-                    condicion_dict.get(condicion.upper(), 1),               # Condicion: Convierte la condición a mayúsculas y asigna por defecto "BUENO" si no es válida
-                    None if modelo.strip() == '' else modelo,               # Modelo
-                )
-
+            # Formateo
+            categoriaId = getCategoria("equipo", categoria.upper())
+            estadoId = estado_dict.get(estado.upper(), 1)
+            fechaRegistro = datetime.now(pytz.timezone('America/Costa_Rica'))
+            descripcion = '?' if descripcion is None else (descripcion.strip() if isinstance(descripcion, str) and descripcion.strip() != '' else descripcion)
+            marca = None if marca is None else (marca.strip() if isinstance(marca, str) and marca.strip() != '' else marca)
+            modelo = None if modelo is None else (str(modelo).strip() if isinstance(modelo, (str, int)) else None)
+            activoTec = str(activoTec).upper().replace(" ", "").replace("'", "-")
+            serie = None if serie is None else (serie.strip() if isinstance(serie, str) and serie.strip() != '' else serie)
+            observaciones = None if (not observaciones or observaciones.strip() == '') else observaciones
+            condicion = condicion_dict.get(condicion.upper(), 1) # Condicion: Convierte la condición a mayúsculas y asigna por defecto "BUENO" si no es válida
+            estante =  estante.upper()
+            
+            # Insertar a DB
+            cursor = connection.cursor()
+            for _ in range(int(cantidad)):
+                activoBodega = getActivoBodega("equipo") # Distinto para cada entidad
+                # Id, CategoriaId, EstadoId, FechaRegistro, Descripcion, Marca, Modelo, ActivoBodega, ActivoTec, Serie, Observaciones, Condicion, Estante
+                values = (categoriaId, estadoId, fechaRegistro, descripcion, marca, modelo, activoBodega, activoTec, serie, observaciones, condicion, estante)
                 query = """
-                    INSERT INTO Componente (CategoriaId, EstadoId, FechaRegistro, Descripcion, Cantidad, ActivoBodega, Observaciones, Estante, Condicion, Modelo)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO Equipo (CategoriaId, EstadoId, FechaRegistro, Descripcion, Marca, Modelo, ActivoBodega, ActivoTec, Serie, Observaciones, Condicion, Estante)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 cursor.execute(query, values)
                 connection.commit()
+
+    print("[DONE] Equipo")
+
+def process_componentes():
+    wb = openpyxl.load_workbook(filename)
+    sheet = wb['componentes']
+    headers = [cell.value for cell in sheet[1]]
+
+    # Encabezados esperados
+    expected_headers = ['CATEGORIA', 'DESCRIPCION', 'NO. PARTE', 'CANTIDAD', 'OBSERVACIONES', 'CONDICION', 'ESTANTE', 'MODELO']
+
+    # Asegurarse de que todos los encabezados esperados estén presentes
+    if all(header in headers for header in expected_headers):
+        for row in sheet.iter_rows(min_row=2):
+            # Asigna los valores a variables según los encabezados dinámicamente, debe ser el mismo orden que el de expected headers
+            categoria, descripcion, cantidad, observaciones, condicion, estante, no_parte = (
+                row[headers.index(header)].value for header in expected_headers
+            )            
+            
+            # Formateo
+            categoriaId = getCategoria("componente", categoria.upper())
+            estadoId = 1 if (cantidad is not None and int(cantidad) > 0) else 3  # 1:Disponible - 3:Agotado
+            fechaRegistro = datetime.now(pytz.timezone('America/Costa_Rica'))
+            descripcion = '?' if descripcion is None else (descripcion.strip() if isinstance(descripcion, str) and descripcion.strip() != '' else descripcion)
+            cantidadTotal = int(cantidad) if cantidad else 0     # Valor defecto si no esta, es cero
+            cantidadDisponible = cantidadTotal
+            activoBodega = getActivoBodega("componente")
+            observaciones = None if (not observaciones or observaciones.strip() == '') else observaciones
+            estante =  estante.upper()
+            condicion = condicion_dict.get(condicion.upper(), 1) # Condicion: Convierte la condición a mayúsculas y asigna por defecto "BUENO" si no es válida
+            no_parte = None if no_parte is None else (str(no_parte).strip() if isinstance(no_parte, (str, int)) else None)
+            
+            # Insertar a dB
+            cursor = connection.cursor()
+            # Id, CategoriaId, EstadoId, FechaRegistro, Descripcion, Cantidad, CantidadDisponible, ActivoBodega, Observaciones, Estante, Condicion, Modelo
+            values = (categoriaId, estadoId, fechaRegistro, descripcion, cantidadTotal, cantidadDisponible, activoBodega, observaciones, estante, condicion, no_parte,)
+            query = """
+                INSERT INTO Componente (CategoriaId, EstadoId, FechaRegistro, Descripcion, CantidadTotal, CantidadDisponible, ActivoBodega, Observaciones, Estante, Condicion, NoParte)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            cursor.execute(query, values)
+            connection.commit()
     
     print("[DONE] Componentes")
 
@@ -156,10 +163,11 @@ if __name__ == "__main__":
         password="admin",
         database="sibe_db"
     )
+    filename = 'Inventario.xlsx'
 
-    # Procesa el archivo 'equipo.csv'
-    process_equipo('equipo.csv')
-    process_componentes('componentes.csv')
+    # Procesar
+    process_equipo()
+    process_componentes()
 
     # Cierra la conexión a la base de datos
     connection.close()

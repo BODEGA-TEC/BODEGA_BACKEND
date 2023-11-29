@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using Sibe.API.Data;
 using Sibe.API.Data.Dtos.Componente;
-using Sibe.API.Data.Dtos.Equipo;
 using Sibe.API.Models;
-using Sibe.API.Models.Historicos;
 using Sibe.API.Models.Inventario;
 using Sibe.API.Services.CategoriaService;
 using Sibe.API.Services.EstadoService;
-using System.ComponentModel;
 
 namespace Sibe.API.Services.ComponenteService
 {
@@ -31,12 +27,10 @@ namespace Sibe.API.Services.ComponenteService
             _categoriaService = categoriaService;
         }
 
-
-        //private async Task IsActivoTecInUse(string? activoTec)
-        //{
-        //    if (activoTec != null && await _context.Componente.AnyAsync(c => c.ActivoTec == activoTec))
-        //        throw new Exception(_messages["ActivoTecInUse"]);
-        //}
+        private static string GetEstadoDisponibilidad(int cantidadDisponible)
+        {
+            return cantidadDisponible > 0 ? "DISPONIBLE" : "AGOTADO";
+        }
 
         public async Task<Componente> FetchById(int id)
         {
@@ -54,14 +48,11 @@ namespace Sibe.API.Services.ComponenteService
 
             try
             {
-                // Si el activo tec ya se encuentra registrado
-                //await IsActivoTecInUse(componenteDto.ActivoTec);
-
                 // Recuperar categoria
                 var categoria = await _categoriaService.FetchById(componenteDto.CategoriaId);
 
                 // Recuperar estado
-                var estado = await _estadoService.FetchById(componenteDto.EstadoId);
+                var estado = await _estadoService.FetchByNombre(GetEstadoDisponibilidad(componenteDto.CantidadDisponible));
 
                 // Recuperar el id del componente a insertar
                 int scope_identity = _context.Componente.Any() ? _context.Componente.Max(c => c.Id) + 1 : 1;
@@ -72,30 +63,17 @@ namespace Sibe.API.Services.ComponenteService
                     Categoria = categoria,
                     Estado = estado,
                     Descripcion = componenteDto.Descripcion.ToUpper(),
-                    Cantidad = componenteDto.Cantidad,
+                    CantidadTotal = componenteDto.CantidadTotal,
+                    CantidadDisponible = componenteDto.CantidadDisponible,
                     Condicion = componenteDto.Condicion,
                     Estante = componenteDto.Estante.ToUpper(),
-                    Modelo = componenteDto.Modelo,
+                    NoParte = componenteDto.NoParte,
                     ActivoBodega = Utils.UniqueIdentifierHelper.GenerateIdentifier("BC", scope_identity, 6),
-                    //ActivoTec = componenteDto.ActivoTec,
                     Observaciones = componenteDto.Observaciones
                 };
 
                 // Agregar componente
                 _context.Componente.Add(componente);
-                await _context.SaveChangesAsync();
-
-                // Crear historico componentes
-                var historicoComponente = new HistoricoComponente
-                {
-                    Componente = componente,
-                    CantidadDisponible = componente.Cantidad,
-                    CantidadModificada = 0, // Todos los componentes siguen disponibles.
-                    Detalle = "Registrado"
-                };
-
-                // Agregar registro histórico
-                _context.HistoricoComponente.Add(historicoComponente);
                 await _context.SaveChangesAsync();
 
                 // Map a Dto
@@ -178,16 +156,13 @@ namespace Sibe.API.Services.ComponenteService
                 // Recuperar componente
                 var target = await FetchById(id);
 
-                // Para tener un historial de la diferencia de la cantidad que habia antes.
-                int modificado = componenteDto.Cantidad.HasValue ? componenteDto.Cantidad.Value - target.Cantidad : 0;
-
                 // Actualizar componente | Solamente datos que no son null
                 target.Descripcion = componenteDto.Descripcion ?? target.Descripcion.ToUpper();
-                //target.ActivoTec = componenteDto.ActivoTec ?? target.ActivoTec;
-                target.Cantidad = componenteDto.Cantidad ?? target.Cantidad;
+                target.CantidadTotal = componenteDto.CantidadTotal ?? target.CantidadTotal;
+                target.CantidadDisponible = componenteDto.CantidadDisponible ?? target.CantidadDisponible;
                 target.Condicion = componenteDto.Condicion ?? target.Condicion;
                 target.Estante = componenteDto.Estante ?? target.Estante.ToUpper();
-                target.Modelo = componenteDto.Modelo ?? target.Modelo;
+                target.NoParte = componenteDto.NoParte ?? target.NoParte;
                 target.Observaciones = componenteDto.Observaciones ?? target.Observaciones;
 
                 // Actualizar categoría si se proporciona un ID válido
@@ -195,22 +170,10 @@ namespace Sibe.API.Services.ComponenteService
                     ? await _categoriaService.FetchById((int)componenteDto.CategoriaId)
                     : target.Categoria;
 
-                // Actualizar estado si se proporciona un ID válido
-                target.Estado = componenteDto.EstadoId.HasValue
-                    ? await _estadoService.FetchById((int)componenteDto.EstadoId)
-                    : target.Estado;
-
-                // Crear historico componentes
-                var historicoComponente = new HistoricoComponente
-                {
-                    Componente = target,
-                    CantidadDisponible = target.Cantidad,
-                    CantidadModificada = modificado,
-                    Detalle = "Actualizado"
-                };
+                // Actualizar estado si es necesario
+                var estado = await _estadoService.FetchByNombre(GetEstadoDisponibilidad(target.CantidadDisponible));
 
                 // Actualizar componente y agregar registro histórico
-                _context.HistoricoComponente.Add(historicoComponente);
                 await _context.SaveChangesAsync();
 
                 // Map a Dto

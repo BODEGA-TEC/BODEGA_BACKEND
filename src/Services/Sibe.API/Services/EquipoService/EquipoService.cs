@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Sibe.API.Data;
 using Sibe.API.Data.Dtos.Equipo;
 using Sibe.API.Models;
-using Sibe.API.Models.Enums;
-using Sibe.API.Models.Historicos;
 using Sibe.API.Models.Inventario;
 using Sibe.API.Services.CategoriaService;
 using Sibe.API.Services.EstadoService;
@@ -83,18 +81,6 @@ namespace Sibe.API.Services.EquipoService
 
                 // Agregar equipo y registro histórico
                 _context.Equipo.Add(equipo);
-
-                // Crear historico equipo
-                var historicoEquipo = new HistoricoEquipo
-                {
-                    Equipo = equipo,
-                    Estado = equipo.Estado,
-                    Detalle = "Registrado"
-                };
-
-                // Agregar registro histórico
-                _context.HistoricoEquipo.Add(historicoEquipo);
-                await _context.SaveChangesAsync();
 
                 // Map a Dto
                 ReadEquipoDto entityDto = _mapper.Map<ReadEquipoDto>(equipo);
@@ -196,16 +182,7 @@ namespace Sibe.API.Services.EquipoService
                     ? await _estadoService.FetchById((int)equipoDto.EstadoId)
                     : target.Estado;
 
-                // Crear historico equipo
-                var historicoEquipo = new HistoricoEquipo
-                {
-                    Equipo = target,
-                    Estado = target.Estado,
-                    Detalle = "Equipo actualizado"
-                };
-
                 // Actualizar equipo y agregar registro histórico
-                _context.HistoricoEquipo.Add(historicoEquipo);
                 await _context.SaveChangesAsync();
 
                 // Map a Dto

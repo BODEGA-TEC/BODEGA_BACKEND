@@ -44,33 +44,6 @@ namespace Sibe.API.Services.EstadoService
             return response;
         }
 
-        //public async Task<ServiceResponse<List<Estado>>> ReadAll()
-        //{
-        //    var response = new ServiceResponse<List<Estado>>();
-
-        //    try
-        //    {
-        //        // Recuperar estados
-        //        var estados = await _context.Estado
-        //            .ToListAsync()
-        //            ?? throw new Exception(_messages["NotFound"]);
-
-        //        // Configurar respuesta
-        //        string? message = estados.Count == 0
-        //            ? _messages["Empty"]
-        //            : _messages["ReadSuccess"];
-        //        response.SetSuccess(message, estados);
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        // Configurar error
-        //        response.SetError(ex.Message);
-        //    }
-
-        //    return response;
-        //}
-
         public async Task<ServiceResponse<List<Estado>>> ReadByTipoActivo(TipoActivo tipo)
         {
             var response = new ServiceResponse<List<Estado>>();
@@ -90,7 +63,7 @@ namespace Sibe.API.Services.EstadoService
                 }
                 else if (tipo == TipoActivo.COMPONENTE)
                 {
-                    estados = estados.Where(e => new[] { "DISPONIBLE", "DAÑADO", "AGOTADO" }
+                    estados = estados.Where(e => new[] { "DISPONIBLE", "AGOTADO" }
                         .Contains(e.Nombre.ToUpper()))
                         .ToList();
                 }

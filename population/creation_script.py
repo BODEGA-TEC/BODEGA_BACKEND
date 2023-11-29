@@ -125,7 +125,7 @@ def process_componentes():
             categoria, descripcion, cantidad, observaciones, condicion, estante, no_parte = (
                 row[headers.index(header)].value for header in expected_headers
             )            
-            
+            print(row)
             # Formateo
             categoriaId = getCategoria("componente", categoria.upper())
             estadoId = 1 if (cantidad is not None and int(cantidad) > 0) else 3  # 1:Disponible - 3:Agotado
@@ -166,7 +166,7 @@ if __name__ == "__main__":
     filename = 'Inventario.xlsx'
 
     # Procesar
-    process_equipo()
+    #process_equipo()
     process_componentes()
 
     # Cierra la conexión a la base de datos

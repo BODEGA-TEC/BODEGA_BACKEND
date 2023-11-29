@@ -65,7 +65,7 @@ def getActivoBodega(table_name):
     return code
 
 
-def process_equipo(filename):
+def process_equipo():
     wb = openpyxl.load_workbook(filename)
     sheet = wb['equipo']
     headers = [cell.value for cell in sheet[1]]
@@ -75,6 +75,7 @@ def process_equipo(filename):
         
     # Asegurarse de que todos los encabezados esperados estén presentes
     if all(header in headers for header in expected_headers):
+        print("[...] Equipo")
         for row in sheet.iter_rows(min_row=2, values_only=True):
 
             # Asigna los valores a variables según los encabezados dinámicamente, debe ser el mismo orden que el de expected headers
@@ -110,21 +111,22 @@ def process_equipo(filename):
 
     print("[DONE] Equipo")
 
-def process_componentes(filename):
+def process_componentes():
     wb = openpyxl.load_workbook(filename)
     sheet = wb['componentes']
     headers = [cell.value for cell in sheet[1]]
 
     # Encabezados esperados
-    expected_headers = ['CATEGORIA', 'DESCRIPCION', 'NO. PARTE', 'CANTIDAD', 'OBSERVACIONES', 'CONDICION', 'ESTANTE', 'MODELO']
+    expected_headers = ['CATEGORIA', 'DESCRIPCION', 'NO. PARTE', 'CANTIDAD', 'OBSERVACIONES', 'CONDICION', 'ESTANTE']
 
     # Asegurarse de que todos los encabezados esperados estén presentes
     if all(header in headers for header in expected_headers):
+        print("[...] Componentes")
         for row in sheet.iter_rows(min_row=2):
             # Asigna los valores a variables según los encabezados dinámicamente, debe ser el mismo orden que el de expected headers
-            categoria, descripcion, cantidad, observaciones, condicion, estante, no_parte = (
+            categoria, descripcion, no_parte, cantidad, observaciones, condicion, estante = (
                 row[headers.index(header)].value for header in expected_headers
-            )            
+            )
             # Formateo
             categoriaId = getCategoria("componente", categoria.upper())
             estadoId = 1 if (cantidad is not None and int(cantidad) > 0) else 3  # 1:Disponible - 3:Agotado
@@ -133,9 +135,9 @@ def process_componentes(filename):
             cantidadTotal = int(cantidad) if cantidad else 0     # Valor defecto si no esta, es cero
             cantidadDisponible = cantidadTotal
             activoBodega = getActivoBodega("componente")
-            observaciones = None if (not observaciones or observaciones.strip() == '') else observaciones
+            observaciones = None if (not observaciones or str(observaciones).strip() == '') else str(observaciones)
             estante =  estante.upper()
-            condicion = condicion_dict.get(condicion.upper(), 1) # Condicion: Convierte la condición a mayúsculas y asigna por defecto "BUENO" si no es válida
+            condicion = condicion_dict.get(condicion.upper(), 1) if condicion else 1 # Condicion: Convierte la condición a mayúsculas y asigna por defecto "BUENO" si no es válida
             no_parte = None if no_parte is None else (str(no_parte).strip() if isinstance(no_parte, (str, int)) else None)
             
             # Insertar a dB
@@ -162,10 +164,11 @@ if __name__ == "__main__":
         password="admin",
         database="sibe_db"
     )
+    filename = 'Inventario.xlsx'
 
     # Procesar
-    #process_equipo('equipo.xlsx')
-    process_componentes('componentes.xlsx')
+    process_equipo()
+    process_componentes()
 
     # Cierra la conexión a la base de datos
     connection.close()

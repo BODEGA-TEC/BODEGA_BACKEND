@@ -43,7 +43,7 @@ class Ldap:
 if __name__ == '__main__':
     LDAP_URI = 'estudiantes.ie.tec.ac.cr'
     base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'
-    username = 'cn=sibe,'+base_dn
+    username = 'sibe'
     password = 'Cg7X4k57QWSc'
     try:
         ldap = Ldap(LDAP_URI, username, password)

@@ -1,18 +1,15 @@
 ﻿using System;
-using System.DirectoryServices;
 using System.DirectoryServices.Protocols;
 
 public class LdapService
 {
     private readonly string _domain;
-    private readonly string _baseDn;
     private readonly string _username;
     private readonly string _password;
 
-    public LdapService(string domain, string baseDn, string username, string password)
+    public LdapService(string domain, string username, string password)
     {
         _domain = domain;
-        _baseDn = baseDn;
         _username = username;
         _password = password;
     }

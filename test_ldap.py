@@ -13,24 +13,23 @@ try:
     c.bind()
     print("Conexión exitosa.")
 
-    # Define la base de búsqueda y el filtro de búsqueda
-    search_filter = '(objectClass=organizationalUnit)'
-
-    # Realiza la búsqueda
-    if c.search(base_dn, search_filter, SUBTREE):
-        print("Unidades Organizativas encontradas:")
+    # Realiza la búsqueda para recuperar todas las entradas
+    if c.search(base_dn, '(objectClass=*)', SUBTREE):
+        print("Entradas encontradas:")
         for entry in c.response:
             print(entry['dn'])
-            # for attribute, values in entry['attributes'].items():
-            #     print(f"  {attribute}: {values}")
+            for attribute, values in entry['attributes'].items():
+                print(f"  {attribute}: {values}")
+        # También puedes imprimir un mensaje adicional indicando que la búsqueda fue exitosa
+        print("Búsqueda exitosa.")
     else:
-        print("No se encontraron unidades organizativas.")
-                
+        print("No se encontraron entradas.")
 except Exception as e:
     print(f"Error de autenticación: {e}")
 finally:
     # Cerrar la conexión
     c.unbind()
+
 
 
 # from ldap3 import Server, Connection, ALL

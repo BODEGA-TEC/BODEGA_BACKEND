@@ -41,8 +41,12 @@
     "RegisterSuccess": "Se ha registrado exitosamente.",
     "LoginSuccess": "Se ha iniciado sesión correctamente.",
     "RoleNotFound": "No se ha encontrado el rol.",
+    "UsuarioNotFound": "No se ha encontrado usuario.",
     "CarneInUse": "Este carné ya se encuentra registrado.",
-    "InvalidCredentials": "Carné o contraseña inválido(s)."
+    "InvalidCredentials": "Carné o contraseña inválido(s).",
+    "ExpiredClave": "La clave ha vencido.",
+    "ClaveTemporalUnchanged": "Debe cambiarse la clave temporal primero.",
+    "RefreshTokenNotFound": "No se ha encontrado refresh token."
   }
 
 }

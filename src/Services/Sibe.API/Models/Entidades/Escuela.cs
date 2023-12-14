@@ -2,7 +2,7 @@
 
 namespace Sibe.API.Models.Entidades
 {
-    public class Departamento
+    public class Escuela
     {
         [Key]
         public int Id { get; set; }

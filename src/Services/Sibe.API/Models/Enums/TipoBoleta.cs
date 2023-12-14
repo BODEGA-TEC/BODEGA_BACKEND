@@ -4,7 +4,7 @@ namespace Sibe.API.Models.Enums
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
 
-    public enum TipoComprobantePrestamo
+    public enum TipoBoleta
     {
         PRESTAMO = 1,
         DEVOLUCION = 2,

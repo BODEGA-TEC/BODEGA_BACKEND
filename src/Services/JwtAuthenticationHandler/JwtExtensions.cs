@@ -27,7 +27,9 @@ namespace JwtAuthenticationHandler
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey)), 
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
         }

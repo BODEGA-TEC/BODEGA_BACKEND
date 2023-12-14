@@ -16,14 +16,13 @@ namespace Sibe.API.Data
             Componente = Set<Componente>();
             BoletaEquipo = Set<BoletaEquipo>();
             BoletaComponente = Set<BoletaComponente>();
-            PrestamoEstudiante = Set<BoletaEstudiante>();
-            PrestamoProfesor = Set<BoletaProfesor>();
             Equipo = Set<Equipo>();
-            Departamento = Set<Departamento>();
+            Escuela = Set<Escuela>();
             Estado = Set<Estado>();
-            HistoricoEquipo = Set<HistoricoEquipo>();
-            HistoricoComponente = Set<HistoricoComponente>();
-            Profesor = Set<Profesor>();
+            //HistoricoEquipo = Set<HistoricoEquipo>();
+            //HistoricoComponente = Set<HistoricoComponente>();
+            HistoricoRefreshToken = Set<HistoricoRefreshToken>();
+            HistoricoClave = Set<HistoricoClave>();
             Rol = Set<Rol>();
             Usuario = Set<Usuario>();
         }
@@ -32,25 +31,36 @@ namespace Sibe.API.Data
         public DbSet<Componente> Componente { get; set; }
         public DbSet<BoletaEquipo> BoletaEquipo { get; set; }
         public DbSet<BoletaComponente> BoletaComponente { get; set; }
-        public DbSet<BoletaEstudiante> PrestamoEstudiante { get; set; }
-        public DbSet<BoletaProfesor> PrestamoProfesor { get; set; }
-        public DbSet<Departamento> Departamento { get; set; }
+        public DbSet<Escuela> Escuela { get; set; }
         public DbSet<Equipo> Equipo { get; set; }
         public DbSet<Estado> Estado { get; set; }
-        public DbSet<HistoricoEquipo> HistoricoEquipo { get; set; }
-        public DbSet<HistoricoComponente> HistoricoComponente { get; set; }
-        public DbSet<Profesor> Profesor { get; set; }
+        //public DbSet<HistoricoEquipo> HistoricoEquipo { get; set; }
+        //public DbSet<HistoricoComponente> HistoricoComponente { get; set; }
+        public DbSet<HistoricoRefreshToken> HistoricoRefreshToken { get; set; }
+        public DbSet<HistoricoClave> HistoricoClave { get; set; }
         public DbSet<Rol> Rol { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             // Atributos importantes de settear utilizando Fluent API
-            modelBuilder.Entity<Rol>()
-                .HasIndex(r => r.Nombre)
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.Carne)
                 .IsUnique();
+
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.Correo)
+                .IsUnique();
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(u => u.Roles)
+                .WithMany()  // No necesitamos especificar una propiedad de navegación en el otro extremo (Rol)
+                .UsingEntity(j => j.ToTable("UsuarioRol"));
+
+            modelBuilder.Entity<Rol>()
+                    .HasIndex(r => r.Nombre)
+                    .IsUnique();
 
             modelBuilder.Entity<Categoria>()
                 .HasIndex(c => new { c.Tipo, c.Nombre })
@@ -111,10 +121,10 @@ namespace Sibe.API.Data
             );
 
             // Escuelas inicales
-            modelBuilder.Entity<Departamento>().HasData(
-                new Departamento { Id = 1, Nombre = "ESCUELA DE ELETRONICA" },
-                new Departamento { Id = 2, Nombre = "ESCUELA DE MECATRONICA" },
-                new Departamento { Id = 3, Nombre = "ESCUELA DE COMPUTADORES" }                
+            modelBuilder.Entity<Escuela>().HasData(
+                new Escuela { Id = 1, Nombre = "ESCUELA DE ELETRONICA" },
+                new Escuela { Id = 2, Nombre = "ESCUELA DE MECATRONICA" },
+                new Escuela { Id = 3, Nombre = "ESCUELA DE COMPUTADORES" }                
             );
         }
     }

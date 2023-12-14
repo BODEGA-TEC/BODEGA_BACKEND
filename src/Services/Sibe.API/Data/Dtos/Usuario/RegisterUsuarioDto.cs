@@ -7,7 +7,7 @@ namespace Sibe.API.Data.Dtos.Usuario
         public string Carne { get; set; } = string.Empty!;
         public string Nombre { get; set; } = string.Empty!;
         public string Clave { get; set; } = string.Empty!;
-        public int RolId { get; set; } = 3; // Asistente por defecto
+        public List<int> RolesIds { get; set; } = new List<int> { 3 }; // Asistente por defecto
         public string Correo { get; set; } = string.Empty!;
     }
 }

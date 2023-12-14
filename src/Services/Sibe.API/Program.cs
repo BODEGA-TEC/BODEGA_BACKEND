@@ -10,9 +10,12 @@ using JwtAuthenticationHandler;
 using App.API.Swagger;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Sibe.API.Services.UsuarioService;
+using Sibe.API.Services.AuthService;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var ldapService = new LdapService("estudiantes.ie.tec.ac.cr", "dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr", "sibe", "Cg7X4k57QWSc");
+ldapService.GetLdapServerDetails();
 
 // Agregar la configuraci�n desde /Services/serviceMessages.json
 builder.Configuration
@@ -61,7 +64,7 @@ builder.Services.AddScoped<IEquipoService, EquipoService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<IEstadoService, EstadoService>();
 builder.Services.AddScoped<IComponenteService, ComponenteService>();
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Service to implement authentication middleware
 builder.Services.AddAuthorization();
@@ -84,7 +87,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

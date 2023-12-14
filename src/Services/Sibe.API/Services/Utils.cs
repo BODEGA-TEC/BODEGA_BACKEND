@@ -1,9 +1,5 @@
-﻿using IronBarCode;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
-//using SixLabors.ImageSharp;
-//using SixLabors.ImageSharp.Processing;
-//using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace Sibe.API.Utils
 {
@@ -48,27 +44,23 @@ namespace Sibe.API.Utils
             return code;
         }
 
-        public static string GenerateBarcode(string data)
+        public static string GenerateRandomString(int length)
         {
-            // Crear objeto BarcodeGenerator
-            var barcode = IronBarCode.BarcodeWriter.CreateBarcode(data, IronBarCode.BarcodeEncoding.Code128);
-            //barcode.AddAnnotationTextAboveBarcode("activo bodega");
-            barcode.AddBarcodeValueTextBelowBarcode();
-            barcode.SetMargins(5, 5, 5, 5);
-            barcode.ResizeTo(500, 200);
+            //const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const string allowedChars = "0123456789";
 
-            // Guardar la imagen del código de barras en un archivo temporal
-            string tempFile = Path.GetTempFileName();
-            barcode.SaveAsPng(tempFile);
+            // Obtiene el timestamp actual en milisegundos
+            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
-            // Leer el archivo temporal como una cadena Base64
-            byte[] imageBytes = File.ReadAllBytes(tempFile);
-            string base64String = Convert.ToBase64String(imageBytes);
+            // Inicializa el generador de números aleatorios
+            Random random = new();
 
-            // Eliminar el archivo temporal
-            File.Delete(tempFile);
+            // Crea un string aleatorio combinando el timestamp y caracteres permitidos
+            string randomString = timestamp.ToString() +
+                new string(Enumerable.Repeat(allowedChars, length)
+                    .Select(s => s[random.Next(s.Length)]).ToArray());
 
-            return base64String;
+            return randomString;
         }
     }
 }

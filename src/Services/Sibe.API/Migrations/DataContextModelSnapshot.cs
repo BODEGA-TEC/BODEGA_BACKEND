@@ -19,25 +19,41 @@ namespace Sibe.API.Migrations
                 .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("RolUsuario", b =>
+                {
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RolesId", "UsuarioId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("UsuarioRol", (string)null);
+                });
+
             modelBuilder.Entity("Sibe.API.Models.Comprobantes.Boleta", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("AsistenteCarne")
-                        .IsRequired()
-                        .HasColumnType("varchar(10)");
+                    b.Property<int?>("AprobadorId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Descripcion")
+                    b.Property<int>("AsistenteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CarneSolicitante")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Detalle")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("FechaCreacion")
+                    b.Property<DateTime>("FechaEmision")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("Tipo")
@@ -45,13 +61,11 @@ namespace Sibe.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AsistenteCarne");
+                    b.HasIndex("AprobadorId");
+
+                    b.HasIndex("AsistenteId");
 
                     b.ToTable("Boleta");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Boleta");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Sibe.API.Models.Comprobantes.BoletaComponente", b =>
@@ -87,7 +101,7 @@ namespace Sibe.API.Migrations
                     b.ToTable("BoletaEquipo");
                 });
 
-            modelBuilder.Entity("Sibe.API.Models.Entidades.Departamento", b =>
+            modelBuilder.Entity("Sibe.API.Models.Entidades.Escuela", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,7 +113,7 @@ namespace Sibe.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departamento");
+                    b.ToTable("Escuela");
 
                     b.HasData(
                         new
@@ -119,36 +133,31 @@ namespace Sibe.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Sibe.API.Models.Entidades.Profesor", b =>
+            modelBuilder.Entity("Sibe.API.Models.Entidades.HistoricoClave", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Correo")
+                    b.Property<byte[]>("ClaveHash")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longblob");
 
-                    b.Property<int>("DepartamentoId")
+                    b.Property<byte[]>("ClaveSalt")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<DateTime>("FechaCambio")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PrimerApellido")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("SegundoApellido")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartamentoId");
+                    b.HasIndex("UsuarioId");
 
-                    b.ToTable("Profesor");
+                    b.ToTable("HistoricoClave");
                 });
 
             modelBuilder.Entity("Sibe.API.Models.Entidades.Rol", b =>
@@ -195,32 +204,37 @@ namespace Sibe.API.Migrations
 
             modelBuilder.Entity("Sibe.API.Models.Entidades.Usuario", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
                     b.Property<string>("Carne")
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)");
 
-                    b.Property<byte[]>("ClaveHash")
-                        .IsRequired()
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("ClaveSalt")
-                        .IsRequired()
-                        .HasColumnType("longblob");
+                    b.Property<string>("ClaveTemporal")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Correo")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int?>("EscuelaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("RolId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("Carne");
+                    b.HasIndex("Carne")
+                        .IsUnique();
 
-                    b.HasIndex("RolId");
+                    b.HasIndex("Correo")
+                        .IsUnique();
+
+                    b.HasIndex("EscuelaId");
 
                     b.ToTable("Usuario");
                 });
@@ -290,6 +304,36 @@ namespace Sibe.API.Migrations
                     b.HasIndex("EstadoId");
 
                     b.ToTable("HistoricoEquipo");
+                });
+
+            modelBuilder.Entity("Sibe.API.Models.Historicos.HistoricoRefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("FechaExpiracion")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("HistoricoRefreshToken");
                 });
 
             modelBuilder.Entity("Sibe.API.Models.Inventario.Categoria", b =>
@@ -487,41 +531,34 @@ namespace Sibe.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Sibe.API.Models.Comprobantes.BoletaEstudiante", b =>
+            modelBuilder.Entity("RolUsuario", b =>
                 {
-                    b.HasBaseType("Sibe.API.Models.Comprobantes.Boleta");
+                    b.HasOne("Sibe.API.Models.Entidades.Rol", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("Carne")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("ProfesorAutorizadorId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ProfesorAutorizadorId");
-
-                    b.HasDiscriminator().HasValue("BoletaEstudiante");
-                });
-
-            modelBuilder.Entity("Sibe.API.Models.Comprobantes.BoletaProfesor", b =>
-                {
-                    b.HasBaseType("Sibe.API.Models.Comprobantes.Boleta");
-
-                    b.Property<int>("ProfesorId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ProfesorId");
-
-                    b.HasDiscriminator().HasValue("BoletaProfesor");
+                    b.HasOne("Sibe.API.Models.Entidades.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Sibe.API.Models.Comprobantes.Boleta", b =>
                 {
+                    b.HasOne("Sibe.API.Models.Entidades.Usuario", "Aprobador")
+                        .WithMany()
+                        .HasForeignKey("AprobadorId");
+
                     b.HasOne("Sibe.API.Models.Entidades.Usuario", "Asistente")
                         .WithMany()
-                        .HasForeignKey("AsistenteCarne")
+                        .HasForeignKey("AsistenteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Aprobador");
 
                     b.Navigation("Asistente");
                 });
@@ -564,26 +601,20 @@ namespace Sibe.API.Migrations
                     b.Navigation("Equipo");
                 });
 
-            modelBuilder.Entity("Sibe.API.Models.Entidades.Profesor", b =>
+            modelBuilder.Entity("Sibe.API.Models.Entidades.HistoricoClave", b =>
                 {
-                    b.HasOne("Sibe.API.Models.Entidades.Departamento", "Departamento")
-                        .WithMany()
-                        .HasForeignKey("DepartamentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Departamento");
+                    b.HasOne("Sibe.API.Models.Entidades.Usuario", null)
+                        .WithMany("HistoricoClaves")
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("Sibe.API.Models.Entidades.Usuario", b =>
                 {
-                    b.HasOne("Sibe.API.Models.Entidades.Rol", "Rol")
+                    b.HasOne("Sibe.API.Models.Entidades.Escuela", "Escuela")
                         .WithMany()
-                        .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EscuelaId");
 
-                    b.Navigation("Rol");
+                    b.Navigation("Escuela");
                 });
 
             modelBuilder.Entity("Sibe.API.Models.Historicos.HistoricoComponente", b =>
@@ -628,6 +659,17 @@ namespace Sibe.API.Migrations
                     b.Navigation("Estado");
                 });
 
+            modelBuilder.Entity("Sibe.API.Models.Historicos.HistoricoRefreshToken", b =>
+                {
+                    b.HasOne("Sibe.API.Models.Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("Sibe.API.Models.Inventario.Componente", b =>
                 {
                     b.HasOne("Sibe.API.Models.Inventario.Categoria", "Categoria")
@@ -666,31 +708,16 @@ namespace Sibe.API.Migrations
                     b.Navigation("Estado");
                 });
 
-            modelBuilder.Entity("Sibe.API.Models.Comprobantes.BoletaEstudiante", b =>
-                {
-                    b.HasOne("Sibe.API.Models.Entidades.Profesor", "ProfesorAutorizador")
-                        .WithMany()
-                        .HasForeignKey("ProfesorAutorizadorId");
-
-                    b.Navigation("ProfesorAutorizador");
-                });
-
-            modelBuilder.Entity("Sibe.API.Models.Comprobantes.BoletaProfesor", b =>
-                {
-                    b.HasOne("Sibe.API.Models.Entidades.Profesor", "Profesor")
-                        .WithMany()
-                        .HasForeignKey("ProfesorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Profesor");
-                });
-
             modelBuilder.Entity("Sibe.API.Models.Comprobantes.Boleta", b =>
                 {
                     b.Navigation("BoletaComponentes");
 
                     b.Navigation("BoletaEquipo");
+                });
+
+            modelBuilder.Entity("Sibe.API.Models.Entidades.Usuario", b =>
+                {
+                    b.Navigation("HistoricoClaves");
                 });
 
             modelBuilder.Entity("Sibe.API.Models.Inventario.Componente", b =>

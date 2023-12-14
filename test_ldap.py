@@ -1,29 +1,20 @@
-from ldap3 import Server, Connection, ALL, NTLM
+import ldap
 
-# Configuración del servidor LDAP
-ldap_server = 'estudiantes.ie.tec.ac.cr'
-ldap_port = 389  # Puerto LDAP típico
+# Inicializa la conexión LDAP
+l = ldap.initialize('ldap://estudiantes.ie.tec.ac.cr')
 
-# Información de autenticación
-ldap_domain = 'estudiantes.ie.tec.ac.cr'
-ldap_username = 'sibe'
-ldap_password = 'Cg7X4k57QWSc'
+# Define el nombre de usuario y la contraseña
+username = "uid=sibe,ou=People,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr"
+password = "Cg7X4k57QWSc"
 
-# Construir el servidor
-server = Server(ldap_server, port=ldap_port, get_info=ALL)
-
-# Intentar conectar al servidor LDAP
 try:
-    # Utilizar NTLM para la autenticación
-    connection = Connection(server, user=f'{ldap_domain}\\{ldap_username}', password=ldap_password, authentication=NTLM)
+    # Establece la versión del protocolo LDAP
+    l.protocol_version = ldap.VERSION3
 
-    # Establecer la conexión
-    if connection.bind():
-        print("Conexión exitosa")
-    else:
-        print(f"Fallo en la conexión: {connection.result}")
-except Exception as e:
-    print(f"Error durante la conexión: {e}")
-finally:
-    # Cerrar la conexión
-    connection.unbind()
+    # Intenta iniciar sesión en el servidor LDAP
+    l.simple_bind_s(username, password)
+    print("Conexión exitosa.")
+except ldap.INVALID_CREDENTIALS:
+    print("Tu nombre de usuario o contraseña es incorrecto.")
+except ldap.LDAPError as e:
+    print(e)

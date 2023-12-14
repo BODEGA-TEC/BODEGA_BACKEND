@@ -14,7 +14,7 @@ using Sibe.API.Services.AuthService;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var ldapService = new LdapService("estudiantes.ie.tec.ac.cr", "dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr", "sibe", "Cg7X4k57QWSc");
+var ldapService = new LdapService("estudiantes.ie.tec.ac.cr","sibe", "Cg7X4k57QWSc");
 ldapService.GetLdapServerDetails();
 
 // Agregar la configuraci�n desde /Services/serviceMessages.json

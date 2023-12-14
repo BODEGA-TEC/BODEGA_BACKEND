@@ -5,6 +5,7 @@ ldap_server = 'estudiantes.ie.tec.ac.cr'
 ldap_port = 389  # Puerto LDAP típico
 
 # Información de autenticación
+ldap_domain = 'estudiantes.ie.tec.ac.cr'
 ldap_username = 'sibe'
 ldap_password = 'Cg7X4k57QWSc'
 
@@ -13,8 +14,8 @@ server = Server(ldap_server, port=ldap_port, get_info=ALL)
 
 # Intentar conectar al servidor LDAP
 try:
-    # Puedes usar NTLM para la autenticación si es necesario
-    connection = Connection(server, user=f'{ldap_username}@estudiantes.ie.tec.ac.cr', password=ldap_password, authentication=NTLM)
+    # Utilizar NTLM para la autenticación
+    connection = Connection(server, user=f'{ldap_domain}\\{ldap_username}', password=ldap_password, authentication=NTLM)
 
     # Establecer la conexión
     if connection.bind():

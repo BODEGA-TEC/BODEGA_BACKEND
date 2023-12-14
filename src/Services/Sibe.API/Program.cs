@@ -14,8 +14,26 @@ using Sibe.API.Services.AuthService;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var ldapService = new LdapService("estudiantes.ie.tec.ac.cr","sibe", "Cg7X4k57QWSc");
-ldapService.GetLdapServerDetails();
+var ldapService = new LdapService("estudiantes.ie.tec.ac.cr", "sibe", "Cg7X4k57QWSc");
+
+if (ldapService.VerifyLdapDomain())
+{
+    Console.WriteLine("Dominio LDAP válido.");
+
+    if (ldapService.VerifyLdapUser())
+    {
+        Console.WriteLine("Usuario y credenciales válidos.");
+    }
+    else
+    {
+        Console.WriteLine("Credenciales inválidas o usuario inexistente.");
+    }
+}
+else
+{
+    Console.WriteLine("Dominio LDAP no válido.");
+}
+
 
 // Agregar la configuraci�n desde /Services/serviceMessages.json
 builder.Configuration

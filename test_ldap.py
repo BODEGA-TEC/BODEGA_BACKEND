@@ -6,24 +6,22 @@ username = 'cn=sibe,'+base_dn
 
 # Define el servidor y la conexión
 s = Server(domain, get_info=ALL)
-c = Connection(s, user=username, password='Cg7X4k57QWSc')
+c = Connection(s, user=username, password='admin')
 
 # Intenta realizar la conexión manualmente
 try:
     c.bind()
     print("Conexión exitosa.")
 
-    # Realiza la búsqueda para recuperar todas las entradas
-    if c.search(base_dn, '(objectClass=*)', SUBTREE):
-        print("Entradas encontradas:")
-        for entry in c.response:
-            print(entry['dn'])
-            for attribute, values in entry['attributes'].items():
-                print(f"  {attribute}: {values}")
-        # También puedes imprimir un mensaje adicional indicando que la búsqueda fue exitosa
-        print("Búsqueda exitosa.")
+    # Realiza la búsqueda para recuperar la entrada del usuario
+    if c.search(base_dn, f'(cn={username})', SUBTREE):
+        # Imprime los atributos de la entrada del usuario
+        entry = c.response[0]
+        print("Permisos del usuario:")
+        for attribute, values in entry['attributes'].items():
+            print(f"  {attribute}: {values}")
     else:
-        print("No se encontraron entradas.")
+        print("No se encontró la entrada del usuario.")
 except Exception as e:
     print(f"Error de autenticación: {e}")
 finally:

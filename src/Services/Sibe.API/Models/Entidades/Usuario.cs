@@ -1,4 +1,5 @@
-﻿using Sibe.API.Utils;
+﻿using Sibe.API.Models.Enums;
+using Sibe.API.Utils;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -43,25 +44,17 @@ namespace Sibe.API.Models.Entidades
 
     public class Usuario
     {
-        private static readonly string emailRegexPattern = @"^[a-zA-Z0-9._%+-]+@(estudiantec\.cr|itcr\.ac\.cr)$";
-
 
         [Key]
-        public int Id { get; set; }
+        public string Username { get; set; } = string.Empty;
 
-        public Escuela? Escuela { get; set; }
+        public Rol Rol { get; set; } = Rol.ASISTENTE;
 
-        public List<Rol> Roles { get; set; } = new List<Rol>();
-
-        public required string Nombre { get { return _nombre; } set { _nombre = value.ToUpper(); } }
-
-        [MaxLength(10)] // El carné tiene una longitud máxima de 10 caracteres.
-        public string? Carne { get; set; }
-
-        [EmailAddress]
-        public required string Correo { get { return _correo; } set { SetValidCorreo(value); } }
+        public string Correo { get; set; } = string.Empty;
 
         public string? ClaveTemporal { get; set; }
+
+        public DateTime FechaRegistro { get; set; } = TimeZoneHelper.Now();
 
         public List<HistoricoClave> HistoricoClaves { get; set; } = new List<HistoricoClave>(); // Tabla para almacenar contraseñas anteriores
 
@@ -72,12 +65,5 @@ namespace Sibe.API.Models.Entidades
         [NotMapped]
         private string _correo = string.Empty;
 
-
-        // Función para verificar y asignar un correo electrónico con formato válido.
-        private void SetValidCorreo(string correo)
-        {
-            RegexValidator.ValidateWithRegex(correo, emailRegexPattern, "El dominio debe ser @estudiantec.cr o @itcr.ac.cr.");
-            _correo = correo.ToLower(); // Convierte a minúsculas antes de asignar
-        }
     }
 }

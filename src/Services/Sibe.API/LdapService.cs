@@ -14,40 +14,22 @@ public class LdapService
         _password = password;
     }
 
-    public bool VerifyLdapDomain()
+    public void GetLdapServerDetails()
     {
-        try
+        using (LdapConnection connection = new LdapConnection(new LdapDirectoryIdentifier(_domain)))
         {
-            // Intenta conectar al servidor LDAP sin proporcionar credenciales
-            using (LdapConnection connection = new LdapConnection(new LdapDirectoryIdentifier(_domain)))
-            {
-                connection.Bind();
-                return true; // Si no hay excepción, el dominio existe
-            }
-        }
-        catch (LdapException)
-        {
-            return false; // Si hay excepción, el dominio no existe o no es accesible
-        }
-    }
+            connection.Credential = new System.Net.NetworkCredential(_username, _password);
+            connection.AuthType = AuthType.Basic;
 
-    public bool VerifyLdapUser()
-    {
-        try
-        {
-            // Intenta conectar al servidor LDAP con credenciales
-            using (LdapConnection connection = new LdapConnection(new LdapDirectoryIdentifier(_domain)))
-            {
-                connection.Credential = new System.Net.NetworkCredential(_username, _password);
-                connection.AuthType = AuthType.Basic;
+            connection.Bind();
 
-                connection.Bind();
-                return true; // Si no hay excepción, el usuario existe y las credenciales son válidas
-            }
-        }
-        catch (LdapException)
-        {
-            return false; // Si hay excepción, el usuario no existe o las credenciales no son válidas
+            Console.WriteLine("Detalles del servidor LDAP:");
+            Console.WriteLine($"  Servidor: {_domain}");
+            Console.WriteLine($"  Usuario de conexión: {_username}");
+
+            // Puedes agregar más detalles según tus necesidades
+
+            connection.Dispose();
         }
     }
 }

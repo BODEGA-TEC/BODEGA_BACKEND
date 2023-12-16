@@ -46,7 +46,11 @@ namespace Sibe.API.Models.Entidades
     {
 
         [Key]
+        public int Id { get; set; }
+
         public string Username { get; set; } = string.Empty;
+
+        public string Nombre { get { return _nombre; } set { _nombre = value.ToUpper(); } }
 
         public Rol Rol { get; set; } = Rol.ASISTENTE;
 
@@ -61,9 +65,6 @@ namespace Sibe.API.Models.Entidades
 
         [NotMapped]
         private string _nombre = string.Empty;
-
-        [NotMapped]
-        private string _correo = string.Empty;
 
     }
 }

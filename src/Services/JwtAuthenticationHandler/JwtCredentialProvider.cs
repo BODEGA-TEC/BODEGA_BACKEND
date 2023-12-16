@@ -48,20 +48,20 @@ namespace JwtAuthenticationHandler
             return computedHash.SequenceEqual(passwordHash);
         }
 
-        public string CreateToken(string email, string nombre, List<string> roles)
+        public string CreateToken(string username, string email, string rol)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(nombre) || roles == null || !roles.Any())
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(rol))
             {
-                throw new ArgumentException("email, name, and roles cannot be null or empty.");
+                throw new ArgumentException("email, username, and rol cannot be null or empty.");
             }
 
             // Add claims
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, email),
-                    new Claim(ClaimTypes.Name, nombre)
+                    new Claim(ClaimTypes.NameIdentifier, username),
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim(ClaimTypes.Role, rol)
                 };
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECURITY_KEY));
             var signingCreds = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512Signature);

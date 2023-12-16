@@ -2,10 +2,7 @@
 using Sibe.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Services.AuthService;
-using Sibe.API.Models.Entidades;
 using Sibe.API.Data.Dtos.Usuario;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 
 namespace Sibe.API.Controllers
 {

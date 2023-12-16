@@ -6,39 +6,49 @@ using Sibe.API.Models.Entidades;
 using Sibe.API.Data.Dtos.Usuario;
 using Sibe.API.Models.Historicos;
 using Sibe.API.Utils;
+using Microsoft.OpenApi.Extensions;
 
 namespace Sibe.API.Services.AuthService
 {
     public class AuthService : IAuthService
     {
         private readonly int MAX_PASSWORD_HISTORY_ENTRIES = 4;
-        private readonly ILogger<AuthService> _logger;
         private readonly IConfigurationSection _messages;
         private readonly DataContext _context;
         private readonly JwtCredentialProvider _jwtCredentialProvider;
 
-        public AuthService(ILogger<AuthService> logger, IConfiguration configuration, DataContext context, JwtCredentialProvider jwtCredentialProvider)
+        public AuthService(IConfiguration configuration, DataContext context, JwtCredentialProvider jwtCredentialProvider)
         {
-            _logger = logger;
             _messages = configuration.GetSection("UsuarioService");
             _context = context;
             _jwtCredentialProvider = jwtCredentialProvider;
         }
 
-        private async Task<Usuario> GetUsuarioByCorreo(string correo)
+
+
+
+
+        private async Task<Usuario> GetUsuarioByUsername(string username)
         {
-            // Recuperar usuario
-            return await _context.Usuario
-                .Include(u => u.Roles)
-                .FirstOrDefaultAsync(u => u.Equals(correo)) ?? throw new Exception(_messages["UsuarioNotFound"]);
+            return await _context.Usuario.SingleOrDefaultAsync(x => x.Username == username)
+                ?? throw new Exception(_messages["UsuarioNotFound"]);
+        }
+
+        private async Task IsUsernameInUse(string username)
+        {
+            if (await _context.Usuario.AnyAsync(x => x.Username == username))
+                throw new Exception(_messages["UsernameInUse"]);
+        }
+
+        private async Task IsCorreoInUse(string correo)
+        {
+            if (await _context.Usuario.AnyAsync(x => x.Correo == correo))
+                throw new Exception(_messages["CorreoInUse"]);
         }
 
 
-        private async Task IsCarneInUse(string carne)
-        {
-            if (await _context.Usuario.AnyAsync(u => u.Carne == carne))
-                throw new Exception(_messages["CarneInUse"]);
-        }
+
+
 
         // Método para asignar la clave temporal al usuario
         private static void SetClaveTemporal(Usuario usuario) => usuario.ClaveTemporal = UniqueIdentifierHelper.GenerateRandomString(length: 8);
@@ -64,8 +74,7 @@ namespace Sibe.API.Services.AuthService
         // Metodo que se encarga de la creacion y almacenado de los tokens de autenticacion.
         private async Task<(string AccessToken, string RefreshToken)> CreateTokens(Usuario usuario)
         {
-            var rolesNames = usuario.Roles?.Select(r => r.Nombre).ToList() ?? new List<string>();
-            var accessToken = _jwtCredentialProvider.CreateToken(usuario.Correo, usuario.Nombre, rolesNames);
+            var accessToken = _jwtCredentialProvider.CreateToken(usuario.Username, usuario.Correo, usuario.Rol.ToString());
             var (refreshToken, fechaCreacion, fechaExpiracion) = _jwtCredentialProvider.GenerateRefreshToken();
 
             // Almacenar el refresh token
@@ -92,52 +101,41 @@ namespace Sibe.API.Services.AuthService
 
             try
             {
-                // Si el carne ya se encuentra registrado
-                await IsCarneInUse(usuarioDto.Carne);
-
-                // Recuperar roles
-                List<Rol> roles = await _context.Rol
-                    .Where(r => usuarioDto.RolesIds.Contains(r.Id))
-                    .ToListAsync();
-
-                if (roles.Count != usuarioDto.RolesIds.Count)
-                {
-                    throw new Exception(_messages["RoleNotFound"]);
-                }
+                // Validaciones
+                await IsUsernameInUse(usuarioDto.Username);
+                await IsCorreoInUse(usuarioDto.Correo);
 
                 // Crear usuario
                 var usuario = new Usuario
                 {
-                    Carne = usuarioDto.Carne,
-                    Nombre = usuarioDto.Nombre.ToUpper(),
-                    Correo = usuarioDto.Correo, // Valida formato correo
-                    Roles = roles
+                    Nombre = usuarioDto.Nombre,
+                    Username = usuarioDto.Username,
+                    Correo = usuarioDto.Correo,
+                    Rol = usuarioDto.Rol
                 };
                 SetClaveTemporal(usuario);
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["RegisterSuccess"]);
-                _logger.LogInformation("Registro exitoso: {Nombre}", usuario.Nombre);
             }
 
             catch (Exception ex)
             {
                 // Log del error
                 response.SetError(ex.Message);
-                _logger.LogError(ex, "Se produjo un error al registrar al usuario {Nombre}", usuarioDto.Nombre);
             }
 
             return response;
         }
 
-        public async Task<ServiceResponse<Dictionary<string, object>>> Login(string correo, string clave)
+        public async Task<ServiceResponse<Dictionary<string, object>>> Login(string username, string clave)
         {
             var response = new ServiceResponse<Dictionary<string, object>>();
 
             try
             {
                 // Recuperar usuario
-                var usuario = await GetUsuarioByCorreo(correo);
+                var usuario = await GetUsuarioByUsername(username);
 
                 // Autenticacion
                 var currentClave = GetCurrentClave(usuario);
@@ -153,22 +151,20 @@ namespace Sibe.API.Services.AuthService
                 var loginResponse = new Dictionary<string, object>
                 {
                     { "id", usuario.Id },
-                    { "name", usuario.Nombre },
-                    { "roles", usuario.Roles },
+                    { "nombre", usuario.Nombre },
+                    { "rol", usuario.Rol },
                     { "accessToken", tokens.AccessToken },
                     { "refreshToken", tokens.RefreshToken }
                 };
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["LoginSucess"], loginResponse);
-                _logger.LogInformation("Inicio de sesión exitoso: {Usuario.Nombre}", usuario.Nombre);
             }
 
             catch (Exception ex)
             {
                 // Log del error
                 response.SetError(ex.Message);
-                _logger.LogError(ex, "Se produjo un error al iniciar sesión con el usuario \"{correo}\"", correo);
             }
 
             return response;
@@ -201,14 +197,12 @@ namespace Sibe.API.Services.AuthService
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["LoginSucess"], responseData);
-                _logger.LogInformation("Se ha actualizado refresh token exitosamente");
             }
 
             catch (Exception ex)
             {
                 // Log del error
                 response.SetError(ex.Message);
-                _logger.LogError(ex, "Se produjo un error al obtener el refresh token");
             }
 
             return response;
@@ -251,14 +245,12 @@ namespace Sibe.API.Services.AuthService
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["RegisterSuccess"]);
-                _logger.LogInformation("Registro exitoso: {Nombre}", usuario.Nombre);
             }
 
             catch (Exception ex)
             {
                 // Log del error
                 response.SetError(ex.Message);
-                _logger.LogError(ex, "Se produjo un error al cambiar la clave");
             }
 
             return response;

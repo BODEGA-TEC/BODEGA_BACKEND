@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Sibe.API.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Sibe.API.Data.Dtos.Usuario
 {
     public class RegisterUsuarioDto
     {
-        public string Carne { get; set; } = string.Empty!;
         public string Nombre { get; set; } = string.Empty!;
-        public string Clave { get; set; } = string.Empty!;
-        public List<int> RolesIds { get; set; } = new List<int> { 3 }; // Asistente por defecto
+        public string Username { get; set; } = string.Empty!;
         public string Correo { get; set; } = string.Empty!;
+        public string Clave { get; set; } = string.Empty!;
+        public Rol Rol { get; set; } = Rol.ASISTENTE;
     }
 }

@@ -45,9 +45,13 @@
     "CorreoInUse": "Este correo ya se encuentra registrado.",
     "UsernameInUse": "Este nombre de usuario ya se encuentra registrado.",
     "InvalidCredentials": "Carné o contraseña inválido(s).",
-    "ExpiredClave": "La clave ha vencido.",
+    "ExpiredClave": "La clave ha vencido. Se ha enviado la clave temporal al correo registrado.",
     "ClaveTemporalUnchanged": "Debe cambiarse la clave temporal primero.",
-    "RefreshTokenNotFound": "No se ha encontrado refresh token."
+    "RefreshTokenNotFound": "No se ha encontrado refresh token.",
+    "ClaveDuplicated": "La contraseña debe ser distinta de las 4 anteriores.",
+    "ClaveTemporalSentSuccess": "Se ha enviado la clave temporal al correo registrado.",
+    "ClaveChangeSuccess": "Se ha cambiado correctamente.",
+    "ClaveTemporalInvalid" : "Clave temporal incorrecta."
   }
 
 }

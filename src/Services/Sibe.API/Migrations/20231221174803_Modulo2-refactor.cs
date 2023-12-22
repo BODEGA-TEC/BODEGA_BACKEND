@@ -9,12 +9,34 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Sibe.API.Migrations
 {
     /// <inheritdoc />
-    public partial class Modulo2 : Migration
+    public partial class Modulo2refactor : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Asistente",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nombre = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Carne = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Correo = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FechaRegistro = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    HuellaDigital = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Asistente", x => x.Id);
+                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -30,21 +52,6 @@ namespace Sibe.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categoria", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Escuela",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nombre = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Escuela", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -66,46 +73,25 @@ namespace Sibe.API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Rol",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nombre = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descripcion = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rol", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Usuario",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    EscuelaId = table.Column<int>(type: "int", nullable: true),
+                    Username = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Nombre = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Carne = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Rol = table.Column<int>(type: "int", nullable: false),
                     Correo = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ClaveTemporal = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FechaRegistro = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuario", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Usuario_Escuela_EscuelaId",
-                        column: x => x.EscuelaId,
-                        principalTable: "Escuela",
-                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -233,7 +219,7 @@ namespace Sibe.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FechaCambio = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    FechaRegistro = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ClaveHash = table.Column<byte[]>(type: "longblob", nullable: false),
                     ClaveSalt = table.Column<byte[]>(type: "longblob", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: true)
@@ -268,31 +254,6 @@ namespace Sibe.API.Migrations
                     table.PrimaryKey("PK_HistoricoRefreshToken", x => x.Id);
                     table.ForeignKey(
                         name: "FK_HistoricoRefreshToken_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "UsuarioRol",
-                columns: table => new
-                {
-                    RolesId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UsuarioRol", x => new { x.RolesId, x.UsuarioId });
-                    table.ForeignKey(
-                        name: "FK_UsuarioRol_Rol_RolesId",
-                        column: x => x.RolesId,
-                        principalTable: "Rol",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UsuarioRol_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuario",
                         principalColumn: "Id",
@@ -419,16 +380,6 @@ namespace Sibe.API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.InsertData(
-                table: "Escuela",
-                columns: new[] { "Id", "Nombre" },
-                values: new object[,]
-                {
-                    { 1, "ESCUELA DE ELETRONICA" },
-                    { 2, "ESCUELA DE MECATRONICA" },
-                    { 3, "ESCUELA DE COMPUTADORES" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Estado",
                 columns: new[] { "Id", "Descripcion", "Nombre" },
                 values: new object[,]
@@ -440,16 +391,6 @@ namespace Sibe.API.Migrations
                     { 5, "El item se encuentra en mantenimiento y reparación.", "EN REPARACION" },
                     { 6, "El item ha sido retirado de la bodega, donado o descontinuado su uso.", "RETIRADO" },
                     { 7, "Un funcionario ha apartado el item y está reservado para su préstamo futuro.", "APARTADO" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Rol",
-                columns: new[] { "Id", "Descripcion", "Nombre" },
-                values: new object[,]
-                {
-                    { 1, "Administra usuarios y gestiona información sensible.", "ADMINISTRADOR" },
-                    { 2, "Desarrollo y mantenimiento del sistema.", "PROFESOR" },
-                    { 3, "Asistencia y tareas administrativas.", "ASISTENTE" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -546,37 +487,24 @@ namespace Sibe.API.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rol_Nombre",
-                table: "Rol",
-                column: "Nombre",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Usuario_Carne",
-                table: "Usuario",
-                column: "Carne",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Usuario_Correo",
                 table: "Usuario",
                 column: "Correo",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuario_EscuelaId",
+                name: "IX_Usuario_Username",
                 table: "Usuario",
-                column: "EscuelaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsuarioRol_UsuarioId",
-                table: "UsuarioRol",
-                column: "UsuarioId");
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Asistente");
+
             migrationBuilder.DropTable(
                 name: "BoletaComponente");
 
@@ -596,9 +524,6 @@ namespace Sibe.API.Migrations
                 name: "HistoricoRefreshToken");
 
             migrationBuilder.DropTable(
-                name: "UsuarioRol");
-
-            migrationBuilder.DropTable(
                 name: "Componente");
 
             migrationBuilder.DropTable(
@@ -608,9 +533,6 @@ namespace Sibe.API.Migrations
                 name: "Equipo");
 
             migrationBuilder.DropTable(
-                name: "Rol");
-
-            migrationBuilder.DropTable(
                 name: "Usuario");
 
             migrationBuilder.DropTable(
@@ -618,9 +540,6 @@ namespace Sibe.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Estado");
-
-            migrationBuilder.DropTable(
-                name: "Escuela");
         }
     }
 }

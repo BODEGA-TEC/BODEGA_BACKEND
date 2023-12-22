@@ -36,9 +36,9 @@ namespace Sibe.API.Controllers
         }
 
         /// <summary>
-        /// Authenticates a user and returns an access token.
+        /// Autentica a un usuario y devuelve el access y refresh token.
         /// </summary>
-        /// <param name="request">User data for authentication.</param>
+        /// <param name="request">Datos de autenticacion.</param>
         /// <returns>ActionResult<ServiceResponse<string>> Object encapsulating the operation result, including the ID of the authenticated user and an access token.</returns>
         [HttpPost("login")]
         public async Task<ActionResult<ServiceResponse<string>>> Login(LoginUsuarioDto request)
@@ -58,6 +58,18 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<Dictionary<string, string>>>> RefreshToken(int usuarioId, RefreshTokenDto requestTokenDto)
         {
             var response = await _authService.RefreshToken(usuarioId, requestTokenDto);
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
+
+        /// <summary>
+        /// Setea la clave temporal al usuario propietario del correo y envía este codigo al correo registrado
+        /// </summary>
+        /// <param name="correo">Correo del usuario para el cual se va generar la clave temporal.</param>
+        /// <returns>ActionResult<ServiceResponse<string>> Objeto que encapsula el resultado de la operación.</returns>
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult<ServiceResponse<string>>> ForgotClave(string correo)
+        {
+            var response = await _authService.ForgotClave(correo);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 

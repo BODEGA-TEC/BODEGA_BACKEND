@@ -49,15 +49,8 @@ namespace Sibe.API.Utils
             //const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             const string allowedChars = "0123456789";
 
-            // Obtiene el timestamp actual en milisegundos
-            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
-            // Inicializa el generador de números aleatorios
             Random random = new();
-
-            // Crea un string aleatorio combinando el timestamp y caracteres permitidos
-            string randomString = timestamp.ToString() +
-                new string(Enumerable.Repeat(allowedChars, length)
+            string randomString = new string(Enumerable.Repeat(allowedChars, length)
                     .Select(s => s[random.Next(s.Length)]).ToArray());
 
             return randomString;

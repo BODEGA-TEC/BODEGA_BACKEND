@@ -7,11 +7,13 @@ using Sibe.API.Data.Dtos.Usuario;
 using Sibe.API.Models.Historicos;
 using Sibe.API.Utils;
 using Microsoft.OpenApi.Extensions;
+using Sibe.API.Models.Inventario;
 
 namespace Sibe.API.Services.AuthService
 {
     public class AuthService : IAuthService
     {
+        private static readonly string passwordRegex = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d\\/%()_\\-*&@]{8,16}$";
         private readonly int MAX_PASSWORD_HISTORY_ENTRIES = 4;
         private readonly IConfigurationSection _messages;
         private readonly DataContext _context;
@@ -26,7 +28,17 @@ namespace Sibe.API.Services.AuthService
 
 
 
+        // Funcion para verificar que la clave es de un formato correcto.
+        private void ValidateRegexClave(string clave)
+        {
+            string errorMessage = @"De 8 a 16 caracteres.
+                                    Al menos una letra mayúscula.
+                                    Al menos una letra minúscula.
+                                    Al menos un número.
+                                    Al menos un carácter especial: "" /, %, (, ), _, -, *, &, @.""";
 
+            RegexValidator.ValidateWithRegex(clave, passwordRegex, errorMessage);
+        }
 
         private async Task<Usuario> GetUsuarioByUsername(string username)
         {
@@ -51,17 +63,18 @@ namespace Sibe.API.Services.AuthService
 
 
         // Método para asignar la clave temporal al usuario
-        private static void SetClaveTemporal(Usuario usuario) => usuario.ClaveTemporal = UniqueIdentifierHelper.GenerateRandomString(length: 8);
+        private static void SetClaveTemporal(Usuario usuario) => usuario.ClaveTemporal = UniqueIdentifierHelper.GenerateRandomString(length: 6);
 
 
         // Método para obtener la contraseña más reciente y activa
         private HistoricoClave GetCurrentClave(Usuario usuario)
         {
             // Ordenar el historial de claves por fecha de cambio de forma descendente
-            var currentClave = usuario.HistoricoClaves.OrderByDescending(h => h.FechaCambio).FirstOrDefault();
+            var currentClave = usuario.HistoricoClaves.OrderByDescending(h => h.FechaRegistro).FirstOrDefault();
 
             // Verificar si la contraseña es null o si ha vencido
-            if (currentClave == null || currentClave.FechaCambio.AddMonths(6) < TimeZoneHelper.Now())
+            var expirationDate = currentClave?.FechaRegistro.AddMonths(6);
+            if (currentClave == null || expirationDate < TimeZoneHelper.Now())
             {
                 SetClaveTemporal(usuario);
                 throw new Exception(currentClave == null ? _messages["ClaveTemporalUnchanged"] : _messages["ExpiredClave"]);
@@ -104,6 +117,7 @@ namespace Sibe.API.Services.AuthService
                 // Validaciones
                 await IsUsernameInUse(usuarioDto.Username);
                 await IsCorreoInUse(usuarioDto.Correo);
+                ValidateRegexClave(usuarioDto.Clave);
 
                 // Crear usuario
                 var usuario = new Usuario
@@ -113,7 +127,14 @@ namespace Sibe.API.Services.AuthService
                     Correo = usuarioDto.Correo,
                     Rol = usuarioDto.Rol
                 };
-                SetClaveTemporal(usuario);
+
+                // Crear clave hash y salt
+                JwtCredentialProvider.CreatePasswordHash(usuarioDto.Clave, out byte[] claveHash, out byte[] claveSalt);
+                usuario.HistoricoClaves.Add(new HistoricoClave { ClaveHash = claveHash, ClaveSalt = claveSalt });
+
+                // Almacenar en db
+                _context.Usuario.Add(usuario);
+                await _context.SaveChangesAsync();
 
                 // Configurar respuesta
                 response.SetSuccess(_messages["RegisterSuccess"]);
@@ -135,7 +156,9 @@ namespace Sibe.API.Services.AuthService
             try
             {
                 // Recuperar usuario
-                var usuario = await GetUsuarioByUsername(username);
+                var usuario = await _context.Usuario
+                    .Include(u => u.HistoricoClaves)
+                    .FirstOrDefaultAsync(u => u.Username == username) ?? throw new Exception(_messages["UsuarioNotFound"]);
 
                 // Autenticacion
                 var currentClave = GetCurrentClave(usuario);
@@ -189,7 +212,7 @@ namespace Sibe.API.Services.AuthService
                 var tokens = await CreateTokens(storedRefreshToken.Usuario);
 
                 // Configurar respuesta
-                var responseData = new Dictionary<string, object>
+                var responseData = new Dictionary<string, string>
                 {
                     { "accessToken", tokens.AccessToken },
                     { "refreshToken", tokens.RefreshToken }
@@ -208,6 +231,38 @@ namespace Sibe.API.Services.AuthService
             return response;
         }
 
+        public async Task<ServiceResponse<string>> ForgotClave(string correo)
+        {
+            var response = new ServiceResponse<string>();
+
+            try
+            {
+                // Obtener al usuario con ese correo
+                var usuario = await _context.Usuario
+                    .FirstOrDefaultAsync(u => u.Correo == correo) ?? throw new Exception(_messages["UsuarioNotFound"]);
+
+                // Asignar clave temporal
+                SetClaveTemporal(usuario);
+
+                /* Enviar la clave temporal por correo. */
+
+                // Actualizar
+                await _context.SaveChangesAsync();
+
+                // Configurar respuesta
+                response.SetSuccess(_messages["ClaveTemporalSentSuccess"], usuario.ClaveTemporal);
+            }
+
+            catch (Exception ex)
+            {
+                // Log del error
+                response.SetError(ex.Message);
+            }
+
+            return response;
+        }
+
+
 
         public async Task<ServiceResponse<object>> ChangeClave(ChangeClaveDto info)
         {
@@ -215,36 +270,42 @@ namespace Sibe.API.Services.AuthService
 
             try
             {
+                // Validar formato de la contraseña
+                ValidateRegexClave(info.ClaveNueva);
+
                 // Obtener las contraseñas del usuario.
                 var usuario = await _context.Usuario
                     .Include(u => u.HistoricoClaves)
-                    .FirstOrDefaultAsync(u => u.Id == info.UsuarioId) ?? throw new Exception(_messages["UsuarioNotFound"]);
+                    .FirstOrDefaultAsync(u => u.Id == info.UsuarioId && u.ClaveTemporal == info.ClaveTemporal) ?? throw new Exception(_messages["ClaveTemporalInvalid"]);
+                //var usuario.HistoricoClaves = usuario.HistoricoClaves.OrderByDescending(h => h.FechaRegistro).ToList();  // De las más nueva a la más vieja.
 
-                var claves = usuario.HistoricoClaves.OrderByDescending(h => h.FechaCambio).ToList();
+                // Verificar que la clave no esté repetida
+                bool duplicatedClave = usuario.HistoricoClaves.Any(currentClave => JwtCredentialProvider.AuthPasswordHash(info.ClaveNueva, currentClave.ClaveHash, currentClave.ClaveSalt));
+                if (duplicatedClave) throw new Exception(_messages["ClaveDuplicated"]);
 
-                // Crear HistoricoClave
-                var historicoClave = new HistoricoClave { Clave = info.ClaveNueva };
-
-                // Crear clave hash y salt
-                JwtCredentialProvider.CreatePasswordHash(info.ClaveNueva, out byte[] claveHash, out byte[] claveSalt);
-                historicoClave.ClaveHash = claveHash;
-                historicoClave.ClaveSalt = claveSalt;
-
-                // Gestionar la antigüedad de las claves directamente
-                if (claves.Count >= MAX_PASSWORD_HISTORY_ENTRIES)
+                // Si existen 4 claves almacenadas, se desecha la más vieja.
+                if (usuario.HistoricoClaves.Count == MAX_PASSWORD_HISTORY_ENTRIES)
                 {
-                    // Eliminar la más antigua
-                    claves.RemoveAt(claves.Count - 1);
+                    // Obtener la clave más antigua
+                    var oldestClave = usuario.HistoricoClaves.OrderBy(h => h.FechaRegistro).First();
+
+                    // Eliminar la más antigua de la base de datos
+                    _context.HistoricoClave.Remove(oldestClave);
+
+                    // Eliminar la más antigua de la lista en memoria
+                    usuario.HistoricoClaves.Remove(oldestClave);
                 }
 
-                // Agregar la nueva clave al historial del usuario
-                claves.Insert(0, historicoClave);
+                // Agregar la nueva clave al historial del usuario y despejar la clave temporal
+                JwtCredentialProvider.CreatePasswordHash(info.ClaveNueva, out byte[] claveHash, out byte[] claveSalt);
+                usuario.HistoricoClaves.Add(new HistoricoClave { ClaveHash = claveHash, ClaveSalt = claveSalt });
+                usuario.ClaveTemporal = null;
 
                 // Guardar cambios (modificaciones de la lista)
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                response.SetSuccess(_messages["RegisterSuccess"]);
+                response.SetSuccess(_messages["ClaveChangeSuccess"]);
             }
 
             catch (Exception ex)

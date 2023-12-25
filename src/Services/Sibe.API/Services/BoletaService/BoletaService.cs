@@ -49,15 +49,66 @@ namespace Sibe.API.Services.BoletaService
             return time.ToString("yyyyddMMHHmmss");
         }
 
-        private void CheckIdsNotFound(IEnumerable<int> inputIds, IEnumerable<int> existingIds, string? errorMessageTemplate)
+        // Agrega equipos a una boleta nueva y recupera información relevante de cada equipo de la base de datos.
+        private async Task AddAndRetrieveBoletaEquipo(Boleta boleta, List<BoletaEquipoDto> boletaList)
         {
-            var idsNotFound = inputIds.Except(existingIds);
-            if (idsNotFound.Any())
+            foreach (var boletaEquipo in boletaList)
             {
-                string errorMessage = $"{errorMessageTemplate} {string.Join(", ", idsNotFound)}";
-                throw new Exception(errorMessage);
+                // Recuperar el equipo
+                var equipo = await _context.Equipo
+                    .Include(e => e.Estado)
+                    .SingleOrDefaultAsync(e => e.Id == boletaEquipo.Id)
+                    ?? throw new Exception($"{_messages["EquipoIdNotFound"]} {boletaEquipo.Id}");
+
+                // Verificar si el equipo tiene el estado disponible
+                var expectedEstadoId = (boleta.TipoBoleta == TipoBoleta.PRESTAMO) ? 1 : 2; // 1: DISPONIBLE - 2: PRESTADO
+                if (equipo.Estado.Id != expectedEstadoId)
+                {
+                    string errorMessage = (expectedEstadoId == 1)
+                        ? $"{_messages["EquipoNotAvailable"]} {boletaEquipo.Id}"  // Estado esperado: DISPONIBLE
+                        : $"{_messages["EquipoNotPrestado"]} {boletaEquipo.Id}";  // Estado esperado: PRESTADO
+
+                    throw new Exception(errorMessage);
+                }
+
+                // Agregar el equipo a la lista de la boleta creada.
+                boleta.BoletaEquipo.Add(new BoletaEquipo
+                {
+                    Boleta = boleta,
+                    Equipo = equipo,
+                    Observaciones = equipo.Observaciones
+                });
+
+                equipo.EstadoId = (boleta.TipoBoleta == TipoBoleta.PRESTAMO) ? 2 : 1;
             }
         }
+
+        //// Agrega equipos a una boleta nueva y recupera información relevante de cada equipo de la base de datos.
+        //private async Task AddAndRetrieveBoletaComponentes(Boleta boleta, List<BoletaComponenteDto> boletaList)
+        //{
+        //    foreach (var boletaComponente in boletaList)
+        //    {
+        //        // Recuperar el componente
+        //        var componente = await _context.Componente
+        //            .Include(e => e.Estado)
+        //            .SingleOrDefaultAsync(e => e.Id == boletaComponente.Id)
+        //            ?? throw new Exception($"{_messages["ComponenteIdNotFound"]} {boletaComponente.Id}");
+
+        //        // Verificar si hay suficiente componentes para el prestamo solicitado
+        //        if (boleta.po.Estado.Id != expectedEstadoId)
+        //        {
+        //            throw new Exception($"{_messages["ComponenteQuantityRequestError"]} {boletaComponente.Id}");
+        //        }
+
+        //        // Agregar el equipo a la lista de la boleta creada.
+        //        boleta.BoletaEquipo.Add(new BoletaEquipo
+        //        {
+        //            Boleta = boleta,
+        //            Equipo = equipo,
+        //            Observaciones = equipo.Observaciones
+        //        });
+        //    }
+        //}
 
         public async Task<ServiceResponse<int>> CreateBoletaPrestamo(CreateBoletaDto info)
         {
@@ -70,11 +121,7 @@ namespace Sibe.API.Services.BoletaService
 
                 // No se permiten préstamos sin la aprobación del profesor
                 if (string.IsNullOrEmpty(info.Aprobador) && info.Componentes.Any())
-                    throw new Exception("No se permiten préstamos de componentes sin la aprobación de un profesor.");
-
-                // Verificar la existencia de los IDs de los activos
-                CheckIdsNotFound(info.Equipo.Select(c => c.Id), _context.Equipo.Select(c => c.Id), _messages["EquipoIdNotFound"]);
-                CheckIdsNotFound(info.Componentes.Select(c => c.Id), _context.Componente.Select(c => c.Id), _messages["ComponenteIdNotFound"]);
+                    throw new Exception(_messages["AprobadorNeeded"]);
 
                 // Recuperar la informacion del solicitante
                 var solicitante = new
@@ -101,27 +148,8 @@ namespace Sibe.API.Services.BoletaService
                     CorreoSolicitante = solicitante.Correo,
                     CarneSolicitante = solicitante.Carne
                 };
-
-                foreach (var equipo in info.Equipo)
-                {
-                    boletaPrestamo.BoletaEquipo.Add(new BoletaEquipo
-                    {
-                        Boleta = boletaPrestamo,
-                        EquipoId = equipo.Id,
-                        Observaciones = equipo.Observaciones
-                    });
-                }
-
-                foreach (var componente in info.Componentes)
-                {
-                    boletaPrestamo.BoletaComponentes.Add(new BoletaComponente
-                    {
-                        Boleta = boletaPrestamo,
-                        ComponenteId = componente.Id,
-                        Cantidad = componente.Cantidad,
-                        Observaciones = componente.Observaciones
-                    });
-                }
+                await AddAndRetrieveBoletaEquipo(boletaPrestamo, info.Equipo);
+                //await AddAndRetrieveBoletaComponentes(boletaPrestamo, info.Componentes);
 
                 // Agregar al contexto
                 _context.Boleta.Add(boletaPrestamo);
@@ -150,8 +178,6 @@ namespace Sibe.API.Services.BoletaService
                 var asistente = await _asistenteService.FetchByCarne(info.CarneAsistente);
 
                 // Verificar la existencia de los IDs de los activos
-                CheckIdsNotFound(info.Equipo.Select(c => c.Id), _context.Equipo.Select(c => c.Id), _messages["EquipoIdNotFound"]);
-                CheckIdsNotFound(info.Componentes.Select(c => c.Id), _context.Componente.Select(c => c.Id), _messages["ComponenteIdNotFound"]);
 
                 // Recuperar la informacion del solicitante
                 var solicitante = new
@@ -162,19 +188,18 @@ namespace Sibe.API.Services.BoletaService
                     Carne = (info.TipoSolicitante == TipoSolicitante.ESTUDIANTE) ? info.IdSolicitante : null
                 };
 
-
                 // Recuperar el consecutivo anterior
-                var boletaPrestamo = _context.Boleta
+                var boletaPrestamo = await _context.Boleta
                     .Where(b => b.CorreoSolicitante == solicitante.Correo &&
                                 b.Estado == BoletaEstado.PENDIENTE &&
                                 b.BoletaEquipo.Any(be => info.Equipo.Select(eq => eq.Id).Contains(be.EquipoId)))
-                    .Single()
+                    .SingleOrDefaultAsync()
                     ?? throw new Exception(_messages["BoletaPrestamoNotFound"]);
 
                 var boletaDevolucion = new Boleta
                 {
                     Consecutivo = boletaPrestamo.Consecutivo,
-                    Aprobador = info.Aprobador,
+                    Aprobador = boletaPrestamo.Aprobador,
                     TipoBoleta = TipoBoleta.DEVOLUCION,
                     Estado = BoletaEstado.CERRADO,
                     FechaEmision = TimeZoneHelper.Now(),
@@ -185,27 +210,8 @@ namespace Sibe.API.Services.BoletaService
                     CorreoSolicitante = solicitante.Correo,
                     CarneSolicitante = solicitante.Carne
                 };
-
-                foreach (var equipo in info.Equipo)
-                {
-                    boletaDevolucion.BoletaEquipo.Add(new BoletaEquipo
-                    {
-                        Boleta = boletaDevolucion,
-                        EquipoId = equipo.Id,
-                        Observaciones = equipo.Observaciones
-                    });
-                }
-
-                foreach (var componente in info.Componentes)
-                {
-                    boletaDevolucion.BoletaComponentes.Add(new BoletaComponente
-                    {
-                        Boleta = boletaDevolucion,
-                        ComponenteId = componente.Id,
-                        Cantidad = componente.Cantidad,
-                        Observaciones = componente.Observaciones
-                    });
-                }
+                await AddAndRetrieveBoletaEquipo(boletaDevolucion, info.Equipo);
+                //await AddAndRetrieveBoletaComponentes(boletaPrestamo, info.Componentes);
 
                 // Agregar al contexto
                 _context.Boleta.Add(boletaDevolucion);

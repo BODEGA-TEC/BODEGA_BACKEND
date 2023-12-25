@@ -66,9 +66,13 @@
     "CreateSuccess": "Boleta creada con éxito.",
     "ReadSuccess": "Boleta(s) recuperada(s) con éxito.",
     "Empty": "No se han registrado boletas.",
-    "EquipoIdNotFound": "No se encontraron los siguientes IDs de equipo: ",
-    "ComponenteIdNotFound": "No se encontraron los siguientes IDs de componentes: ",
-    "BoletaPrestamoNotFound":"No se ha encontrado la boleta de prestamo respectiva."
+    "EquipoIdNotFound": "El siguiente equipo no se encuentra: ",
+    "EquipoNotAvailable": "El siguiente equipo no está disponible: ",
+    "EquipoNotPrestado": "El siguiente equipo no se encuentra prestado: ",
+    "ComponenteIdNotFound": "Los siguientes componentes no están disponibles: ",
+    "BoletaPrestamoNotFound": "No se ha encontrado la boleta de prestamo respectiva.",
+    "ComponenteQuantityRequestError": "La cantidad solicitada es mayor que la cantidad disponible: ",
+    "AprobadorNeeded": "No se permiten préstamos de componentes sin la aprobación de un profesor."
   }
 
 }

@@ -3,6 +3,7 @@ using Sibe.API.Models.Enums;
 using Sibe.API.Models.Historicos;
 using Sibe.API.Utils;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sibe.API.Models.Inventario
 {
@@ -17,7 +18,9 @@ namespace Sibe.API.Models.Inventario
 
         // Navegación a la entidad Estado que representa el estado del componente.
         [Required]
+        [ForeignKey("EstadoId")]
         public Estado Estado { get; set; } = null!;
+        public int EstadoId { get; set; }
 
         [Required]
         public DateTime FechaRegistro { get; set; } = TimeZoneHelper.Now();

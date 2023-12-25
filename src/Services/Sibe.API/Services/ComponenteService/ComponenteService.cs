@@ -42,9 +42,9 @@ namespace Sibe.API.Services.ComponenteService
                 ?? throw new Exception(_messages["NotFound"]);
         }
 
-        public async Task<ServiceResponse<ReadComponenteDto>> Create(CreateComponenteDto componenteDto)
+        public async Task<ServiceResponse<object>> Create(CreateComponenteDto componenteDto)
         {
-            var response = new ServiceResponse<ReadComponenteDto>();
+            var response = new ServiceResponse<object>();
 
             try
             {
@@ -76,11 +76,8 @@ namespace Sibe.API.Services.ComponenteService
                 _context.Componente.Add(componente);
                 await _context.SaveChangesAsync();
 
-                // Map a Dto
-                ReadComponenteDto entityDto = _mapper.Map<ReadComponenteDto>(componente);
-
                 // Configurar respuesta
-                response.SetSuccess(_messages["CreateSuccess"], entityDto);
+                response.SetSuccess(_messages["CreateSuccess"]);
             }
 
             catch (Exception ex)

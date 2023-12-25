@@ -6,7 +6,7 @@ namespace Sibe.API.Services.ComponenteService
 {
     public interface IComponenteService
     {
-        Task<ServiceResponse<ReadComponenteDto>> Create(CreateComponenteDto componente);
+        Task<ServiceResponse<object>> Create(CreateComponenteDto componente);
         Task<ServiceResponse<List<ReadComponenteDto>>> ReadAll();
         Task<ServiceResponse<Componente>> ReadById(int id);
         Task<ServiceResponse<ReadComponenteDto>> Update(int id, UpdateComponenteDto componente);

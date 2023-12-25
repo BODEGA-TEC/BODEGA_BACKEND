@@ -11,6 +11,8 @@ using App.API.Swagger;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Sibe.API.Services.AuthService;
+using Sibe.API.Services.AsistenteService;
+using Sibe.API.Services.BoletaService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +67,10 @@ builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<IEstadoService, EstadoService>();
 builder.Services.AddScoped<IComponenteService, ComponenteService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAsistenteService, AsistenteService>();
+builder.Services.AddScoped<IBoletaService, BoletaService>();
+
+
 
 // Service to implement authentication middleware
 builder.Services.AddAuthorization();

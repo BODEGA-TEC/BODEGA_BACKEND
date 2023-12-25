@@ -1,4 +1,4 @@
-﻿using Sibe.API.Models.Comprobantes;
+﻿using Sibe.API.Models.Boletas;
 using Sibe.API.Models.Enums;
 using Sibe.API.Models.Historicos;
 using Sibe.API.Models.Inventario;

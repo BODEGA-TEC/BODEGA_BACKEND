@@ -1,4 +1,4 @@
-﻿using Sibe.API.Models.Comprobantes;
+﻿using Sibe.API.Models.Boletas;
 using Sibe.API.Models.Inventario;
 using Sibe.API.Utils;
 using System.ComponentModel.DataAnnotations;

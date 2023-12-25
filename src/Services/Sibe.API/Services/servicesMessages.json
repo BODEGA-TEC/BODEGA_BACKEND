@@ -51,7 +51,24 @@
     "ClaveDuplicated": "La contraseña debe ser distinta de las 4 anteriores.",
     "ClaveTemporalSentSuccess": "Se ha enviado la clave temporal al correo registrado.",
     "ClaveChangeSuccess": "Se ha cambiado correctamente.",
-    "ClaveTemporalInvalid" : "Clave temporal incorrecta."
+    "ClaveTemporalInvalid": "Clave temporal incorrecta."
+  },
+  "AsistenteService": {
+    "RegisterSuccess": "Se han registrado exitosamente.",
+    "AuthSuccess": "Se ha autenticado correctamente.",
+    "NotFound": "No se ha encontrado asistente.",
+    "ReadSuccess": "Se ha(n) recuperado exitosamente.",
+    "Empty": "No se ha registrado asistentes.",
+    "Inactivo": "El perfil del asistente se encuentra inactivo."
+  },
+  "BoletaService": {
+    "NotFound": "Boleta no encontrada.",
+    "CreateSuccess": "Boleta creada con éxito.",
+    "ReadSuccess": "Boleta(s) recuperada(s) con éxito.",
+    "Empty": "No se han registrado boletas.",
+    "EquipoIdNotFound": "No se encontraron los siguientes IDs de equipo: ",
+    "ComponenteIdNotFound": "No se encontraron los siguientes IDs de componentes: ",
+    "BoletaPrestamoNotFound":"No se ha encontrado la boleta de prestamo respectiva."
   }
 
 }

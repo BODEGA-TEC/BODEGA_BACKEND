@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Sibe.API.Models.Comprobantes
+namespace Sibe.API.Models.Boletas
 {
     /* seguimiento preciso de la cantidad prestada de cada tipo de componente en cada boleta de préstamo */
     public class BoletaComponente
@@ -14,7 +14,9 @@ namespace Sibe.API.Models.Comprobantes
         public int ComponenteId { get; set; }
 
         [Required]
-        public int CantidadPrestada { get; set; }
+        public int Cantidad { get; set; }
+
+        public string? Observaciones { get; set; }
 
         // Navegación a la entidad Boleta
         [ForeignKey("BoletaId")]

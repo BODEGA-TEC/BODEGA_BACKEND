@@ -8,6 +8,8 @@ using Sibe.API.Data.Dtos.Usuario;
 using Sibe.API.Models;
 using Sibe.API.Models.Entidades;
 using Sibe.API.Models.Inventario;
+using Sibe.API.Utils;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Sibe.API.Services.AsistenteService
 {
@@ -26,26 +28,25 @@ namespace Sibe.API.Services.AsistenteService
         }
 
 
-        private async Task IsCarneInUse(string carne)
-        {
-            if (await _context.Asistente.AnyAsync(a => a.Carne == carne))
-                throw new Exception(_messages["CarneInUse"]);
-        }
-        private async Task IsCorreoInUse(string correo)
-        {
-            if (await _context.Asistente.AnyAsync(a => a.Correo == correo))
-                throw new Exception(_messages["CorreoInUse"]);
-        }
+        //private async Task IsCarneInUse(string carne)
+        //{
+        //    if (await _context.Asistente.AnyAsync(a => a.Carne == carne))
+        //        throw new Exception(_messages["CarneInUse"]);
+        //}
+        //private async Task IsCorreoInUse(string correo)
+        //{
+        //    if (await _context.Asistente.AnyAsync(a => a.Correo == correo))
+        //        throw new Exception(_messages["CorreoInUse"]);
+        //}
 
-        public async Task<Asistente> FetchById(int id)
+
+        public async Task<Asistente> FetchByCarne(string carne)
         {
             // Recuperar asistente
             return await _context.Asistente
-                .SingleOrDefaultAsync(a => a.Id == id)
+                .SingleOrDefaultAsync(a => a.Carne == carne)
                 ?? throw new Exception(_messages["NotFound"]);
         }
-
-
 
 
 
@@ -57,7 +58,8 @@ namespace Sibe.API.Services.AsistenteService
             {
                 // Recuperar asistentes
                 var asistentes = await _context.Asistente
-                    .ToListAsync() ?? throw new Exception(_messages["NotFound"]);
+                    .ToListAsync()
+                    ?? throw new Exception(_messages["NotFound"]);
 
                 // Map a Dto
                 List<ReadAsistenteDto> dto = _mapper.Map<List<ReadAsistenteDto>>(asistentes);
@@ -89,8 +91,9 @@ namespace Sibe.API.Services.AsistenteService
             {
                 // Recuperar asistentes
                 var asistentes = await _context.Asistente
-                    .Where(a => a.Activo)
-                    .ToListAsync() ?? throw new Exception(_messages["NotFound"]);
+                    .Where(a => a.FechaRegistro >= DateTime.UtcNow.AddMonths(-6))
+                    .ToListAsync()
+                    ?? throw new Exception(_messages["NotFound"]);
 
                 // Map a Dto
                 List<ReadAsistenteDto> dto = _mapper.Map<List<ReadAsistenteDto>>(asistentes);
@@ -121,9 +124,7 @@ namespace Sibe.API.Services.AsistenteService
             try
             {
                 // Recuperar asistentes
-                var asistente = await _context.Asistente
-                    .SingleOrDefaultAsync(a => a.Carne == carne)
-                    ?? throw new Exception(_messages["NotFound"]);
+                var asistente = await FetchByCarne(carne);
 
                 // Map a Dto
                 ReadAsistenteDto dto = _mapper.Map<ReadAsistenteDto>(asistente);
@@ -153,11 +154,17 @@ namespace Sibe.API.Services.AsistenteService
                     .SingleOrDefaultAsync(a => a.HuellaDigital == data)
                     ?? throw new Exception(_messages["NotFound"]);
 
+                if (!asistente.Activo)
+                {
+                    throw new Exception(_messages["Inactive"]);
+                }
+
+
                 // Map a Dto
                 ReadAsistenteDto dto = _mapper.Map<ReadAsistenteDto>(asistente);
 
                 // Configurar respuesta
-                response.SetSuccess(_messages["ReadSuccess"], dto);
+                response.SetSuccess(_messages["AuthSuccess"], dto);
             }
 
             catch (Exception ex)
@@ -170,20 +177,62 @@ namespace Sibe.API.Services.AsistenteService
         }
 
 
-        public Task<ServiceResponse<object>> RegisterAsistentes(List<RegisterUsuarioDto> asistentesDto)
+        public async Task<ServiceResponse<object>> RegisterAsistentes(List<RegisterAsistenteDto> asistentesDto)
         {
-            throw new NotImplementedException();
+            var response = new ServiceResponse<object>();
+
+            try
+            {
+                foreach (var asistenteDto in asistentesDto)
+                {
+                    // Verificar si ya existe un asistente con el mismo correo y carné
+                    var existingAsistente = await _context.Asistente
+                        .FirstOrDefaultAsync(a => a.Correo == asistenteDto.Correo && a.Carne == asistenteDto.Carne);
+
+                    if (existingAsistente != null)
+                    {
+                        // Si existe, actualiza la fecha de registro
+                        existingAsistente.FechaRegistro = TimeZoneHelper.Now();
+                    }
+
+                    else
+                    {
+                        // Si no existe, crea un nuevo asistente
+                        var newAsistente = new Asistente
+                        {
+                            Nombre = asistenteDto.Nombre,
+                            Carne = asistenteDto.Carne,
+                            Correo = asistenteDto.Correo,
+                        };
+
+                        // Añadir el nuevo asistente al contexto
+                        _context.Asistente.Add(newAsistente);
+                    }
+                }
+                await _context.SaveChangesAsync();
+
+                // Configurar respuesta
+                response.SetSuccess(_messages["RegisterSuccess"]);
+            }
+
+            catch (Exception ex)
+            {
+                // Configurar error
+                response.SetError(ex.Message);
+            }
+
+            return response;
         }
 
 
-        public async Task<ServiceResponse<object>> RegisterHuellaDigitalAsistente(int asistenteId, string data)
+        public async Task<ServiceResponse<object>> RegisterHuellaDigitalAsistente(string carne, string data)
         {
             var response = new ServiceResponse<object>();
 
             try
             {
                 // Recuperar asistentes
-                var asistente = await FetchById(asistenteId);
+                var asistente = await FetchByCarne(carne);
 
                 // Guardar huella
                 asistente.HuellaDigital = data;

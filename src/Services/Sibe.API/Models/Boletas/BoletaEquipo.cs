@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Sibe.API.Models.Comprobantes
+namespace Sibe.API.Models.Boletas
 {
     public class BoletaEquipo
     {
@@ -12,12 +12,14 @@ namespace Sibe.API.Models.Comprobantes
         [Required]
         public int EquipoId { get; set; }
 
+        public string? Observaciones { get; set; }
+
         // Navegación a la entidad Boleta
         [ForeignKey("BoletaId")]
         public Boleta? Boleta { get; set; }
 
         // Navegación a la entidad Equipo
         [ForeignKey("EquipoId")]
-        public Equipo? Equipo { get; set; }
+        public Equipo? Equipo { get; set; }  
     }
 }

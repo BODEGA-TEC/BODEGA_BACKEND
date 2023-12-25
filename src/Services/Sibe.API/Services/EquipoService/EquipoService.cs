@@ -45,9 +45,9 @@ namespace Sibe.API.Services.EquipoService
         }
 
 
-        public async Task<ServiceResponse<ReadEquipoDto>> Create(CreateEquipoDto equipoDto)
+        public async Task<ServiceResponse<object>> Create(CreateEquipoDto equipoDto)
         {
-            var response = new ServiceResponse<ReadEquipoDto>();
+            var response = new ServiceResponse<object>();
 
             try
             {
@@ -81,12 +81,10 @@ namespace Sibe.API.Services.EquipoService
 
                 // Agregar equipo y registro histórico
                 _context.Equipo.Add(equipo);
-
-                // Map a Dto
-                ReadEquipoDto entityDto = _mapper.Map<ReadEquipoDto>(equipo);
+                await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                response.SetSuccess(_messages["CreateSuccess"], entityDto);
+                response.SetSuccess(_messages["CreateSuccess"]);
             }
 
             catch (Exception ex)

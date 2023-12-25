@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sibe.API.Models.Comprobantes;
+using Sibe.API.Models.Boletas;
 using Sibe.API.Models.Entidades;
 using Sibe.API.Models.Enums;
 using Sibe.API.Models.Historicos;
@@ -15,6 +15,7 @@ namespace Sibe.API.Data
             Asistente = Set<Asistente>();
             Categoria = Set<Categoria>();
             Componente = Set<Componente>();
+            Boleta = Set<Boleta>();
             BoletaEquipo = Set<BoletaEquipo>();
             BoletaComponente = Set<BoletaComponente>();
             Equipo = Set<Equipo>();
@@ -29,6 +30,7 @@ namespace Sibe.API.Data
         public DbSet<Asistente> Asistente { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Componente> Componente { get; set; }
+        public DbSet<Boleta> Boleta { get; set; }
         public DbSet<BoletaEquipo> BoletaEquipo { get; set; }
         public DbSet<BoletaComponente> BoletaComponente { get; set; }
         public DbSet<Equipo> Equipo { get; set; }
@@ -46,11 +48,9 @@ namespace Sibe.API.Data
             modelBuilder.Entity<Usuario>()
                 .HasIndex(u => u.Username)
                 .IsUnique();
-            modelBuilder.Entity<Usuario>()
-                .HasIndex(u => u.Correo)
-                .IsUnique();
-
-
+            //modelBuilder.Entity<Usuario>()
+            //    .HasIndex(u => u.Correo)
+            //    .IsUnique();
 
             modelBuilder.Entity<Categoria>()
                 .HasIndex(c => new { c.Tipo, c.Nombre })

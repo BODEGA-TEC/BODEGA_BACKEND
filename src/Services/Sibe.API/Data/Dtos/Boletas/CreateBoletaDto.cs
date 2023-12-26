@@ -10,9 +10,13 @@ namespace Sibe.API.Data.Dtos.Boletas
 
     public class BoletaComponenteDto
     {
+        private int _cantidad;
         public int Id { get; set; }
-        public int Cantidad { get; set; }
-        public string? Observaciones { get; set; }
+        public int Cantidad
+        {
+            get => _cantidad;
+            set => _cantidad = Math.Abs(value);
+        }
     }
 
     public class CreateBoletaDto

@@ -18,7 +18,7 @@ namespace Sibe.API.Models.Entidades
         [EmailAddress]
         public required string Correo { get { return _correo; } set { SetValidCorreo(value); } }
 
-        public DateTime FechaRegistro { get; set; } = TimeZoneHelper.Now();
+        public DateTime FechaRegistro   { get; set; } = TimeZoneHelper.Now();
 
         public string HuellaDigital { get; set; } = string.Empty;
 

@@ -13,6 +13,7 @@ using Sibe.API.Services.AsistenteService;
 using Sibe.API.Services.ComponenteService;
 using Sibe.API.Services.EquipoService;
 using Sibe.API.Utils;
+using System.ComponentModel;
 using System.Xml;
 
 namespace Sibe.API.Services.BoletaService
@@ -83,32 +84,55 @@ namespace Sibe.API.Services.BoletaService
             }
         }
 
-        //// Agrega equipos a una boleta nueva y recupera información relevante de cada equipo de la base de datos.
-        //private async Task AddAndRetrieveBoletaComponentes(Boleta boleta, List<BoletaComponenteDto> boletaList)
-        //{
-        //    foreach (var boletaComponente in boletaList)
-        //    {
-        //        // Recuperar el componente
-        //        var componente = await _context.Componente
-        //            .Include(e => e.Estado)
-        //            .SingleOrDefaultAsync(e => e.Id == boletaComponente.Id)
-        //            ?? throw new Exception($"{_messages["ComponenteIdNotFound"]} {boletaComponente.Id}");
+        // Agrega equipos a una boleta nueva y recupera información relevante de cada equipo de la base de datos.
+        private async Task AddAndRetrieveBoletaComponentes(Boleta boleta, List<BoletaComponenteDto> boletaList)
+        {
+            foreach (var boletaComponente in boletaList)
+            {
+                // Recuperar el componente
+                var componente = await _context.Componente
+                    .Include(e => e.Estado)
+                    .SingleOrDefaultAsync(e => e.Id == boletaComponente.Id)
+                    ?? throw new Exception($"{_messages["ComponenteIdNotFound"]} {boletaComponente.Id}");
 
-        //        // Verificar si hay suficiente componentes para el prestamo solicitado
-        //        if (boleta.po.Estado.Id != expectedEstadoId)
-        //        {
-        //            throw new Exception($"{_messages["ComponenteQuantityRequestError"]} {boletaComponente.Id}");
-        //        }
+                var cantidadBoleta = boletaComponente.Cantidad;
 
-        //        // Agregar el equipo a la lista de la boleta creada.
-        //        boleta.BoletaEquipo.Add(new BoletaEquipo
-        //        {
-        //            Boleta = boleta,
-        //            Equipo = equipo,
-        //            Observaciones = equipo.Observaciones
-        //        });
-        //    }
-        //}
+                if (boleta.TipoBoleta == TipoBoleta.PRESTAMO)
+                {
+                    if (cantidadBoleta == 0)
+                    {
+                        throw new Exception($"{_messages["ComponenteRequestZero"]} {boletaComponente.Id}");
+                    }
+                    // Verificar si hay suficiente componentes para el prestamo solicitado
+                    if (componente.CantidadDisponible == 0 || componente.CantidadDisponible < cantidadBoleta)
+                    {
+                        throw new Exception($"{_messages["ComponenteQuantityRequestError"]} {boletaComponente.Id}");
+                    }
+                    else
+                    {
+                        // Descontar los componentes que se estan prestando
+                        componente.CantidadDisponible -= cantidadBoleta;
+                    }
+                }
+                else
+                {   
+                    // Volver a sumar los componentes que se estan devolviendo.
+                    componente.CantidadDisponible += cantidadBoleta;
+                }
+
+                // Si pasa a ser cero se pone en agotado, de lo contrario, deberia quedar en disponible.
+                componente.EstadoId = componente.CantidadDisponible > 0 ? 1 : 3; 
+
+                // Agregar el componente a la lista de la boleta creada.
+                boleta.BoletaComponentes.Add(new BoletaComponente
+                {
+                    Boleta = boleta,
+                    Componente = componente,
+                    Observaciones = componente.Observaciones
+                });
+            }
+        }
+
 
         public async Task<ServiceResponse<int>> CreateBoletaPrestamo(CreateBoletaDto info)
         {
@@ -149,7 +173,7 @@ namespace Sibe.API.Services.BoletaService
                     CarneSolicitante = solicitante.Carne
                 };
                 await AddAndRetrieveBoletaEquipo(boletaPrestamo, info.Equipo);
-                //await AddAndRetrieveBoletaComponentes(boletaPrestamo, info.Componentes);
+                await AddAndRetrieveBoletaComponentes(boletaPrestamo, info.Componentes);
 
                 // Agregar al contexto
                 _context.Boleta.Add(boletaPrestamo);
@@ -211,7 +235,7 @@ namespace Sibe.API.Services.BoletaService
                     CarneSolicitante = solicitante.Carne
                 };
                 await AddAndRetrieveBoletaEquipo(boletaDevolucion, info.Equipo);
-                //await AddAndRetrieveBoletaComponentes(boletaPrestamo, info.Componentes);
+                await AddAndRetrieveBoletaComponentes(boletaDevolucion, info.Componentes);
 
                 // Agregar al contexto
                 _context.Boleta.Add(boletaDevolucion);

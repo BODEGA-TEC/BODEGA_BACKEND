@@ -20,6 +20,7 @@ def print_entities_in_ou():
 
     result = conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
 
+    print(result)
     # Imprimir resultados
     for dn, entry in result:
         print(f"DN: {dn}")

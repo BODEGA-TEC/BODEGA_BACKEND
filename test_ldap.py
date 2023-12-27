@@ -19,8 +19,6 @@ base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructu
 def print_entities_in_ou():
 
     conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
-
-    print(conn.entries)
     
     # Imprimir resultados
     for e in conn.entries:

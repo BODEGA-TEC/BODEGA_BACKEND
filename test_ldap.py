@@ -11,18 +11,15 @@ format_string = '{:25} {:>6} {:19} {:19}'
 
 server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
+#(memberOf=CN=allestudiantes,OU=Grupos,DC=estudiantes,DC=ie,DC=tec,DC=ac,DC=cr)
 
-ou_filter = '(&(objectClass=*)(memberOf=CN=allestudiantes,OU=Grupos,DC=estudiantes,DC=ie,DC=tec,DC=ac,DC=cr))'
+
 base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
- 
-ous_to_filter = ['ou=Docentes', 'ou=Estudiantes']
-ou_filter = '(|' + ''.join([f'(ou={ou})' for ou in ous_to_filter]) + ')'
-print(ou_filter)
+filter = '(&(objectClass=*)(objectClass=person)(|(ou=Docentes)(ou=Estudiantes)))'
+
 def print_entities_in_ou():
 
-    conn.search(search_base=base_dn, search_filter='(objectClass=*)', attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
-    
-    # conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
+    conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
 
     i = 0
     print("\n" * 2)
@@ -30,7 +27,6 @@ def print_entities_in_ou():
     for e in conn.entries:
 
         try:
-            
             # if 'M' in e['name'].value[0]:
             #     # print("=" * 80)
             #     names.append(e['name'].value)

@@ -27,7 +27,7 @@ def print_entities_in_ou():
 
         try:
             
-            if 'M' in e['name'].value:
+            if 'ich' in e['name'].value:
                 
                 # print("=" * 80)
                 # print(e)

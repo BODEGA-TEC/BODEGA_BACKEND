@@ -6,7 +6,7 @@ domain_name = 'estudiantes.ie.tec.ac.cr'
 user_name = 'sibe'
 password = 'Cg7X4k57QWSc'
 
-format_string = '{:25} {:>6} {:19} {:19} {}'
+format_string = '{:25} {:>6} {:19} {:19}'
 print(format_string.format('User', 'DisplayName', 'userPrincipalName', 'Expires'))
 
 server = Server(server_name, get_info=ALL)

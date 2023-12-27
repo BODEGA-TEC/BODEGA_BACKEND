@@ -17,6 +17,6 @@ for e in conn.entries:
     if 'description' in e:
         desc = e.description.value
     else:
-        desc = "Error"
+        print("Error")
 
     print(format_string.format(str(e.name), str(e.logonCount.value), str(e.lastLogon.value)[:19], str(e.accountExpires.value)[:19], desc))

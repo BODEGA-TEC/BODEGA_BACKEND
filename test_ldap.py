@@ -17,10 +17,15 @@ def print_entities_in_ou():
     ou_filter = '(&(objectCategory=*))'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
-    for index, e in enumerate(conn.entries):
+    i = 0
+    for e in conn.entries:
         # if index >= 1:
         #     break  # Sale del bucle después de imprimir las primeras 3 entradas
-        print(e['dn'])
+        print(e.entry_raw_attributes())
+        
+        i+=1
+        if i>=2:
+            break
         # t = type(e.entry_raw_attributes())
         # print(t)
 

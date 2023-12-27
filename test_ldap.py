@@ -18,34 +18,44 @@ base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructu
           
 def print_entities_in_ou():
 
-    conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
+    if conn.bind():
+        # Imprimir la jerarquía de directorios
+        result = conn.extend.standard.who_am_i()
+        print(f"Usuario autenticado: {result}")
 
-    i = 0
-    print("\n" * 4)
-    names = []
-    for e in conn.entries:
+        schema = conn.extend.standard.fetch_schema()
+        print("Esquema LDAP:")
+        for obj_class in schema:
+            print(f"  {obj_class}")
 
-        try:
+    # conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
+
+    # i = 0
+    # print("\n" * 4)
+    # names = []
+    # for e in conn.entries:
+
+    #     try:
             
-            if 'ichar' in e['sAMAccountName'].value:
+    #         if 'ichar' in e['sAMAccountName'].value:
                 
-                # print("=" * 80)
-                print(e)
-                # print(e['name'].value)
+    #             # print("=" * 80)
+    #             print(e)
+    #             # print(e['name'].value)
 
-            #     print()
-            # print(e['sAMAccountName'])
-            # print(e)
+    #         #     print()
+    #         # print(e['sAMAccountName'])
+    #         # print(e)
             
-        except:
-            continue
-            # i+=1
-            # if i>=4:
-            #     break
-        # t = type(e.entry_raw_attributes())
-        # print(t)
+    #     except:
+    #         continue
+    #         # i+=1
+    #         # if i>=4:
+    #         #     break
+    #     # t = type(e.entry_raw_attributes())
+    #     # print(t)
     
-    print("\n" * 4)
+    # print("\n" * 4)
 
 
 

@@ -27,11 +27,12 @@ def print_entities_in_ou():
 
         try:
             
-            print(e['name'].value)
-            if 'ichard' in e['name'].value:
+            if 'M' in e['name'].value:
                 
                 # print("=" * 80)
-                print(e)
+                # print(e)
+                print(e['name'].value)
+
             #     print()
             # print(e['sAMAccountName'])
             # print(e)

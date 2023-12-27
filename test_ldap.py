@@ -11,7 +11,7 @@ print(format_string.format('User', 'DisplayName', 'userPrincipalName', 'Expires'
 
 server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
-conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', '(objectclass=*)', attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
+conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', '(objectclass=person)', attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
 for index, e in enumerate(conn.entries):
     if index >= 1:

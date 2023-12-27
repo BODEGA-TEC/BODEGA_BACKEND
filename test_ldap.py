@@ -14,7 +14,7 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', '(objectclass=person)', attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
 for index, e in enumerate(conn.entries):
-    if index >= 1:
+    if index >= 4:
         break  # Sale del bucle después de imprimir las primeras 3 entradas
     print(e)
     # print(f"Entry: {e.dn}")

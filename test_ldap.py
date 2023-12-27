@@ -13,8 +13,9 @@ server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
 
 def print_entities_in_ou(ou_name):
+    
     ou_filter = f'(&(objectClass=*)(ou={ou_name}))'
-    conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL])
+    conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL_ATTRIBUTES])
 
     print(f"Listado de entidades en la OU - '{ou_name}':")
     for index, e in enumerate(conn.entries):

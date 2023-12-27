@@ -12,20 +12,19 @@ format_string = '{:25} {:>6} {:19} {:19}'
 server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
 
-def print_entities_in_ou(ou_name):
+def print_entities_in_ou():
     
-    ou_filter = f'(&(objectClass=*)(ou={ou_name}))'
+    
+    ou_filter = f'((&((objectCategory=person)(objectclass=user)(mail=*))))'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL_ATTRIBUTES])
 
-    print(f"Listado de entidades en la OU - '{ou_name}':")
     for index, e in enumerate(conn.entries):
         # if index >= 3:
         #     break  # Sale del bucle después de imprimir las primeras 3 entradas
-
         print(f"- {e}")
 
 # Llamada a la función para imprimir las entidades en la OU "Docentes"
-print_entities_in_ou('2023')
+print_entities_in_ou()
 
 
 

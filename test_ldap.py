@@ -14,7 +14,10 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', '(objectclass=*)', attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
 for index, e in enumerate(conn.entries):
-    if index >= 5:
+    if index >= 1:
         break  # Sale del bucle después de imprimir las primeras 3 entradas
-
-    print(format_string.format(str(e.name), str(e.displayName), str(e.userPrincipalName)[:19], str(e.accountExpires.value)[:19]))
+    print(f"Entry: {e.dn}")
+    for attribute in e:
+        print(f"  {attribute.key}: {attribute.values}")
+    print("=" * 50)
+    # print(format_string.format(str(e.name), str(e.displayName), str(e.userPrincipalName)[:19], str(e.accountExpires.value)[:19]))

@@ -18,42 +18,40 @@ base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructu
           
 def print_entities_in_ou():
 
-    conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
+    conn.search(search_base=base_dn, search_filter='(objectClass=*)', attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
     
-    # Imprimir resultados
-    for e in conn.entries:
-        for key, value in e.items():
-            print(f"  {key}: {value}")
-        print()
-
     # conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
 
-    # i = 0
-    # print("\n" * 4)
-    # names = []
-    # for e in conn.entries:
+    i = 0
+    print("\n" * 4)
+    names = []
+    for e in conn.entries:
 
-    #     try:
+        try:
             
-    #         if 'ichar' in e['sAMAccountName'].value:
-                
-    #             # print("=" * 80)
-    #             print(e)
-    #             # print(e['name'].value)
+            if 'M' in e['name'].value[0]:
+                # print("=" * 80)
+                names.append(e['name'])
+                # print(e)
+                # print(e['name'].value)
 
-    #         #     print()
-    #         # print(e['sAMAccountName'])
-    #         # print(e)
+            #     print()
+            # print(e['sAMAccountName'])
+            # print(e)
             
-    #     except:
-    #         continue
-    #         # i+=1
-    #         # if i>=4:
-    #         #     break
-    #     # t = type(e.entry_raw_attributes())
-    #     # print(t)
+        except:
+            continue
+            # i+=1
+            # if i>=4:
+            #     break
+        # t = type(e.entry_raw_attributes())
+        # print(t)
     
-    # print("\n" * 4)
+    print("\n" * 4)
+
+    names.sort()
+    for n in names:
+        print(n)
 
 
 

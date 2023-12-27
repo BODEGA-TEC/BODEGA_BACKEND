@@ -22,8 +22,8 @@ def print_entities_in_ou():
         # if index >= 1:
         #     break  # Sale del bucle después de imprimir las primeras 3 entradas
         attributes = e.entry_raw_attributes
-        print(attributes)
-        
+        pprint(attributes)
+                
         i+=1
         if i>=2:
             break

@@ -41,7 +41,7 @@ def print_entities_in_ou():
             #     break
         # t = type(e.entry_raw_attributes())
         # print(t)
-    pprint(names.sort())
+    print(names.sort())
     
     print("\n" * 4)
 

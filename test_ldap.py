@@ -24,10 +24,11 @@ def print_entities_in_ou():
     i = 0
     print("\n" * 4)
     for e in conn.entries:
-        if 'ichard' in e['sAMAccountName']:
-            print(e)
+
         print("=" * 80)
         try:
+            if 'ichard' in e['sAMAccountName']:
+                print(e)
             print(e['sAMAccountName'])
         except:
             continue

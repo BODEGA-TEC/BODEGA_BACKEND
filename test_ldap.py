@@ -26,7 +26,7 @@ def print_entities_in_ou():
     for e in conn.entries:
 
         try:
-            names.append(e['name'].value())
+            names.append(e['name'].value)
             # if 'ichard' in e['name']:
             #     print("=" * 80)
             #     print(e)

@@ -12,7 +12,7 @@ format_string = '{:25} {:>6} {:19} {:19}'
 server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
 
-ou_filter = '(objectClass=person)'
+ou_filter = '(objectClass=*)'
 base_dn = 'ou=Grupos,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP       
         
         

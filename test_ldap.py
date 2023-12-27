@@ -13,9 +13,11 @@ server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
 
 ou_filter = '(&(objectClass=*)(memberOf=CN=allestudiantes,OU=Grupos,DC=estudiantes,DC=ie,DC=tec,DC=ac,DC=cr))'
-base_dn = 'ou=2018,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP       
-        
-          
+base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
+ 
+ous_to_filter = ['ou=Docentes', 'ou=Estudiantes']
+ou_filter = '(|' + ''.join([f'(ou={ou})' for ou in ous_to_filter]) + ')'
+print(ou_filter)
 def print_entities_in_ou():
 
     conn.search(search_base=base_dn, search_filter='(objectClass=*)', attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
@@ -23,7 +25,7 @@ def print_entities_in_ou():
     # conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
 
     i = 0
-    print("\n" * 4)
+    print("\n" * 2)
     names = []
     for e in conn.entries:
 

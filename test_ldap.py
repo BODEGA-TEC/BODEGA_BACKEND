@@ -14,7 +14,7 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 
 def print_entities_in_ou():
     
-    ou_filter = '(&(objectCategory=*)(objectClass=*)(ou=Estudiantes))'
+    ou_filter = '(&(objectClass=*)(ou=Estudiantes))'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
     i = 0
@@ -33,6 +33,8 @@ def print_entities_in_ou():
             break
         # t = type(e.entry_raw_attributes())
         # print(t)
+        
+    print("\n" * 4)
 
 # Llamada a la función para imprimir las entidades en la OU "Docentes"
 print_entities_in_ou()

@@ -18,8 +18,9 @@ def print_entities_in_ou():
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL_ATTRIBUTES])
 
     for index, e in enumerate(conn.entries):
-        if index >= 10:
+        if index >= 1:
             break  # Sale del bucle después de imprimir las primeras 3 entradas
+        print(e)
         t = type(e.entry_dn())
         print(t)
 

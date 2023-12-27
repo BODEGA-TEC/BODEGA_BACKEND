@@ -11,12 +11,12 @@ print(format_string.format('User', 'Logins', 'Last Login', 'Expires', 'Descripti
 
 server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
-conn.search('dc={},dc=local'.format(domain_name), '(objectclass=*)', attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
+conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', '(objectclass=*)', attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
 for e in conn.entries:
     if 'description' in e:
         desc = e.description.value
     else:
-        desc = ""
+        desc = "Error"
 
     print(format_string.format(str(e.name), str(e.logonCount.value), str(e.lastLogon.value)[:19], str(e.accountExpires.value)[:19], desc))

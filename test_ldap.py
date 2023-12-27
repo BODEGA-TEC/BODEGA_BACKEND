@@ -15,16 +15,13 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 def print_entities_in_ou():
     
     ou_filter = '(objectClass=organizationalUnit)'
-    conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
+    base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
+
+    conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
 
     i = 0
     print("\n" * 4)
     for e in conn.entries:
-        # if index >= 1:
-        #     break  # Sale del bucle después de imprimir las primeras 3 entradas
-        # attributes = e.entry_raw_attributes
-        # print(attributes.items())
-        # print("=" * 80)
         
         print(e)
         print("=" * 80)

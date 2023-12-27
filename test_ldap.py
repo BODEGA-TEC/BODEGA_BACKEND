@@ -12,8 +12,8 @@ format_string = '{:25} {:>6} {:19} {:19}'
 server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
 
-ou_filter = '(objectClass=user)'
-base_dn = 'ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP       
+ou_filter = '(objectClass=*)'
+base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP       
         
         
           
@@ -24,9 +24,10 @@ def print_entities_in_ou():
     i = 0
     print("\n" * 4)
     for e in conn.entries:
-        if 'ichards' in e['sAMAccountName']:
+        if 'ichard' in e['sAMAccountName']:
             print(e)
-            print("=" * 80)
+        print("=" * 80)
+        print(e['sAMAccountName'])
         print()
 
         i+=1

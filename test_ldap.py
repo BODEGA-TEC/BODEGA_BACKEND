@@ -15,7 +15,6 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 ou_filter = '(objectClass=*)'
 base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP       
         
-        
           
 def print_entities_in_ou():
 
@@ -23,13 +22,15 @@ def print_entities_in_ou():
 
     i = 0
     print("\n" * 4)
+    names = []
     for e in conn.entries:
 
         try:
-            if 'mrichards' in e['sAMAccountName']:
-                print("=" * 80)
-                print(e)
-                print()
+            names.append(e['name'])
+            # if 'ichard' in e['name']:
+            #     print("=" * 80)
+            #     print(e)
+            #     print()
             # print(e['sAMAccountName'])
             # print(e)
             
@@ -41,6 +42,7 @@ def print_entities_in_ou():
         # t = type(e.entry_raw_attributes())
         # print(t)
         
+    pprint(names.sort())
     print("\n" * 4)
 
 

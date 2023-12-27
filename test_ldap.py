@@ -31,7 +31,7 @@ def print_entities_in_ou():
             
             if 'M' in e['name'].value[0]:
                 # print("=" * 80)
-                names.append(e['name'])
+                names.append(e['name'].value)
                 # print(e)
                 # print(e['name'].value)
 

@@ -15,7 +15,7 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 def print_entities_in_ou():
     
     ou_filter = '(&(objectCategory=person)(objectClass=user))'
-    conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=['name'])
+    conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=['name','carne'])
 
     for index, e in enumerate(conn.entries):
         # if index >= 1:

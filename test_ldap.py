@@ -18,15 +18,14 @@ base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructu
           
 def print_entities_in_ou():
 
-    if conn.bind():
-        # Imprimir la jerarquía de directorios
-        result = conn.extend.standard.who_am_i()
-        print(f"Usuario autenticado: {result}")
+    result = conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
 
-        schema = conn.extend.standard.fetch_schema()
-        print("Esquema LDAP:")
-        for obj_class in schema:
-            print(f"  {obj_class}")
+    # Imprimir resultados
+    for dn, entry in result:
+        print(f"DN: {dn}")
+        for key, value in entry.items():
+            print(f"  {key}: {value}")
+        print()
 
     # conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
 

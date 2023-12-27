@@ -11,15 +11,13 @@ format_string = '{:25} {:>6} {:19} {:19}'
 
 server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
-ou_filter = '(objectClass=organizationalUnit)'
-conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
-# Imprime el listado de unidades organizativas
-print("Listado de Unidades Organizativas:")
+filter = '(objectClass=organizationalUnit)'
+conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
+
 for index, e in enumerate(conn.entries):
-    if index >= 4:
-        break  # Sale del bucle después de imprimir las primeras 3 entradas    
-    
+        # if index >= 4:
+        #     break  # Sale del bucle después de imprimir las primeras 3 entradas    
     ou_name = e.ou.value
     print(f"- {ou_name}")
     # print(f"Entry: {e.dn}")

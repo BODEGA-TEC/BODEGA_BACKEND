@@ -36,9 +36,9 @@ def print_entities_in_ou():
             continue
         print()
 
-        i+=1
-        if i>=4:
-            break
+            # i+=1
+            # if i>=4:
+            #     break
         # t = type(e.entry_raw_attributes())
         # print(t)
         

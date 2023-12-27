@@ -21,6 +21,9 @@ def print_entries_hierarchy(base_dn, conn, level=0):
 
     # Imprime las entradas jerárquicamente
     for entry in conn.entries:
+        if level == 5:
+            return
+        
         print("  " * level + f"- {entry.entry_dn}")
 
         # Llama recursivamente a la función para las subunidades

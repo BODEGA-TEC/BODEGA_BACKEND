@@ -1,6 +1,5 @@
 import sys
 from ldap3 import Server, Connection, ALL, NTLM, ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES, AUTO_BIND_NO_TLS, SUBTREE
-from ldap3.core.exceptions import LDAPCursorError
 
 server_name = 'ie-estudiantes'
 domain_name = 'estudiantes.ie.tec.ac.cr'
@@ -15,9 +14,9 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 conn.search('dc={},dc=local'.format(domain_name), '(objectclass=*)', attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
 for e in conn.entries:
-    try:
-        desc = e.description.value if 'description' in e else ""
-    except LDAPCursorError:
-        desc = "Error"
+    if 'description' in e:
+        desc = e.description.value
+    else:
+        desc = ""
 
     print(format_string.format(str(e.name), str(e.logonCount.value), str(e.lastLogon.value)[:19], str(e.accountExpires.value)[:19], desc))

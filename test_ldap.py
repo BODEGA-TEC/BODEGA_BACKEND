@@ -13,60 +13,13 @@ server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
 
 ou_filter = '(objectClass=organizationalUnit)'
-base_dn = 'ou=2023,ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
-
-def print_entries_hierarchy(base_dn, conn, level=0):
-    # Realiza una búsqueda en la base_dn y subunidades
-    conn.search(search_base=base_dn, search_filter='(objectClass=organizationalUnit)', search_scope=SUBTREE)
-
-    # Imprime las entradas jerárquicamente
-    for entry in conn.entries:
-        if level == 5:
-            return
-        
-        print("  " * level + f"- {entry.entry_dn}")
-
-        # Llama recursivamente a la función para las subunidades
-        print_entries_hierarchy(entry.entry_dn, conn, level + 1)
+base_dn = 'ou=Docentes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP       
         
         
-# Llama a la función para imprimir las entradas jerárquicamente
-print_entries_hierarchy(base_dn, conn)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+          
 def print_entities_in_ou():
-    
 
-    conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
+    conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
 
     i = 0
     print("\n" * 4)
@@ -77,7 +30,7 @@ def print_entities_in_ou():
         print()
 
         i+=1
-        if i>=10:
+        if i>=15:
             break
         # t = type(e.entry_raw_attributes())
         # print(t)
@@ -86,7 +39,7 @@ def print_entities_in_ou():
 
 
 
-
+print_entities_in_ou()
 
 
 

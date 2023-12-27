@@ -12,10 +12,23 @@ format_string = '{:25} {:>6} {:19} {:19}'
 server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
 
+ou_filter = '(objectClass=organizationalUnit)'
+base_dn = 'ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
+
+
+def print_entries_hierarchy(base_dn, conn, level=0):
+    # Realiza una búsqueda en la base_dn y subunidades
+    conn.search(search_base=base_dn, search_filter='(objectClass=organizationalUnit)', search_scope=SUBTREE)
+
+    # Imprime las entradas jerárquicamente
+    for entry in conn.entries:
+        print("  " * level + f"- {entry.entry_dn}")
+
+        # Llama recursivamente a la función para las subunidades
+        print_entries_hierarchy(entry.entry_dn, conn, level + 1)
+        
 def print_entities_in_ou():
     
-    ou_filter = '(objectClass=organizationalUnit)'
-    base_dn = 'ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
 
     conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
 
@@ -36,7 +49,7 @@ def print_entities_in_ou():
     print("\n" * 4)
 
 # Llamada a la función para imprimir las entidades en la OU "Docentes"
-print_entities_in_ou()
+print_entries_hierarchy()
 
 
 

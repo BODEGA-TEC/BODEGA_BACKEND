@@ -14,10 +14,11 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 
 def print_entities_in_ou():
     
-    ou_filter = '(&(objectClass=*)(ou=Estudiantes))'
+    ou_filter = '(&(objectClass=*))'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
     i = 0
+    print("\n" * 4)
     for e in conn.entries:
         # if index >= 1:
         #     break  # Sale del bucle después de imprimir las primeras 3 entradas

@@ -1,5 +1,5 @@
 import sys
-from ldap3 import Server, Connection, ALL, NTLM, ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES, AUTO_BIND_NO_TLS, SUBTREE
+from ldap3 import Server, Connection, ALL, NTLM, SUBTREE, ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES, AUTO_BIND_NO_TLS, SUBTREE
 from pprint import pprint  # Importa pprint desde el módulo pprint
 server_name = 'ie-estudiantes'
 domain_name = 'estudiantes.ie.tec.ac.cr'

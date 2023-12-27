@@ -25,17 +25,16 @@ def print_entities_in_ou():
     print("\n" * 4)
     for e in conn.entries:
 
-        print("=" * 80)
         try:
             if 'mrichards' in e['sAMAccountName']:
+                print("=" * 80)
                 print(e)
+                print()
             # print(e['sAMAccountName'])
             # print(e)
             
         except:
             continue
-        print()
-
             # i+=1
             # if i>=4:
             #     break

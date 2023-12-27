@@ -14,13 +14,13 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 
 def print_entities_in_ou():
     
-    ou_filter = '(&(objectCategory=person)(objectClass=user))'
+    ou_filter = '(&(objectCategory=person)(objectClass=user)(ou=Docentes))'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL_ATTRIBUTES])
 
     for index, e in enumerate(conn.entries):
         if index >= 10:
             break  # Sale del bucle después de imprimir las primeras 3 entradas
-        print(e)
+        print(e[0][1]['displayName'][0])
 
 # Llamada a la función para imprimir las entidades en la OU "Docentes"
 print_entities_in_ou()

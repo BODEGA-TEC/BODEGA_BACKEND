@@ -30,12 +30,14 @@ def print_entities_in_ou():
             if 'ichard' in e['sAMAccountName']:
                 print(e)
             print(e['sAMAccountName'])
+            print(e)
+            
         except:
             continue
         print()
 
         i+=1
-        if i>=15:
+        if i>=4:
             break
         # t = type(e.entry_raw_attributes())
         # print(t)

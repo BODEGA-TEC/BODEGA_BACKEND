@@ -27,7 +27,7 @@ def print_entities_in_ou():
 
         try:
             
-            if 'andoval' in e['name'].value:
+            if 'ichar' in e['name'].value:
                 
                 # print("=" * 80)
                 print(e)

@@ -27,7 +27,7 @@ def print_entities_in_ou():
 
         try:
             
-            if 'ichar' in e['name'].value:
+            if 'ichar' in e['sAMAccountName'].value:
                 
                 # print("=" * 80)
                 print(e)

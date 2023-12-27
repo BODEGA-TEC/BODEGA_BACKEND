@@ -22,7 +22,12 @@ def print_entities_in_ou():
         # if index >= 1:
         #     break  # Sale del bucle después de imprimir las primeras 3 entradas
         attributes = e.entry_raw_attributes
-        pprint(attributes)
+        print(f"DN: {e.entry_dn}")
+        for attribute, values in attributes.items():
+            print(f"  {attribute}:")
+            for value in values:
+                print(f"    {value}")
+        print("=" * 80)
                 
         i+=1
         if i>=2:

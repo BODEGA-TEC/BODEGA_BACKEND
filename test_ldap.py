@@ -15,7 +15,7 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 def print_entities_in_ou():
     
     ou_filter = '(objectClass=organizationalUnit)'
-    base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
+    base_dn = 'ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
 
     conn.search(search_base=base_dn, search_filter=ou_filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
 

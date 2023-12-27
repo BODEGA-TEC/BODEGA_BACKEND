@@ -13,7 +13,7 @@ server = Server(server_name, get_info=ALL)
 conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password=password, authentication=NTLM, auto_bind=True)
 
 ou_filter = '(objectClass=organizationalUnit)'
-base_dn = 'ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
+base_dn = 'ou=2023,ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
 
 def print_entries_hierarchy(base_dn, conn, level=0):
     # Realiza una búsqueda en la base_dn y subunidades

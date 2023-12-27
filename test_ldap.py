@@ -23,9 +23,8 @@ def print_entities_in_ou():
     print(conn.entries)
     
     # Imprimir resultados
-    for dn, entry in conn.entries:
-        print(f"DN: {dn}")
-        for key, value in entry.items():
+    for e in conn.entries:
+        for key, value in e.items():
             print(f"  {key}: {value}")
         print()
 

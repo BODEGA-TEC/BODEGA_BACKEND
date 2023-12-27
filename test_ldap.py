@@ -20,7 +20,8 @@ def print_entities_in_ou():
     for index, e in enumerate(conn.entries):
         if index >= 10:
             break  # Sale del bucle después de imprimir las primeras 3 entradas
-        print(e.entry_dn())
+        t = type(e.entry_dn())
+        print(t)
 
 # Llamada a la función para imprimir las entidades en la OU "Docentes"
 print_entities_in_ou()

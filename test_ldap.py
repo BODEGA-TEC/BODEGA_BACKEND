@@ -25,7 +25,7 @@ def print_entities_in_ou(ou_name):
         print(f"- {e}")
 
 # Llamada a la función para imprimir las entidades en la OU "Docentes"
-print_entities_in_ou('Estudiantes')
+print_entities_in_ou('2023')
 
 
 

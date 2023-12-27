@@ -14,7 +14,7 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 
 def print_entities_in_ou():
     
-    ou_filter = '(&(objectCategory=person)(objectClass=guess))'
+    ou_filter = '(&(objectCategory=person)(objectClass=guest))'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', ou_filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
     i = 0

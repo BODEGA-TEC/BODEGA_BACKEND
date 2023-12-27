@@ -21,8 +21,8 @@ def print_entities_in_ou():
     for e in conn.entries:
         # if index >= 1:
         #     break  # Sale del bucle después de imprimir las primeras 3 entradas
-        attributes = e.entry_raw_attributes()
-        attributes.items()
+        attributes = e.entry_raw_attributes
+        print(attributes)
         
         i+=1
         if i>=2:

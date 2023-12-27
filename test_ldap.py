@@ -30,8 +30,8 @@ def print_entities_in_ou():
             if 'andoval' in e['name'].value:
                 
                 # print("=" * 80)
-                # print(e)
-                print(e['name'].value)
+                print(e)
+                # print(e['name'].value)
 
             #     print()
             # print(e['sAMAccountName'])

@@ -26,10 +26,9 @@ def print_entities_in_ou():
     for e in conn.entries:
 
         try:
-            names.append(e['name'].value)
-            # if 'ichard' in e['name']:
-            #     print("=" * 80)
-            #     print(e)
+            if 'ichard' in e['sAMAccountName'].value:
+                # print("=" * 80)
+                print(e)
             #     print()
             # print(e['sAMAccountName'])
             # print(e)
@@ -41,7 +40,6 @@ def print_entities_in_ou():
             #     break
         # t = type(e.entry_raw_attributes())
         # print(t)
-    print(names.sort())
     
     print("\n" * 4)
 

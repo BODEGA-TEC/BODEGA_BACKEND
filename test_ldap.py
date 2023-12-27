@@ -16,8 +16,9 @@ conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', '(objectclass=*)', attrib
 for index, e in enumerate(conn.entries):
     if index >= 1:
         break  # Sale del bucle después de imprimir las primeras 3 entradas
-    print(f"Entry: {e.dn}")
-    for attribute in e:
-        print(f"  {attribute.key}: {attribute.values}")
-    print("=" * 50)
+    print(e)
+    # print(f"Entry: {e.dn}")
+    # for attribute in e:
+    #     print(f"  {attribute.key}: {attribute.values}")
+    # print("=" * 50)
     # print(format_string.format(str(e.name), str(e.displayName), str(e.userPrincipalName)[:19], str(e.accountExpires.value)[:19]))

@@ -20,7 +20,7 @@ def print_entities_in_ou():
     for index, e in enumerate(conn.entries):
         # if index >= 1:
         #     break  # Sale del bucle después de imprimir las primeras 3 entradas
-        print(e['name'])
+        print(e['dn'])
         # t = type(e.entry_raw_attributes())
         # print(t)
 

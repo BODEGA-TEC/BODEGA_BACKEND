@@ -45,7 +45,7 @@ for e in conn.entries:
     #     break
 
     try:
-        if 'M' in e['name'].value[0]:
+        if 'xel' in e['name'].value:
             # print("=" * 80)
             names.append(e['name'].value)
         print(e)

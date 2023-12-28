@@ -14,8 +14,6 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 #(memberOf=CN=allestudiantes,OU=Grupos,DC=estudiantes,DC=ie,DC=tec,DC=ac,DC=cr)
 
 
-base_dn = 'ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
-filter = '(&(objectClass=person))'
 
 
 def test():
@@ -33,6 +31,8 @@ def test():
 
 
 
+base_dn = 'ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
+filter = '(&(objectClass=person))'
 
 conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
 i = 0

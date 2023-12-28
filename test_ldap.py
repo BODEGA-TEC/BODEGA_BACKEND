@@ -47,8 +47,8 @@ for e in conn.entries:
     try:
         #if 'michael ' in e['name'].value.lower():
             # print("=" * 80)
-            names.append(e['name'].value)
-            #print(e)
+            # names.append(e['name'].value)
+            print(e)
 
         #     print()
         # print(e['sAMAccountName'])
@@ -59,6 +59,6 @@ for e in conn.entries:
 
 print("\n" * 4)
 
-names.sort()
-for n in names:
-    print(n)
+# names.sort()
+# for n in names:
+#     print(n)

@@ -17,41 +17,6 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 base_dn = 'ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
 filter = '(&(objectClass=person))'
 
-# conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
-
-# i = 0
-# print("\n" * 2)
-# names = []
-# for e in conn.entries:
-
-#     # i+=1
-#     # if i>=4:
-#     #     break
-
-#     try:
-#         # if 'M' in e['name'].value[0]:
-#         #     # print("=" * 80)
-#         #     names.append(e['name'].value)
-#         print(e)
-
-#         #     print()
-#         # print(e['sAMAccountName'])
-#         # print(e)
-
-#     except:
-#         continue
-
-
-# print("\n" * 4)
-
-# names.sort()
-# for n in names:
-#     print(n)
-
-
-
-
-
 
 def test():
     filter = '(objectClass=organizationalUnit)'
@@ -61,7 +26,39 @@ def test():
         if index >= 4:
             break  # Sale del bucle después de imprimir las primeras 3 entradas    
         ou_name = e.ou.value
-        print(e)
-        # print(f"- {ou_name} {e.ou.definition}")
+        # print(e)
+        print(f"- {ou_name} {e.ou.definition}")
         
-test()
+# test()
+
+
+
+
+conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
+i = 0
+print("\n" * 2)
+names = []
+for e in conn.entries:
+
+    # i+=1
+    # if i>=4:
+    #     break
+
+    try:
+        if 'M' in e['name'].value[0]:
+            # print("=" * 80)
+            names.append(e['name'].value)
+        print(e)
+
+        #     print()
+        # print(e['sAMAccountName'])
+        # print(e)
+
+    except:
+        continue
+
+print("\n" * 4)
+
+names.sort()
+for n in names:
+    print(n)

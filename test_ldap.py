@@ -15,7 +15,7 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 
 
 base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
-filter = '(&(objectClass=user)(objectCategory=Person)(|(ou=Docentes)(ou=Estudiantes)))'
+filter = '(&(objectClass=user)(objectCategory=Person)(ou=Estudiantes))'
 
 
 conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)

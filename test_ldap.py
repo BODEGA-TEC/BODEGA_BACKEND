@@ -15,8 +15,7 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 
 
 base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
-filter = '(&(objectClass=user)(objectCategory=Person)(ou=Estudiantes))'
-
+filter = '(&(objectClass=*)(objectCategory=*)(ou=*))'
 
 conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
 
@@ -25,25 +24,23 @@ print("\n" * 2)
 names = []
 for e in conn.entries:
 
+    # i+=1
+    # if i>=4:
+    #     break
+
     try:
         # if 'M' in e['name'].value[0]:
         #     # print("=" * 80)
         #     names.append(e['name'].value)
         print(e)
-            # print(e)
-            # print(e['name'].value)
 
         #     print()
         # print(e['sAMAccountName'])
         # print(e)
-        
+
     except:
         continue
-        # i+=1
-        # if i>=4:
-        #     break
-    # t = type(e.entry_raw_attributes())
-    # print(t)
+
 
 print("\n" * 4)
 

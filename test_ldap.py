@@ -61,6 +61,6 @@ def test():
             # if index >= 4:
             #     break  # Sale del bucle después de imprimir las primeras 3 entradas    
         ou_name = e.ou.value
-        print(f"- {ou_name} {e.ou.description}")
+        print(f"- {ou_name} {e.ou.definition}")
         
 test()

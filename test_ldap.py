@@ -48,7 +48,7 @@ for e in conn.entries:
         if 'xel' in e['name'].value:
             # print("=" * 80)
             names.append(e['name'].value)
-        print(e)
+        # print(e)
 
         #     print()
         # print(e['sAMAccountName'])

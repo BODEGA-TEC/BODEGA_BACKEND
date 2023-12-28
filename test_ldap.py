@@ -58,9 +58,10 @@ def test():
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
     for index, e in enumerate(conn.entries):
-            # if index >= 4:
-            #     break  # Sale del bucle después de imprimir las primeras 3 entradas    
+        if index >= 4:
+            break  # Sale del bucle después de imprimir las primeras 3 entradas    
         ou_name = e.ou.value
-        print(f"- {ou_name} {e.ou.definition}")
+        print(e)
+        # print(f"- {ou_name} {e.ou.definition}")
         
 test()

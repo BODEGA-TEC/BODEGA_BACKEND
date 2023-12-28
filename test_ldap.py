@@ -31,7 +31,7 @@ def test():
 
 
 
-base_dn = 'ou=Electronica,ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
+base_dn = 'ou=Docentes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
 filter = '(&(objectClass=person))'
 
 conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES], search_scope=SUBTREE)
@@ -45,7 +45,7 @@ for e in conn.entries:
     #     break
 
     try:
-        # if 'lexis ' in e['name'].value:
+        if 'sandoval ' in e['name'].value.lower():
             # print("=" * 80)
             names.append(e['name'].value)
             print(e)

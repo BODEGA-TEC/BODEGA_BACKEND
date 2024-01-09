@@ -17,15 +17,14 @@ namespace Sibe.API.Data.Dtos.Boletas
             get => _cantidad;
             set => _cantidad = Math.Abs(value);
         }
+        public string? Observaciones { get; set; }
     }
 
     public class CreateBoletaDto
     {
+        public required string Token { get; set; } // De aqui se obtiene el carné del asistente.
         public string? Aprobador { get; set; }
-    
-        public string CarneAsistente { get; set; } = string.Empty;
-
-        public string IdSolicitante { get; set; } = string.Empty;
+        public string CarneSolicitante { get; set; } = string.Empty;
 
         public TipoSolicitante TipoSolicitante { get; set; }
 

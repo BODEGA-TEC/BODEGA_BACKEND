@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Data.Dtos.Boletas;
 using Sibe.API.Models;
-using Sibe.API.Models.Enums;
 using Sibe.API.Services.BoletaService;
 
 namespace Sibe.API.Controllers
@@ -32,6 +31,13 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("{carne}")]
+        public async Task<ActionResult<ServiceResponse<object>>> ReadSolicitanteBoletasPendientes(string carne)
+        {
+            var response = await _boletaService.ReadSolicitanteBoletasPendientes(carne);
+            return Ok(response);
+        }
+
         [HttpPost("registrar/prestamo")]
         public async Task<ActionResult<ServiceResponse<int>>> CreateBoletaPrestamo(CreateBoletaDto info)
         {
@@ -39,18 +45,25 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        [HttpPost("registrar/devolucion")]
-        public async Task<ActionResult<ServiceResponse<int>>> CreateBoletaDevolucion(CreateBoletaDto info)
+        [HttpPost("registrar/devolucion/{boletaPrestamoId}")]
+        public async Task<ActionResult<ServiceResponse<int>>> CreateBoletaDevolucion(int boletaPrestamoId, CreateBoletaDto infoDevolucion)
         {
-            var response = await _boletaService.CreateBoletaDevolucion(info);
+            var response = await _boletaService.CreateBoletaDevolucion(boletaPrestamoId, infoDevolucion);
             return Ok(response);
         }
 
-        //[HttpPost("prestamo/base64")]
-        //public async Task<ActionResult<ServiceResponse<string>>> CreateBoletaPrestamoXMLToBase64(CreateBoletaDto info)
-        //{
-        //    var response = await _boletaService.CreateBoletaPrestamoXMLToBase64(info);
-        //    return Ok(response);
-        //}
+        [HttpGet("{id}/xml")]
+        public async Task<ActionResult<ServiceResponse<string>>> GetBoletaPdf(int id)
+        {
+            var response = await _boletaService.GetBoletaPdf(id);
+            return Ok(response);
+        }
+
+        [HttpGet("{id}/enviar")]
+        public async Task<ActionResult<ServiceResponse<string>>> SendBoletaByEmail(int id)
+        {
+            var response = await _boletaService.SendBoletaByEmail(id);
+            return Ok(response);
+        }
     }
 }

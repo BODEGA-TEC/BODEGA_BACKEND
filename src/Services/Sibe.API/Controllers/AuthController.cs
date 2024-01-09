@@ -43,7 +43,7 @@ namespace Sibe.API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<ServiceResponse<string>>> Login(LoginUsuarioDto request)
         {
-            var response = await _authService.Login(request.Correo, request.Clave);
+            var response = await _authService.Login(request.Username, request.Clave);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
@@ -55,21 +55,21 @@ namespace Sibe.API.Controllers
         /// <param name="requestTokenDto">Datos necesarios para el refresco del token.</param>
         /// <returns>ActionResult<ServiceResponse<Dictionary<string, string>>> Objeto que encapsula el resultado de la operación, incluyendo el nuevo token de acceso.</returns>
         [HttpPost("refresh-token")]
-        public async Task<ActionResult<ServiceResponse<Dictionary<string, string>>>> RefreshToken(int usuarioId, RefreshTokenDto requestTokenDto)
+        public async Task<ActionResult<ServiceResponse<Dictionary<string, string>>>> RefreshToken(RefreshTokenDto requestTokenDto)
         {
-            var response = await _authService.RefreshToken(usuarioId, requestTokenDto);
+            var response = await _authService.RefreshToken(requestTokenDto.UsuarioId, requestTokenDto.RefreshToken, requestTokenDto.AccessTokenExpirado);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
         /// <summary>
         /// Setea la clave temporal al usuario propietario del correo y envía este codigo al correo registrado
         /// </summary>
-        /// <param name="correo">Correo del usuario para el cual se va generar la clave temporal.</param>
+        /// <param name="username">username del usuario para el cual se va generar la clave temporal.</param>
         /// <returns>ActionResult<ServiceResponse<string>> Objeto que encapsula el resultado de la operación.</returns>
         [HttpPost("forgot-password")]
-        public async Task<ActionResult<ServiceResponse<string>>> ForgotClave(string correo)
+        public async Task<ActionResult<ServiceResponse<string>>> ForgotClave(ForgotClaveDto dto)
         {
-            var response = await _authService.ForgotClave(correo);
+            var response = await _authService.ForgotClave(dto.Username);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 

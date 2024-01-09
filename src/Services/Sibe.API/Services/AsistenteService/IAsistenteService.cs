@@ -8,14 +8,11 @@ namespace Sibe.API.Services.AsistenteService
     {
         Task<Asistente> FetchByCarne(string carne);
         Task<ServiceResponse<List<ReadAsistenteDto>>> ReadAll();
-        Task<ServiceResponse<List<ReadAsistenteDto>>> ReadAllActivo();
+        //Task<ServiceResponse<List<ReadAsistenteDto>>> ReadAllActivo();
         Task<ServiceResponse<ReadAsistenteDto>> ReadByCarne(string carne);
-        Task<ServiceResponse<ReadAsistenteDto>> ReadByHuellaDigital(string data);
         Task<ServiceResponse<object>> RegisterAsistentes(List<RegisterAsistenteDto> asistentesDto);
-
-        // Implementación para asignar la huella digital al asistente con el ID proporcionado
-        // y utilizando los datos de la huella digital (fingerprintData).
-        Task<ServiceResponse<object>> RegisterHuellaDigitalAsistente(string carne, string data);
-
+        Task<ServiceResponse<object>> RegisterAsistenteCredentials(string carne, string pin, string fingerprint);
+        Task<ServiceResponse<ReadAsistenteDto>> AuthenticateAsistente(string fingerprint);
+        Task<ServiceResponse<ReadAsistenteDto>> AuthenticateAsistente(string carne, string pin);
     }
 }

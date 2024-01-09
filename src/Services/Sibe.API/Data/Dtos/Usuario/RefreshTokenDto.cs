@@ -2,7 +2,8 @@
 {
     public class RefreshTokenDto
     {
-        public string TokenExpirado { get; set; } = string.Empty;
+        public int UsuarioId { get; set; }
+        public string AccessTokenExpirado { get; set; } = string.Empty;
         public string RefreshToken { get; set; } = string.Empty;
     }
 }

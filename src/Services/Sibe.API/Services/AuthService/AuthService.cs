@@ -11,9 +11,11 @@ using Sibe.API.Models.Inventario;
 
 namespace Sibe.API.Services.AuthService
 {
+
+    
     public class AuthService : IAuthService
     {
-        private static readonly string passwordRegex = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d\\/%()_\\-*&@]{8,16}$";
+        private static readonly string passwordRegex = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d\\/%()_\\-*&@]{8,20}$";
         private readonly int MAX_PASSWORD_HISTORY_ENTRIES = 4;
         private readonly IConfigurationSection _messages;
         private readonly DataContext _context;
@@ -29,13 +31,9 @@ namespace Sibe.API.Services.AuthService
 
 
         // Funcion para verificar que la clave es de un formato correcto.
-        private void ValidateRegexClave(string clave)
+        private static void ValidateRegexClave(string clave)
         {
-            string errorMessage = @"De 8 a 16 caracteres.
-                                    Al menos una letra mayúscula.
-                                    Al menos una letra minúscula.
-                                    Al menos un número.
-                                    Al menos un carácter especial: "" /, %, (, ), _, -, *, &, @.""";
+            string errorMessage = @"De 8 a 20 caracteres. Al menos una letra mayúscula. Al menos una letra minúscula. Al menos un número. Al menos un carácter especial: "" /, %, (, ), _, -, *, &, @.""";
 
             RegexValidator.ValidateWithRegex(clave, passwordRegex, errorMessage);
         }
@@ -116,7 +114,7 @@ namespace Sibe.API.Services.AuthService
             {
                 // Validaciones
                 await IsUsernameInUse(usuarioDto.Username);
-                await IsCorreoInUse(usuarioDto.Correo);
+                //await IsCorreoInUse(usuarioDto.Correo);
                 ValidateRegexClave(usuarioDto.Clave);
 
                 // Crear usuario
@@ -194,7 +192,7 @@ namespace Sibe.API.Services.AuthService
         }
 
 
-        public async Task<ServiceResponse<Dictionary<string, string>>> RefreshToken(int usuarioId, RefreshTokenDto refreshTokenDto)
+        public async Task<ServiceResponse<Dictionary<string, string>>> RefreshToken(int usuarioId, string RefreshToken, string AccessTokenExpirado)
         {
             var response = new ServiceResponse<Dictionary<string, string>>();
 
@@ -203,8 +201,8 @@ namespace Sibe.API.Services.AuthService
                 var storedRefreshToken = _context.HistoricoRefreshToken
                     .Include(h => h.Usuario)
                     .FirstOrDefault(h =>
-                        h.AccessToken == refreshTokenDto.TokenExpirado &&
-                        h.RefreshToken == refreshTokenDto.RefreshToken &&
+                        h.AccessToken == AccessTokenExpirado &&
+                        h.RefreshToken == RefreshToken &&
                         h.Usuario.Id == usuarioId)
                     ?? throw new Exception(_messages["RefreshTokenNotFound"]);
 
@@ -231,7 +229,7 @@ namespace Sibe.API.Services.AuthService
             return response;
         }
 
-        public async Task<ServiceResponse<string>> ForgotClave(string correo)
+        public async Task<ServiceResponse<string>> ForgotClave(string username)
         {
             var response = new ServiceResponse<string>();
 
@@ -239,7 +237,7 @@ namespace Sibe.API.Services.AuthService
             {
                 // Obtener al usuario con ese correo
                 var usuario = await _context.Usuario
-                    .FirstOrDefaultAsync(u => u.Correo == correo) ?? throw new Exception(_messages["UsuarioNotFound"]);
+                    .FirstOrDefaultAsync(u => u.Username == username) ?? throw new Exception(_messages["UsuarioNotFound"]);
 
                 // Asignar clave temporal
                 SetClaveTemporal(usuario);

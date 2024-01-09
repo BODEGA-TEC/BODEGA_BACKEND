@@ -28,7 +28,7 @@ namespace JwtAuthenticationHandler
                 throw new ArgumentException("La configuración del tiempo de expiración del access token JWT no es válida.");
             }
 
-            if (!int.TryParse(configuration["JwtSettings:RefreshTokenExpirationDays"], out REFRESH_TOKEN_EXPIRATION_DAYS))
+            if (!int.TryParse(configuration["JwtSettings:RefreshTokenExpirationHours"], out REFRESH_TOKEN_EXPIRATION_DAYS))
             {
                 throw new ArgumentException("La configuración del tiempo de expiración del refresh token JWT no es válida.");
             }
@@ -88,6 +88,94 @@ namespace JwtAuthenticationHandler
 
             return (refreshToken, createdDate, expiredDate);
         }
+
+
+
+
+        // Asistente AUTH
+        public static void CreatePinHash(string pin, out byte[] pinHash, out byte[] pinSalt)
+        {
+            using (var deriveBytes = new Rfc2898DeriveBytes(pin, 16, 10000, HashAlgorithmName.SHA512))
+            {
+                pinSalt = deriveBytes.Salt;
+                pinHash = deriveBytes.GetBytes(32); // 32 bytes for HMACSHA512
+            }
+        }
+
+        public static bool AuthPinHash(string pin, byte[] pinHash, byte[] pinSalt)
+        {
+            using (var deriveBytes = new Rfc2898DeriveBytes(pin, pinSalt, 10000, HashAlgorithmName.SHA512))
+            {
+                var computedHash = deriveBytes.GetBytes(32); // 32 bytes for HMACSHA512
+                return computedHash.SequenceEqual(pinHash);
+            }
+        }
+
+        public string CreateAsistenteToken(string carne, int expirationTime)
+        {
+            if (string.IsNullOrEmpty(carne))
+            {
+                throw new ArgumentException("carne cannot be null or empty.");
+            }
+            // Add claims
+            var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, carne)
+                };
+
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECURITY_KEY));
+            var signingCreds = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512Signature);
+            var expirationTimestamp = DateTime.UtcNow.AddMinutes(expirationTime);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = expirationTimestamp,
+                SigningCredentials = signingCreds
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
+
+        public string ExtractClaimsFromToken(string token, string claimType)
+        {
+            try 
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var claimsPrincipal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECURITY_KEY)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                }, out _);
+
+                // Acceder al claim
+                var claim = claimsPrincipal.FindFirst(claimType) ?? throw new ArgumentException($"Ha ocurrido un error con el claim '{claimType}'.");
+
+                // Retornar el valor del claim si existe
+                return claim.Value;
+            }
+
+            catch (SecurityTokenExpiredException)
+            {
+                throw new ArgumentException(" El token ha expirado.");
+            }
+            catch (SecurityTokenInvalidSignatureException)
+            {
+                throw new ArgumentException("La firma del token no es válida.");
+            }
+            catch (Exception)
+            {
+                throw new Exception("Ha ocurrido un error con la autenticación.");
+            }
+        }
+
 
     }
 }

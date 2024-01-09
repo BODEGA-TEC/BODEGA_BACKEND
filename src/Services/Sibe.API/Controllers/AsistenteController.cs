@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using iText.Kernel.Pdf;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Data.Dtos.Asistente;
-using Sibe.API.Data.Dtos.Equipo;
 using Sibe.API.Models;
 using Sibe.API.Services.AsistenteService;
-using Sibe.API.Services.EquipoService;
 
 namespace Sibe.API.Controllers
 {
@@ -19,7 +19,7 @@ namespace Sibe.API.Controllers
             _asistenteService = asistenteService;
         }
 
-
+        [Authorize]
         [HttpGet("")]
         public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadAll()
         {
@@ -27,24 +27,17 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        [HttpGet("activos")]
-        public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadAllActivo()
-        {
-            var response = await _asistenteService.ReadAllActivo();
-            return Ok(response);
-        }
+        //[HttpGet("activos")]
+        //public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadAllActivo()
+        //{
+        //    var response = await _asistenteService.ReadAllActivo();
+        //    return Ok(response);
+        //}
 
         [HttpGet("{carne}")]
         public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadByCarne(string carne)
         {
             var response = await _asistenteService.ReadByCarne(carne);
-            return Ok(response);
-        }
-
-        [HttpGet("auth")]
-        public async Task<ActionResult<ServiceResponse<ReadAsistenteDto>>> ReadByHuellaDigital([FromBody] string huellaDigital)
-        {
-            var response = await _asistenteService.ReadByHuellaDigital(huellaDigital);
             return Ok(response);
         }
 
@@ -55,10 +48,24 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        [HttpPost("registrar/{id}/huella")]
-        public async Task<ActionResult<ServiceResponse<object>>> RegisterHuellaDigitalAsistente(string carne, [FromBody] string huellaDigital)
+        [HttpPost("{carne}/inscribir/credenciales")]
+        public async Task<ActionResult<ServiceResponse<object>>> RegisterAsistenteCredentials(string carne, [FromBody] RegisterCredentialsDto credentialsDto)
         {
-            var response = await _asistenteService.RegisterHuellaDigitalAsistente(carne, huellaDigital);
+            var response = await _asistenteService.RegisterAsistenteCredentials(carne, credentialsDto.Pin, credentialsDto.HuellaDigitalImagen);
+            return Ok(response);
+        }
+
+        [HttpPost("autenticar/huella")]
+        public async Task<ActionResult<ServiceResponse<ReadAsistenteDto>>> AuthenticateWithFingerprint([FromBody] FingerprintDto credentialsDto)
+        {
+            var response = await _asistenteService.AuthenticateAsistente(credentialsDto.HuellaDigitalImagen);
+            return Ok(response);
+        }
+
+        [HttpPost("autenticar/pin")]
+        public async Task<ActionResult<ServiceResponse<ReadAsistenteDto>>> AuthenticateWithPin([FromBody] PinDto credentialsDto)
+        {
+            var response = await _asistenteService.AuthenticateAsistente(credentialsDto.Carne, credentialsDto.Pin);
             return Ok(response);
         }
 

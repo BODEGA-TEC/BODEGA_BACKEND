@@ -285,7 +285,7 @@ namespace Sibe.API.Services.BoletaService
                 // Verificar existencia del asistente
                 var asistente = await _asistenteService.FetchByCarne(carne);
 
-                // No se permiten préstamos sin la aprobación del profesor.
+                // No se permiten préstamos de componentes sin la aprobación del profesor.
                 if (info.TipoSolicitante == TipoSolicitante.ESTUDIANTE &&
                     string.IsNullOrEmpty(info.Aprobador) &&
                     info.Componentes.Any())

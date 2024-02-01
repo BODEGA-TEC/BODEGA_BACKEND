@@ -15,6 +15,6 @@ namespace Sibe.API.Models.Historicos
         public DateTime FechaExpiracion { get; set; }
 
         // Propiedad de solo lectura para la columna calculada
-        public bool EsActivo => FechaExpiracion >= TimeZoneHelper.Now();
+        public bool IsExpired => FechaExpiracion < TimeZoneHelper.Now();
     }
 }

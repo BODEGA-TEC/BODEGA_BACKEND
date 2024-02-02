@@ -28,7 +28,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         [HttpGet("")]
         public async Task<ActionResult<ServiceResponse<List<Componente>>>> ReadAll()
         {

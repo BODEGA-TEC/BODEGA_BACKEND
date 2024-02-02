@@ -262,9 +262,9 @@ namespace Sibe.API.Services.AuthService
         /// <param name="usuarioId">El ID del usuario cuyo token se desea refrescar.</param>
         /// <param name="refreshToken">El token de actualización proporcionado por el usuario.</param>
         /// <returns>Un objeto de respuesta que indica el resultado de la operación y los nuevos tokens generados.</returns>
-        public async Task<ServiceResponse<Dictionary<string, string>>> RefreshToken(int usuarioId, string refreshToken)
+        public async Task<ServiceResponse<LoginResponse>> RefreshToken(int usuarioId, string refreshToken)
         {
-            var response = new ServiceResponse<Dictionary<string, string>>();
+            var response = new ServiceResponse<LoginResponse>();
 
             try
             {
@@ -296,13 +296,13 @@ namespace Sibe.API.Services.AuthService
                     await _context.SaveChangesAsync();
                 }
 
-                // Configurar respuesta con los nuevos tokens
-                var responseData = new Dictionary<string, string>
+                // Configurar respuesta
+                var responseData = new LoginResponse
                 {
-                    { "id",  usuario.Id.ToString()  },
-                    { "nombre",  usuario.Nombre  },
-                    { "rol", ((int) usuario.Rol).ToString()},
-                    { "accessToken",  storedRefreshToken.AccessToken  }
+                    Id = usuario.Id,
+                    Nombre = usuario.Nombre,
+                    Rol = (int)usuario.Rol,
+                    AccessToken = storedRefreshToken.AccessToken,
                 };
 
                 // Configurar respuesta

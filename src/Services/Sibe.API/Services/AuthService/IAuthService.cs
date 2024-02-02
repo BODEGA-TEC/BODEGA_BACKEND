@@ -7,7 +7,7 @@ namespace Sibe.API.Services.AuthService
     {
         Task<ServiceResponse<object>> Register(RegisterUsuarioDto usuarioDto);
         Task<ServiceResponse<LoginResponse>> Login(string carne, string clave);
-        Task<ServiceResponse<Dictionary<string, string>>> RefreshToken(int usuarioId, string RefreshToken);
+        Task<ServiceResponse<LoginResponse>> RefreshToken(int usuarioId, string RefreshToken);
         Task<ServiceResponse<string>> ForgotClave(string username);
         Task<ServiceResponse<object>> ChangeClave(ChangeClaveDto info);
         Task<ServiceResponse<object>> Logout(int usuarioId, string refreshToken, string accessToken);

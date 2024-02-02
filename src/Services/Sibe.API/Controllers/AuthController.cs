@@ -91,7 +91,7 @@ namespace Sibe.API.Controllers
         [HttpGet("refresh-token")]
         public async Task<ActionResult<LoginResponse>> RefreshToken()
         {
-            var response = new ServiceResponse<Dictionary<string, string>>();
+            var response = new ServiceResponse<LoginResponse>();
 
             try
             {

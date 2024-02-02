@@ -19,6 +19,7 @@ namespace Sibe.API.Controllers
             _equipoService = equipoService;
         }
 
+        [Authorize]
         [HttpPost("")]
         public async Task<ActionResult<ServiceResponse<ReadEquipoDto>>> Create([FromBody] CreateEquipoDto equipo)
         {
@@ -33,6 +34,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<Equipo>>> ReadById(int id)
         {
@@ -40,7 +42,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        //[Authorize]
+        [Authorize(Roles = "ADMIN")]
         [HttpPut("{id}")]
         public async Task<ActionResult<ServiceResponse<ReadEquipoDto>>> Update(int id, [FromBody] UpdateEquipoDto equipo)
         {
@@ -48,7 +50,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        //[Authorize(Roles = "ADMINISTRADOR")]
+        [Authorize(Roles = "ADMIN")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {

@@ -80,12 +80,13 @@ namespace JwtAuthenticationHandler
         /// <summary>
         /// Crea un token JWT para un usuario con el nombre de usuario, el correo electrónico y el rol especificados.
         /// </summary>
+        /// <param name="id">El id para el cual se crea el token.</param>
         /// <param name="username">El nombre de usuario para el cual se crea el token.</param>
         /// <param name="email">El correo electrónico asociado al usuario.</param>
         /// <param name="rol">El rol del usuario para el cual se crea el token.</param>
         /// <returns>El token JWT generado para el usuario.</returns>
         /// <exception cref="ArgumentException">Se lanza si el nombre de usuario, el correo electrónico o el rol son nulos o vacíos.</exception>
-        public string CreateToken(string username, string email, string rol)
+        public string CreateToken(int id, string username, string email, string rol)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(rol))
             {
@@ -95,14 +96,17 @@ namespace JwtAuthenticationHandler
             // Add claims
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, username),
+                new Claim(ClaimTypes.NameIdentifier, id.ToString()),
+                new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, rol)
+                new Claim(ClaimTypes.Role, rol.ToString())
             };
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECURITY_KEY));
             var signingCreds = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512Signature);
-            var expirationTimestamp = DateTime.UtcNow.AddMinutes(ACCESS_TOKEN_EXPIRATION_MINUTES);
+            //var expirationTimestamp = DateTime.UtcNow.AddMinutes(ACCESS_TOKEN_EXPIRATION_MINUTES);
+            var expirationTimestamp = DateTime.UtcNow.AddSeconds(10);
+
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -140,7 +144,8 @@ namespace JwtAuthenticationHandler
         {
             string refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
             DateTime createdDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
-            DateTime expiredDate = createdDate.AddMinutes(REFRESH_TOKEN_EXPIRATION_DAYS);
+            //DateTime expiredDate = createdDate.AddMinutes(REFRESH_TOKEN_EXPIRATION_DAYS);
+            DateTime expiredDate = createdDate.AddSeconds(40);
 
             return (refreshToken, createdDate, expiredDate);
         }
@@ -205,7 +210,7 @@ namespace JwtAuthenticationHandler
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECURITY_KEY));
             var signingCreds = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512Signature);
-            var expirationTimestamp = DateTime.UtcNow.AddMinutes(expirationTime);
+            var expirationTimestamp = DateTime.UtcNow.AddSeconds(expirationTime);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

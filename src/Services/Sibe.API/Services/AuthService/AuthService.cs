@@ -6,6 +6,8 @@ using Sibe.API.Models.Entidades;
 using Sibe.API.Data.Dtos.Usuario;
 using Sibe.API.Models.Historicos;
 using Sibe.API.Utils;
+using System.Security.Claims;
+using Sibe.API.Models.Enums;
 
 namespace Sibe.API.Services.AuthService
 {
@@ -118,12 +120,12 @@ namespace Sibe.API.Services.AuthService
         private async Task<(string AccessToken, string RefreshToken)> CreateTokens(Usuario usuario)
         {
             // Crear token de acceso
-            var accessToken = _jwtCredentialProvider.CreateToken(usuario.Username, usuario.Correo, usuario.Rol.ToString());
+            var accessToken = _jwtCredentialProvider.CreateToken(usuario.Id, usuario.Username, usuario.Correo, usuario.Rol.ToString());
 
-            // Generar token de actualización
+            // Generar refresh token
             var (refreshToken, fechaCreacion, fechaExpiracion) = _jwtCredentialProvider.GenerateRefreshToken();
 
-            // Almacenar el token de actualización en la base de datos
+            // Almacenar el refresh token en la base de datos
             var historicoRefreshToken = new HistoricoRefreshToken
             {
                 Usuario = usuario,
@@ -208,9 +210,9 @@ namespace Sibe.API.Services.AuthService
         /// <param name="username">El nombre de usuario del usuario que desea iniciar sesión.</param>
         /// <param name="clave">La contraseña del usuario que desea iniciar sesión.</param>
         /// <returns>Un objeto de respuesta que indica el resultado del inicio de sesión y los tokens de acceso y actualización.</returns>
-        public async Task<ServiceResponse<Dictionary<string, object>>> Login(string username, string clave)
+        public async Task<ServiceResponse<LoginResponse>> Login(string username, string clave)
         {
-            var response = new ServiceResponse<Dictionary<string, object>>();
+            var response = new ServiceResponse<LoginResponse>();
 
             try
             {
@@ -230,13 +232,13 @@ namespace Sibe.API.Services.AuthService
                 var tokens = await CreateTokens(usuario);
 
                 // Configurar respuesta
-                var loginResponse = new Dictionary<string, object>
+                var loginResponse = new LoginResponse
                 {
-                    { "id", usuario.Id },
-                    { "nombre", usuario.Nombre },
-                    { "rol", usuario.Rol },
-                    { "accessToken", tokens.AccessToken },
-                    { "refreshToken", tokens.RefreshToken }
+                    Id = usuario.Id,
+                    Nombre = usuario.Nombre,
+                    Rol = (int) usuario.Rol,
+                    AccessToken = tokens.AccessToken,
+                    RefreshToken = tokens.RefreshToken,
                 };
 
                 // Configurar respuesta
@@ -249,7 +251,7 @@ namespace Sibe.API.Services.AuthService
                 response.SetError(ex.Message);
             }
 
-            // Devolver la respuesta
+            // Devolver la respuesta y el token de actualización
             return response;
         }
        
@@ -259,26 +261,17 @@ namespace Sibe.API.Services.AuthService
         /// </summary>
         /// <param name="usuarioId">El ID del usuario cuyo token se desea refrescar.</param>
         /// <param name="refreshToken">El token de actualización proporcionado por el usuario.</param>
-        /// <param name="accessTokenExpirado">El token de acceso expirado que se desea refrescar.</param>
         /// <returns>Un objeto de respuesta que indica el resultado de la operación y los nuevos tokens generados.</returns>
-        public async Task<ServiceResponse<Dictionary<string, string>>> RefreshToken(int usuarioId, string refreshToken, string accessTokenExpirado)
+        public async Task<ServiceResponse<Dictionary<string, string>>> RefreshToken(int usuarioId, string refreshToken)
         {
             var response = new ServiceResponse<Dictionary<string, string>>();
 
             try
             {
-                // Comprobar si el access token está expirado
-                if (!JwtCredentialProvider.IsTokenExpired(accessTokenExpirado))
-                {
-                    // Lanzar error
-                    throw new Exception(_messages["AccessTokenNotExpired"]);
-                }
-
-                // Buscar el token de actualización almacenado
+                // Buscar el refresh token almacenado
                 var storedRefreshToken = _context.HistoricoRefreshToken
                     .Include(h => h.Usuario)
                     .FirstOrDefault(h =>
-                        h.AccessToken == accessTokenExpirado &&
                         h.RefreshToken == refreshToken &&
                         h.Usuario.Id == usuarioId)
                     ?? throw new Exception(_messages["RefreshTokenNotFound"]);
@@ -290,18 +283,30 @@ namespace Sibe.API.Services.AuthService
                     throw new Exception(_messages["RefreshTokenExpired"]);
                 }
 
-                // Crear nuevos tokens
-                var tokens = await CreateTokens(storedRefreshToken.Usuario);
+                Usuario usuario = storedRefreshToken.Usuario;
+
+                // Comprobar si el access token está expirado, si es asi crear otro
+                if (JwtCredentialProvider.IsTokenExpired(storedRefreshToken.AccessToken))
+                {
+                    // Crear nuevo token 
+                    string accessToken = _jwtCredentialProvider.CreateToken(usuario.Id, usuario.Username, usuario.Correo, usuario.Rol.ToString());
+
+                    // Actualizar el token y guardar cambios
+                    storedRefreshToken.AccessToken = accessToken;
+                    await _context.SaveChangesAsync();
+                }
 
                 // Configurar respuesta con los nuevos tokens
                 var responseData = new Dictionary<string, string>
                 {
-                    { "accessToken", tokens.AccessToken },
-                    { "refreshToken", tokens.RefreshToken }
+                    { "id",  usuario.Id.ToString()  },
+                    { "nombre",  usuario.Nombre  },
+                    { "rol", ((int) usuario.Rol).ToString()},
+                    { "accessToken",  storedRefreshToken.AccessToken  }
                 };
 
                 // Configurar respuesta
-                response.SetSuccess(_messages["LoginSucess"], responseData);
+                response.SetSuccess(_messages["RefreshSuccess"], responseData);
             }
 
             catch (Exception ex)
@@ -409,5 +414,41 @@ namespace Sibe.API.Services.AuthService
             // Devolver la respuesta
             return response;
         }
+
+        public async Task<ServiceResponse<object>> Logout(int usuarioId, string refreshToken, string accessToken)
+        {
+            var response = new ServiceResponse<object>();
+
+            try
+            {
+                // Buscar la entrada almacenada coincidente
+                var storedRefreshToken = _context.HistoricoRefreshToken
+                    .Include(h => h.Usuario)
+                    .FirstOrDefault(h =>
+                        h.AccessToken == accessToken &&
+                        h.RefreshToken == refreshToken &&
+                        h.Usuario.Id == usuarioId)
+                    ?? throw new Exception(_messages["RefreshTokenNotFound"]);
+
+                // Eliminar los refresh token expirados de la base de datos
+                _context.HistoricoRefreshToken.RemoveRange(storedRefreshToken);
+
+                // Guardar cambios
+                await _context.SaveChangesAsync();
+
+                // Configurar respuesta
+                response.SetSuccess(_messages["LogoutSuccess"]);
+            }
+
+            catch (Exception ex)
+            {
+                // Log del error
+                response.SetError(ex.Message);
+            }
+
+            // Devolver la respuesta
+            return response;
+        }
+
     }
 }

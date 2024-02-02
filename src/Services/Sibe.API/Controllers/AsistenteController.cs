@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Data.Dtos.Asistente;
 using Sibe.API.Models;
+using Sibe.API.Models.Enums;
 using Sibe.API.Services.AsistenteService;
 
 namespace Sibe.API.Controllers
@@ -19,7 +20,7 @@ namespace Sibe.API.Controllers
             _asistenteService = asistenteService;
         }
 
-        [Authorize]
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("")]
         public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadAll()
         {
@@ -27,13 +28,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        //[HttpGet("activos")]
-        //public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadAllActivo()
-        //{
-        //    var response = await _asistenteService.ReadAllActivo();
-        //    return Ok(response);
-        //}
-
+        [Authorize]
         [HttpGet("{carne}")]
         public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadByCarne(string carne)
         {
@@ -41,6 +36,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost("registrar")]
         public async Task<ActionResult<ServiceResponse<object>>> RegisterAsistentes(List<RegisterAsistenteDto> asistentesDto)
         {
@@ -48,6 +44,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost("{carne}/inscribir/credenciales")]
         public async Task<ActionResult<ServiceResponse<object>>> RegisterAsistenteCredentials(string carne, [FromBody] RegisterCredentialsDto credentialsDto)
         {
@@ -55,6 +52,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPost("autenticar/huella")]
         public async Task<ActionResult<ServiceResponse<ReadAsistenteDto>>> AuthenticateWithFingerprint([FromBody] FingerprintDto credentialsDto)
         {
@@ -62,6 +60,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpPost("autenticar/pin")]
         public async Task<ActionResult<ServiceResponse<ReadAsistenteDto>>> AuthenticateWithPin([FromBody] PinDto credentialsDto)
         {

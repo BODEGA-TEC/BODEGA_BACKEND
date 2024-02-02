@@ -8,6 +8,7 @@ using Sibe.API.Services.ComponenteService;
 
 namespace Sibe.API.Controllers
 {
+    
     [ApiController]
     [Route("api/componentes")]
     public class ComponenteController : ControllerBase
@@ -19,7 +20,7 @@ namespace Sibe.API.Controllers
             _componenteService = componenteService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("")]
         public async Task<ActionResult<ServiceResponse<Componente>>> Create([FromBody] CreateComponenteDto componente)
         {
@@ -27,6 +28,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("")]
         public async Task<ActionResult<ServiceResponse<List<Componente>>>> ReadAll()
         {
@@ -34,6 +36,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<Componente>>> ReadById(int id)
         {
@@ -41,7 +44,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        //[Authorize]
+        [Authorize(Roles = "ADMIN")]
         [HttpPut("{id}")]
         public async Task<ActionResult<ServiceResponse<Componente>>> Update(int id, [FromBody] UpdateComponenteDto componente)
         {
@@ -49,7 +52,7 @@ namespace Sibe.API.Controllers
             return Ok(response);
         }
 
-        //[Authorize]
+        [Authorize(Roles = "ADMIN")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {

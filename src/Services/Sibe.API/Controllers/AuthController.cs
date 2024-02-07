@@ -82,6 +82,40 @@ namespace Sibe.API.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Método HTTP POST para realizar el cierre de sesión.
+        /// </summary>
+        /// <param name="logoutRequest">Los datos de la solicitud de cierre de sesión.</param>
+        /// <returns>Un ActionResult que encapsula una respuesta de servicio.</returns>
+        [HttpPost("logout")]
+        public async Task<ActionResult<ServiceResponse<object>>> Logout(LogoutRequest logoutRequest)
+        {
+            var response = new ServiceResponse<object>();
+
+            try
+            {
+                // Obtener cookies
+                string usuarioId = Request.Cookies["user_id"] ?? throw new Exception("Id del usuario no proporcionado en las cookies.");
+                string refreshToken = Request.Cookies["refresh_token"] ?? throw new Exception("Refresh token no proporcionado en las cookies.");
+
+                // Limpiar las cookies en la respuesta
+                Response.Cookies.Delete("user_id", new CookieOptions { SameSite = SameSiteMode.None });
+                Response.Cookies.Delete("refresh_token", new CookieOptions { SameSite = SameSiteMode.None });
+
+                // Llamar al servicio de logout
+                response = await _authService.Logout(int.Parse(usuarioId), refreshToken, logoutRequest.AccessToken);
+            }
+            catch (Exception ex)
+            {
+                // Manejar cualquier excepción
+                response.SetError(ex.Message);
+            }
+
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
+
+
         /// <summary>
         /// Refresca el token de acceso para un usuario autenticado.
         /// </summary>
@@ -101,33 +135,6 @@ namespace Sibe.API.Controllers
 
                 // Llamar al servicio de autenticación para refrescar el token
                 response = await _authService.RefreshToken(int.Parse(usuarioId), refreshToken);
-            }
-            catch (Exception ex)
-            {
-                // Manejar cualquier excepción
-                response.SetError(ex.Message);
-            }
-
-            return response.Success ? Ok(response) : BadRequest(response);
-        }
-
-        [HttpPost("logout")]
-        public async Task<ActionResult<ServiceResponse<object>>> Logout(LogoutRequest logoutRequest)
-        {
-            var response = new ServiceResponse<object>();
-
-            try
-            {
-                // Obtener cookies
-                string usuarioId = Request.Cookies["user_id"] ?? throw new Exception("Id del usuario no proporcionado en las cookies.");
-                string refreshToken = Request.Cookies["refresh_token"] ?? throw new Exception("Refresh token no proporcionado en las cookies.");
-
-                // Limpiar las cookie en la respuesta
-                Response.Cookies.Delete("user_id");
-                Response.Cookies.Delete("refresh_token");
-
-                // Llamar al servicio de logout
-                response = await _authService.Logout(int.Parse(usuarioId), refreshToken, logoutRequest.AccessToken);
             }
             catch (Exception ex)
             {

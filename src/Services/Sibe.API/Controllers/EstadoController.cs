@@ -25,35 +25,37 @@ namespace Sibe.API.Controllers
         {
             // No se utiliza estado.Id en esta acción.
             var response = await _estadoService.Create(estado.Nombre);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpGet("equipo")]
         public async Task<ActionResult<ServiceResponse<Categoria>>> ReadByTipoActivoEquipo()
         {
             var response = await _estadoService.ReadByTipoActivo(TipoActivo.EQUIPO);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpGet("componentes")]
         public async Task<ActionResult<ServiceResponse<Categoria>>> ReadByTipoActivoComponentes()
         {
             var response = await _estadoService.ReadByTipoActivo(TipoActivo.COMPONENTE);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
+
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<ServiceResponse<Estado>>> Update(int id, [FromBody] Estado estado)
         {
             var response = await _estadoService.Update(id, estado.Nombre);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
+
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {
             var response = await _estadoService.Delete(id);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
     }
 }

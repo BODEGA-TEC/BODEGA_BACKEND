@@ -25,7 +25,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadAll()
         {
             var response = await _asistenteService.ReadAll();
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [Authorize]
@@ -33,7 +33,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadByCarne(string carne)
         {
             var response = await _asistenteService.ReadByCarne(carne);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [Authorize(Roles = "ADMIN")]
@@ -41,7 +41,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<object>>> RegisterAsistentes(List<RegisterAsistenteDto> asistentesDto)
         {
             var response = await _asistenteService.RegisterAsistentes(asistentesDto);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [Authorize(Roles = "ADMIN")]
@@ -49,7 +49,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<object>>> RegisterAsistenteCredentials(string carne, [FromBody] RegisterCredentialsDto credentialsDto)
         {
             var response = await _asistenteService.RegisterAsistenteCredentials(carne, credentialsDto.Pin, credentialsDto.HuellaDigitalImagen);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [Authorize]
@@ -57,7 +57,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<ReadAsistenteDto>>> AuthenticateWithFingerprint([FromBody] FingerprintDto credentialsDto)
         {
             var response = await _asistenteService.AuthenticateAsistente(credentialsDto.HuellaDigitalImagen);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest (response);
         }
 
         [Authorize]
@@ -65,7 +65,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<ReadAsistenteDto>>> AuthenticateWithPin([FromBody] PinDto credentialsDto)
         {
             var response = await _asistenteService.AuthenticateAsistente(credentialsDto.Carne, credentialsDto.Pin);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
     }

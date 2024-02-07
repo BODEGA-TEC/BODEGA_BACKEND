@@ -25,7 +25,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<Componente>>> Create([FromBody] CreateComponenteDto componente)
         {
             var response = await _componenteService.Create(componente);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         //[Authorize(Roles = "ADMIN")]
@@ -33,7 +33,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<List<Componente>>>> ReadAll()
         {
             var response = await _componenteService.ReadAll();
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [Authorize]
@@ -41,7 +41,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<Componente>>> ReadById(int id)
         {
             var response = await _componenteService.ReadById(id);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [Authorize(Roles = "ADMIN")]
@@ -49,7 +49,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<Componente>>> Update(int id, [FromBody] UpdateComponenteDto componente)
         {
             var response = await _componenteService.Update(id, componente);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [Authorize(Roles = "ADMIN")]
@@ -57,7 +57,7 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {
             var response = await _componenteService.Delete(id);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
     }
 }

@@ -21,49 +21,49 @@ namespace Sibe.API.Controllers
         public async Task<ActionResult<ServiceResponse<List<string>>>> ReadAll()
         {
             var response = await _boletaService.ReadAll();
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpGet("fecha/{inicial}/{final}")]
         public async Task<ActionResult<ServiceResponse<List<string>>>> ReadByDateRange(DateTime inicial, DateTime final)
         {
             var response = await _boletaService.ReadByDateRange(inicial, final);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpGet("{carne}")]
         public async Task<ActionResult<ServiceResponse<object>>> ReadSolicitanteBoletasPendientes(string carne)
         {
             var response = await _boletaService.ReadSolicitanteBoletasPendientes(carne);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpPost("registrar/prestamo")]
         public async Task<ActionResult<ServiceResponse<int>>> CreateBoletaPrestamo(CreateBoletaDto info)
         {
             var response = await _boletaService.CreateBoletaPrestamo(info);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpPost("registrar/devolucion/{boletaPrestamoId}")]
         public async Task<ActionResult<ServiceResponse<int>>> CreateBoletaDevolucion(int boletaPrestamoId, CreateBoletaDto infoDevolucion)
         {
             var response = await _boletaService.CreateBoletaDevolucion(boletaPrestamoId, infoDevolucion);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpGet("{id}/xml")]
         public async Task<ActionResult<ServiceResponse<string>>> GetBoletaPdf(int id)
         {
             var response = await _boletaService.GetBoletaPdf(id);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpGet("{id}/enviar")]
         public async Task<ActionResult<ServiceResponse<string>>> SendBoletaByEmail(int id)
         {
             var response = await _boletaService.SendBoletaByEmail(id);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
     }
 }

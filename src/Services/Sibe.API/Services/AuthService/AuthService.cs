@@ -43,7 +43,7 @@ namespace Sibe.API.Services.AuthService
         /// <param name="clave">La clave que se va a verificar.</param>
         private static void ValidateRegexClave(string clave)
         {
-            string errorMessage = @"De 8 a 20 caracteres. Al menos una letra mayúscula. Al menos una letra minúscula. Al menos un número. Al menos un carácter especial: "" /, %, (, ), _, -, *, &, @.""";
+            string errorMessage = @"Contraseña de 8 a 20 caracteres. Al menos una letra mayúscula, una letra minúscula, un número y un carácter especial: "" /, %, (, ), _, -, *, &, @.""";
 
             RegexValidator.ValidateWithRegex(clave, passwordRegex, errorMessage);
         }

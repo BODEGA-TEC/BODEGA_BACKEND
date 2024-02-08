@@ -57,7 +57,7 @@ namespace Sibe.API.Controllers
                         Expires = DateTimeOffset.Now.AddDays(1), // Expira en 1 día
                         HttpOnly = true,
                         Secure = false,
-                        SameSite = SameSiteMode.None
+                        SameSite = SameSiteMode.Lax
                     }
                 );
 
@@ -70,7 +70,7 @@ namespace Sibe.API.Controllers
                         Expires = DateTimeOffset.Now.AddDays(1), // Expira en 1 día
                         HttpOnly = true,
                         Secure = false,
-                        SameSite = SameSiteMode.None
+                        SameSite = SameSiteMode.Lax
                     }
                 );
 

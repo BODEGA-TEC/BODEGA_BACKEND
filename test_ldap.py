@@ -95,5 +95,5 @@ def search_carne(carne):
 # consult_specific_ou("Computadores")
 # consult_all_domain()
 # estudiantes_por_carrera("electronica", ["Richards","Axel"])
-consult_all_by_name("shakime")
+consult_all_by_name("sandoval")
 #search_carne('110760813')

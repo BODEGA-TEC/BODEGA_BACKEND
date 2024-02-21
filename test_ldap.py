@@ -27,38 +27,40 @@ def test():
         # print(e)
         print(f"- {ou_name} {e.ou.definition}")
         
-# test()
+test()
 
 
+def person():
+    base_dn = 'ou=Docentes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
+    filter = '(&(objectClass=person))'
 
-base_dn = 'ou=Docentes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
-filter = '(&(objectClass=person))'
+    conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
+    i = 0
+    print("\n" * 2)
+    names = []
+    for e in conn.entries:
 
-conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
-i = 0
-print("\n" * 2)
-names = []
-for e in conn.entries:
+        # i+=1
+        # if i>=4:
+        #     break
 
-    # i+=1
-    # if i>=4:
-    #     break
+        try:
+            #if 'sandoval' in e['name'].value.lower():
+                # print("=" * 80)
+                # names.append(e['name'].value)
+                print(e)
 
-    try:
-        if 'sandoval' in e['name'].value.lower():
-            # print("=" * 80)
-            # names.append(e['name'].value)
-            print(e)
+            #     print()
+            # print(e['sAMAccountName'])
+            # print(e)
 
-        #     print()
-        # print(e['sAMAccountName'])
-        # print(e)
+        except:
+            continue
 
-    except:
-        continue
+    print("\n" * 4)
 
-print("\n" * 4)
-
-# names.sort()
-# for n in names:
-#     print(n)
+    # names.sort()
+    # for n in names:
+    #     print(n)
+    
+# person()

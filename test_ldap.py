@@ -15,24 +15,21 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 
 
 
-
 def consult_all_ous():
-    print("\n\nconsult_all_ous")
+    print("\n\nconsult_all_ous\n")
 
     filter = '(objectClass=organizationalUnit)'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
-    print("\n" * 2)
     for index, e in enumerate(conn.entries):
         print(e.ou.value)
      
 def consult_specific_ou(ou_name):
-    print("\n\nconsult_specific_ou")
+    print("\n\nconsult_specific_ou\n")
 
     filter = f'(&(objectClass=organizationalUnit)(ou={ou_name}))'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
-    print("\n" * 2)
     for e in conn.entries:
         print(e)
 
@@ -45,55 +42,53 @@ def consult_all_domain():
     for e in conn.entries:
         print(e)
 
-    print("\n" * 2)
-
 
 def estudiantes_por_carrera(carrera,names):
-    print("\n\nestudiantes_por_carrera")
+    print("\n\nestudiantes_por_carrera\n")
     
     base_dn = f'ou={carrera.capitalize()},ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
     filter = '(objectClass=person)'
 
     conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
 
-    print("\n" * 2)
-
     for e in conn.entries:
         if any(name.lower() in e['cn'].value.lower() for name in names):
             print(e)
 
-    print("\n" * 2)
-
 
 def consult_all_by_name(name):
-    print("\n\nconsult_all_by_name")
+    print("\n\nconsult_all_by_name\n")
     
-    base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
+    base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'
     filter = f'(&(objectClass=user)(cn=*{name}*))'
     
     conn.search(base_dn, filter, SUBTREE, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
-    print("\n" * 2)
-
     for e in conn.entries:
         print(e)
-
-    print("\n" * 2)
     
     
-def search_carne(carne):
-    base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac'
-    filter = f'(&(objectClass=user)(telephoneNumber={carne}))'  # Agrega un paréntesis de cierre aquí
+def consult_all_by_carne(carne):
+    print("\n\nconsult_all_by_carne\n")
     
-    conn.search(base_dn, filter, SUBTREE)
-
+    base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'
+    filter = f'(&(objectClass=user)(telephoneNumber={carne}))'
+    
+    conn.search(base_dn, filter, SUBTREE, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
+    
     for entry in conn.entries:
         print(entry['cn'])
 
+
+print("\n" * 2)
     
 # consult_all_ous()
 # consult_specific_ou("Computadores")
 # consult_all_domain()
 # estudiantes_por_carrera("electronica", ["Richards","Axel"])
 consult_all_by_name("Leonardo Sandoval")
-#search_carne('110760813')
+consult_all_by_carne('110760813')
+
+
+
+print("\n" * 2)

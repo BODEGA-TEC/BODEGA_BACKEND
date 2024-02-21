@@ -34,7 +34,7 @@ def consult_specific_ou(ou_name):
 
 
 def person():
-    base_dn = 'ou=Docentes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
+    base_dn = 'ou=Computadores,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
     filter = '(&(objectClass=person))'
 
     conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
@@ -48,7 +48,7 @@ def person():
         #     break
 
         try:
-            #if 'sandoval' in e['name'].value.lower():
+            if 'michael' in e['name'].value.lower():
                 # print("=" * 80)
                 # names.append(e['name'].value)
                 print(e)
@@ -68,5 +68,5 @@ def person():
     
     
 # consult_all_ou()
-consult_specific_ou("Estudiantes")
-# person()
+# consult_specific_ou("Computadores")
+person()

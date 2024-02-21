@@ -24,7 +24,7 @@ def consult_all_ous():
 
     print("\n" * 2)
     for e in enumerate(conn.entries):
-        print(e.ou.value)
+        print(e)
      
 def consult_specific_ou(ou_name):
     print("\n\nconsult_specific_ou")

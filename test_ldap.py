@@ -69,7 +69,7 @@ def consult_all_by_name(name):
     print("\n\nconsult_all_by_name")
     
     base_dn = 'ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
-    filter = '(&(objectClass=*)(cn=*)(ou=*))'
+    filter = '(&(objectClass=user)(ou=*))'
     
     conn.search(base_dn, filter, SUBTREE, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 

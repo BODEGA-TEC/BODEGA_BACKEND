@@ -50,10 +50,8 @@ def consult_all_domain():
 
 def estudiantes_por_carrera(carrera,names):
     print("\n\nestudiantes_por_carrera")
-    carrera = carrera.capitalize()
-    print(carrera)
     
-    base_dn = 'ou={carrera},ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
+    base_dn = f'ou={carrera.capitalize()},ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
     print(base_dn)
     filter = '(objectClass=person)'
 

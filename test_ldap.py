@@ -69,27 +69,18 @@ def consult_all_by_name(name):
     print("\n\nconsult_all_by_name")
     
     base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
-    filter = '(&(objectClass=user)(cn=*richards*))'
+    filter = f'(&(objectClass=user)(cn={name.capitalize()}*))'
     
     conn.search(base_dn, filter, SUBTREE, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
     print("\n" * 2)
 
     for e in conn.entries:
-        # if name.lower() in e['cn'].value.lower():
-        #   print(e['cn'].value.lower())
         print(e)
 
     print("\n" * 2)
     
     
-    
-# consult_all_ous()
-# consult_specific_ou("Computadores")
-# consult_all_domain()
-# estudiantes_por_carrera("electronica", ["Richards","Axel"])
-consult_all_by_name("Richards")
-
 def search_carne(carne):
     base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac'
     filter = f'(&(objectClass=user)(telephoneNumber={carne}))'  # Agrega un paréntesis de cierre aquí
@@ -99,4 +90,10 @@ def search_carne(carne):
     for entry in conn.entries:
         print(entry['cn'])
 
+    
+# consult_all_ous()
+# consult_specific_ou("Computadores")
+# consult_all_domain()
+# estudiantes_por_carrera("electronica", ["Richards","Axel"])
+consult_all_by_name("shakime")
 #search_carne('110760813')

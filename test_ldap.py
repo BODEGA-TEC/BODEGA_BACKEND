@@ -60,8 +60,8 @@ def estudiantes_por_carrera(carrera,names):
     print("\n" * 2)
 
     for e in conn.entries:
-        ##if e['cn'].value.lower() in [name.lower() for name in names]:
-        print(e['cn'].value.lower())
+        if e['cn'].value.lower() in [name.lower() for name in names]:
+            print(e)
 
     print("\n" * 2)
 
@@ -69,4 +69,4 @@ def estudiantes_por_carrera(carrera,names):
 # consult_all_ous()
 # consult_specific_ou("Computadores")
 # consult_all_domain()
-estudiantes_por_carrera("computadores", ["MichaeL","Richards","Alexis"])
+estudiantes_por_carrera("computadores", ["Richards","Alexis"])

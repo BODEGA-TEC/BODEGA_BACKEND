@@ -68,8 +68,8 @@ def estudiantes_por_carrera(carrera,names):
 def consult_all_by_name(name):
     print("\n\nconsult_all_by_name")
     
-    base_dn = f'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
-    filter = '(objectClass=person)'
+    base_dn = f'ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
+    filter = '(objectClass=user)'
 
     conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
 

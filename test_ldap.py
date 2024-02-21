@@ -20,6 +20,7 @@ def consult_all_ou():
     filter = '(objectClass=organizationalUnit)'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
+    print("\n" * 2)
     for e in enumerate(conn.entries):
         print(e.ou.value)
      
@@ -27,46 +28,27 @@ def consult_specific_ou(ou_name):
     filter = f'(&(objectClass=organizationalUnit)(ou={ou_name}))'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
+    print("\n" * 2)
     for e in conn.entries:
         print(e)
 
 
-
-
-def person():
-    base_dn = 'ou=Computadores,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP      
-    filter = '(&(objectClass=person))'
+def estudiantes_por_carrera(carrera,names):
+    carrera = carrera.capitalize()
+    base_dn = 'ou={carrera},ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
+    filter = '(objectClass=person)'
 
     conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
-    i = 0
+
     print("\n" * 2)
-    names = []
+
     for e in conn.entries:
+        if e['cn'].value.lower() in [name.lower() for name in names]:
+            print(e)
 
-        # i+=1
-        # if i>=4:
-        #     break
+    print("\n" * 2)
 
-        try:
-            if 'michael' in e['name'].value.lower():
-                # print("=" * 80)
-                # names.append(e['name'].value)
-                print(e)
-
-            #     print()
-            # print(e['sAMAccountName'])
-            # print(e)
-
-        except:
-            continue
-
-    print("\n" * 4)
-
-    # names.sort()
-    # for n in names:
-    #     print(n)
-    
     
 # consult_all_ou()
 # consult_specific_ou("Computadores")
-person()
+estudiantes_por_carrera("computadores", ["MichaeL","Richards","Alexis"])

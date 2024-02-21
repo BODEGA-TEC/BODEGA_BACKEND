@@ -76,8 +76,8 @@ def consult_all_by_name(name):
     print("\n" * 2)
 
     for e in conn.entries:
-        if name.lower() in e['cn'].value.lower():
-            print(e)
+        #if name.lower() in e['cn'].value.lower():
+        print(e['cn'].value.lower())
 
     print("\n" * 2)
     

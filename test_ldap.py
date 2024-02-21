@@ -69,7 +69,7 @@ def consult_all_by_name(name):
     
     
 def consult_all_by_carne(carne):
-    print("\n\n> CONSULTAR LDAP COMPLETA POR CARNE: ", carne)
+    print("\n\n> CONSULTAR USUARIO CON CARNE: ", carne)
     print("------------------------------------")
      
     base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'

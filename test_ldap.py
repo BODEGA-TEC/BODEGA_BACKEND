@@ -69,8 +69,9 @@ def consult_all_by_name(name):
     
     
 def consult_all_by_carne(carne):
-    print("\n\nconsult_all_by_carne\n")
-    
+    print("\n\n-- CONSULTAR LDAP COMPLETA POR CARNE: ", carne)
+    print("------------------------------------")
+     
     base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'
     filter = f'(&(objectClass=user)(telephoneNumber={carne}))'
     

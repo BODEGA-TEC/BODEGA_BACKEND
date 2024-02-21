@@ -77,8 +77,18 @@ def consult_all_by_carne(carne):
     conn.search(base_dn, filter, SUBTREE, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
     
     for e in conn.entries:
-        print(e)
-
+        if "ou=Docentes" in e.entry_dn:
+            print("/ DOCENTE")
+        elif "ou=Estudiantes" in e.entry_dn:
+            
+            dnsplit = e.entry_dn.split(",")
+            career = dnsplit[2]
+            print("/ ESTUDIANTE")
+            
+        print("Nombre:", e['cn'])
+        print("Carne:",  e['telephoneNumber'])
+        print("Correo:", e['userPrincipalName'], ' [No es el correo verdadero]')
+        print("Carrera:", career)
 
 print("\n" * 2)
     

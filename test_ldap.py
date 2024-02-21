@@ -59,8 +59,8 @@ def estudiantes_por_carrera(carrera,names):
     print("\n" * 2)
 
     for e in conn.entries:
-        #if e['cn'].value.lower() in [name.lower() for name in names]:
-        print(e['cn'].value.lower())
+        if any(name.lower() in e['cn'].value.lower() for name in names):
+            print(e)
 
     print("\n" * 2)
 

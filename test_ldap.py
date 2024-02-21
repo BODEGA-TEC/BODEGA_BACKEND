@@ -69,7 +69,7 @@ def consult_all_by_name(name):
     print("\n\nconsult_all_by_name")
     
     base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
-    filter = f'(&(objectClass=user)(cn=*{name.capitalize()}*))'
+    filter = f'(&(objectClass=user)(cn=*{name}*))'
     
     conn.search(base_dn, filter, SUBTREE, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
@@ -95,5 +95,5 @@ def search_carne(carne):
 # consult_specific_ou("Computadores")
 # consult_all_domain()
 # estudiantes_por_carrera("electronica", ["Richards","Axel"])
-consult_all_by_name("sandoval")
+consult_all_by_name("Leonardo Sandoval")
 #search_carne('110760813')

@@ -88,7 +88,7 @@ def consult_all_by_name(name):
 # consult_specific_ou("Computadores")
 # consult_all_domain()
 # estudiantes_por_carrera("electronica", ["Richards","Axel"])
-#consult_all_by_name("Richards")
+consult_all_by_name("Richards")
 
 def search_carne(carne):
     base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac'
@@ -99,4 +99,4 @@ def search_carne(carne):
     for entry in conn.entries:
         print(entry['cn'])
 
-search_carne('110760813')
+#search_carne('110760813')

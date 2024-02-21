@@ -69,7 +69,7 @@ def consult_all_by_name(name):
     
     
 def consult_all_by_carne(carne):
-    print("\n\n-- CONSULTAR LDAP COMPLETA POR CARNE: ", carne)
+    print("\n\n CONSULTAR LDAP COMPLETA POR CARNE: ", carne)
     print("------------------------------------")
      
     base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'
@@ -78,7 +78,8 @@ def consult_all_by_carne(carne):
     conn.search(base_dn, filter, SUBTREE, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
     
     for e in conn.entries:
-        career = ""
+        career = "NA"
+        
         if "ou=Docentes" in e.entry_dn:
             print("/ DOCENTE")
         elif "ou=Estudiantes" in e.entry_dn:

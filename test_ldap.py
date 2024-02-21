@@ -17,6 +17,8 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 
 
 def consult_all_ou():
+    print("\n\nconsult_all_ou")
+
     filter = '(objectClass=organizationalUnit)'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
@@ -25,6 +27,8 @@ def consult_all_ou():
         print(e.ou.value)
      
 def consult_specific_ou(ou_name):
+    print("\n\nconsult_specific_ou")
+
     filter = f'(&(objectClass=organizationalUnit)(ou={ou_name}))'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
@@ -34,6 +38,7 @@ def consult_specific_ou(ou_name):
 
 
 def estudiantes_por_carrera(carrera,names):
+    print("\n\nestudiantes_por_carrera")
     carrera = carrera.capitalize()
     base_dn = 'ou={carrera},ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
     filter = '(objectClass=person)'

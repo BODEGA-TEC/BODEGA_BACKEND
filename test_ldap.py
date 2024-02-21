@@ -45,7 +45,7 @@ for e in conn.entries:
     #     break
 
     try:
-        #if 'michael ' in e['name'].value.lower():
+        if 'sandoval' in e['name'].value.lower():
             # print("=" * 80)
             # names.append(e['name'].value)
             print(e)

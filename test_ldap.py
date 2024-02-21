@@ -77,6 +77,7 @@ def consult_all_by_carne(carne):
     conn.search(base_dn, filter, SUBTREE, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
     
     for e in conn.entries:
+        career = ""
         if "ou=Docentes" in e.entry_dn:
             print("/ DOCENTE")
         elif "ou=Estudiantes" in e.entry_dn:

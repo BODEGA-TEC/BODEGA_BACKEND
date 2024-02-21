@@ -23,8 +23,8 @@ def consult_all_ous():
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
     print("\n" * 2)
-    for e in enumerate(conn.entries):
-        print(e)
+    for index, e in enumerate(conn.entries):
+        print(e.ou.value)
      
 def consult_specific_ou(ou_name):
     print("\n\nconsult_specific_ou")

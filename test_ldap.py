@@ -40,6 +40,7 @@ def consult_specific_ou(ou_name):
 def estudiantes_por_carrera(carrera,names):
     print("\n\nestudiantes_por_carrera")
     carrera = carrera.capitalize()
+    print(carrera)
     base_dn = 'ou={carrera},ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
     filter = '(objectClass=person)'
 
@@ -48,8 +49,8 @@ def estudiantes_por_carrera(carrera,names):
     print("\n" * 2)
 
     for e in conn.entries:
-        if e['cn'].value.lower() in [name.lower() for name in names]:
-            print(e)
+        ##if e['cn'].value.lower() in [name.lower() for name in names]:
+        print(e)
 
     print("\n" * 2)
 

@@ -40,7 +40,7 @@ def consult_all_domain():
     base_dn = 'ou=Computadores,ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Dominio LDAP
     filter = '(objectClass=*)'  # Filtro para buscar todos los objetos
 
-    conn.search(search_base=base_dn, search_filter=filter, search_scope=SUBTREE)
+    conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
 
     for e in conn.entries:
         print(e)
@@ -52,16 +52,15 @@ def estudiantes_por_carrera(carrera,names):
     print("\n\nestudiantes_por_carrera")
     
     base_dn = f'ou={carrera.capitalize()},ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
-    print(base_dn)
-    filter = '(objectClass=person)'
+    filter = '(objectClass=*)'
 
     conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
 
     print("\n" * 2)
 
     for e in conn.entries:
-        if e['cn'].value.lower() in [name.lower() for name in names]:
-            print(e)
+        #if e['cn'].value.lower() in [name.lower() for name in names]:
+        print(e)
 
     print("\n" * 2)
 

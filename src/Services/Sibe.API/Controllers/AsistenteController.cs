@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using iText.Kernel.Pdf;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Sibe.API.Data.Dtos.Asistente;
-using Sibe.API.Data.Dtos.Equipo;
 using Sibe.API.Models;
+using Sibe.API.Models.Enums;
 using Sibe.API.Services.AsistenteService;
-using Sibe.API.Services.EquipoService;
 
 namespace Sibe.API.Controllers
 {
@@ -19,47 +20,52 @@ namespace Sibe.API.Controllers
             _asistenteService = asistenteService;
         }
 
-
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("")]
         public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadAll()
         {
             var response = await _asistenteService.ReadAll();
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
-        [HttpGet("activos")]
-        public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadAllActivo()
-        {
-            var response = await _asistenteService.ReadAllActivo();
-            return Ok(response);
-        }
-
+        [Authorize]
         [HttpGet("{carne}")]
         public async Task<ActionResult<ServiceResponse<List<ReadAsistenteDto>>>> ReadByCarne(string carne)
         {
             var response = await _asistenteService.ReadByCarne(carne);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
-        [HttpGet("auth")]
-        public async Task<ActionResult<ServiceResponse<ReadAsistenteDto>>> ReadByHuellaDigital([FromBody] string huellaDigital)
-        {
-            var response = await _asistenteService.ReadByHuellaDigital(huellaDigital);
-            return Ok(response);
-        }
-
+        [Authorize(Roles = "ADMIN")]
         [HttpPost("registrar")]
         public async Task<ActionResult<ServiceResponse<object>>> RegisterAsistentes(List<RegisterAsistenteDto> asistentesDto)
         {
             var response = await _asistenteService.RegisterAsistentes(asistentesDto);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
-        [HttpPost("registrar/{id}/huella")]
-        public async Task<ActionResult<ServiceResponse<object>>> RegisterHuellaDigitalAsistente(string carne, [FromBody] string huellaDigital)
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost("{carne}/inscribir/credenciales")]
+        public async Task<ActionResult<ServiceResponse<object>>> RegisterAsistenteCredentials(string carne, [FromBody] RegisterCredentialsDto credentialsDto)
         {
-            var response = await _asistenteService.RegisterHuellaDigitalAsistente(carne, huellaDigital);
-            return Ok(response);
+            var response = await _asistenteService.RegisterAsistenteCredentials(carne, credentialsDto.Pin, credentialsDto.HuellaDigitalImagen);
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
+
+        [Authorize]
+        [HttpPost("autenticar/huella")]
+        public async Task<ActionResult<ServiceResponse<ReadAsistenteDto>>> AuthenticateWithFingerprint([FromBody] FingerprintDto credentialsDto)
+        {
+            var response = await _asistenteService.AuthenticateAsistente(credentialsDto.HuellaDigitalImagen);
+            return response.Success ? Ok(response) : BadRequest (response);
+        }
+
+        [Authorize]
+        [HttpPost("autenticar/pin")]
+        public async Task<ActionResult<ServiceResponse<ReadAsistenteDto>>> AuthenticateWithPin([FromBody] PinDto credentialsDto)
+        {
+            var response = await _asistenteService.AuthenticateAsistente(credentialsDto.Carne, credentialsDto.Pin);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
     }

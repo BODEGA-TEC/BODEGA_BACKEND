@@ -10,7 +10,7 @@ namespace Sibe.API.Models.Entidades
 
         [Key]
         [MaxLength(10)] // El carné tiene una longitud máxima de 10 caracteres.
-        public string Carne { get; set; } = string.Empty;
+        public string Carne { get; set; } = string.Empty!;
 
         public string Nombre { get { return _nombre; } set { _nombre = FormatNombre(value); } }
 
@@ -20,17 +20,19 @@ namespace Sibe.API.Models.Entidades
 
         public DateTime FechaRegistro   { get; set; } = TimeZoneHelper.Now();
 
-        public string HuellaDigital { get; set; } = string.Empty;
+        public string? Fingerprint { get; set; }
+        public byte[]? PinHash { get; set; }
+        public byte[]? PinSalt { get; set; }
 
         // Propiedad calculada para determinar si el asistente está activo
-        public bool Activo => (TimeZoneHelper.Now() - FechaRegistro).TotalDays <= 6 * 30;
-
-
-        [NotMapped]
-        private string _nombre = string.Empty;
+        //public bool Activo => (TimeZoneHelper.Now() - FechaRegistro).TotalDays <= 6 * 30;
+        public bool Verificado => Fingerprint != null && PinHash != null && PinSalt != null;
 
         [NotMapped]
-        private string _correo = string.Empty;
+        private string _nombre = string.Empty!;
+
+        [NotMapped]
+        private string _correo = string.Empty!;
 
 
         private static string FormatNombre(string nombre)

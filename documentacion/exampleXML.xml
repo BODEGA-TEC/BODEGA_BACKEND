@@ -1,0 +1,51 @@
+<Boleta>
+    <Consecutivo>20240401231210</Consecutivo>
+    <Estado>PENDIENTE</Estado>
+    <CarneAsistente>2018170667</CarneAsistente>
+    <NombreAsistente>MICHAEL SHAKIME RICHARDS SPARKS</NombreAsistente>
+    <Fecha>04 enero 2024</Fecha>
+    <Solicitante>
+        <Nombre>PRUEBA ESTUDIANTE</Nombre>
+        <Tipo>ESTUDIANTE</Tipo>
+        <Correo>ESTUDIANTE@gmail.com</Correo>
+    </Solicitante>
+    <DetalleActivos>
+        <Equipo>
+            <Equipo>
+                <Codigo>BE000004</Codigo>
+                <Detalle>Coby LCD con adaptador de 12V</Detalle>
+                <Observaciones>Pantalla con control remoto, cable de alimentacion, cable VGA,  Cable A/V</Observaciones>
+            </Equipo>
+            <Equipo>
+                <Codigo>BE000005</Codigo>
+                <Detalle>Coby LCD con adaptador de 12V</Detalle>
+                <Observaciones>Pantalla con control remoto, cable de alimentacion, cable VGA,  Cable A/V</Observaciones>
+            </Equipo>
+            <Equipo>
+                <Codigo>BE000006</Codigo>
+                <Detalle>Coby LCD con adaptador de 12V</Detalle>
+                <Observaciones>Pantalla con control remoto, cable de alimentacion, cable VGA,  Cable A/V</Observaciones>
+            </Equipo>
+        </Equipo>
+        <Componentes>
+            <Componente>
+                <Codigo>BC000003</Codigo>
+                <Detalle>COMPONENTE 3</Detalle>
+                <Cantidad>2</Cantidad>
+                <Observaciones>string</Observaciones>
+            </Componente>
+            <Componente>
+                <Codigo>BC000004</Codigo>
+                <Detalle>Octal Transparent Latch w/ Three-State Outputs</Detalle>
+                <Cantidad>10</Cantidad>
+                <Observaciones></Observaciones>
+            </Componente>
+            <Componente>
+                <Codigo>BC000005</Codigo>
+                <Detalle>Dual 4-bit Decade counter</Detalle>
+                <Cantidad>7</Cantidad>
+                <Observaciones></Observaciones>
+            </Componente>
+        </Componentes>
+    </DetalleActivos>
+</Boleta>

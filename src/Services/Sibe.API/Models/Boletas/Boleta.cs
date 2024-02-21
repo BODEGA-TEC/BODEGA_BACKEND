@@ -27,7 +27,7 @@ namespace Sibe.API.Models.Boletas
         public TipoSolicitante TipoSolicitante { get; set; }
         public required string NombreSolicitante { get; set; }
         public required string CorreoSolicitante { get; set; }
-        public string? CarneSolicitante { get; set; }
+        public required string CarneSolicitante { get; set; }
 
 
         // Navegación al hash de componentes asociados a este comprobante de préstamo - cada componente se asocia solo una vez por eso el hash

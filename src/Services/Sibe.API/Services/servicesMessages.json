@@ -40,14 +40,18 @@
   "UsuarioService": {
     "RegisterSuccess": "Se ha registrado exitosamente.",
     "LoginSuccess": "Se ha iniciado sesión correctamente.",
+    "LogoutSuccess": "Se ha cerrado sesión correctamente.",
+    "RefreshSuccess": "Token actualizado correctamente.",
     "RoleNotFound": "No se ha encontrado el rol.",
     "UsuarioNotFound": "No se ha encontrado usuario.",
     "CorreoInUse": "Este correo ya se encuentra registrado.",
     "UsernameInUse": "Este nombre de usuario ya se encuentra registrado.",
-    "InvalidCredentials": "Carné o contraseña inválido(s).",
+    "InvalidCredentials": "Usuario o contraseña inválido(s).",
     "ExpiredClave": "La clave ha vencido. Se ha enviado la clave temporal al correo registrado.",
     "ClaveTemporalUnchanged": "Debe cambiarse la clave temporal primero.",
     "RefreshTokenNotFound": "No se ha encontrado refresh token.",
+    "AccessTokenNotExpired": "El access token aun no ha expirado.",
+    "RefreshTokenExpired": "El refresh token ha expirado.",
     "ClaveDuplicated": "La contraseña debe ser distinta de las 4 anteriores.",
     "ClaveTemporalSentSuccess": "Se ha enviado la clave temporal al correo registrado.",
     "ClaveChangeSuccess": "Se ha cambiado correctamente.",
@@ -59,7 +63,9 @@
     "NotFound": "No se ha encontrado asistente.",
     "ReadSuccess": "Se ha(n) recuperado exitosamente.",
     "Empty": "No se ha registrado asistentes.",
-    "Inactivo": "El perfil del asistente se encuentra inactivo."
+    "CreadentialsRegisterSuccess": "Se han registrado exitosamente las credenciales.",
+    "UnsetPinCredentials": "Credencial de PIN no configurada para el asistente.",
+    "InvalidCredentials": "Carné o pin inválido(s)."
   },
   "BoletaService": {
     "NotFound": "Boleta no encontrada.",
@@ -71,9 +77,11 @@
     "EquipoNotPrestado": "El equipo no se encuentra prestado. id: ",
     "ComponenteIdNotFound": "El componente no se ha encontrado. id: ",
     "BoletaPrestamoNotFound": "No se ha encontrado la boleta de prestamo respectiva.",
-    "ComponenteQuantityRequestError": "La cantidad solicitada es mayor que la cantidad disponible. id: ",
+    "ComponenteQuantityRequestError": "La cantidad solicitada es mayor que la cantidad disponible. ACTIVO: ",
     "AprobadorNeeded": "No se permiten préstamos de componentes sin la aprobación de un profesor.",
-    "ComponenteRequestZero": "La cantidad solicitada debe ser mayor a cero. id: "
+    "ComponenteRequestZero": "La cantidad solicitada debe ser mayor a cero. ACTIVO: ",
+    "FinalDateError": "La fecha final debe ser mayor o igual a la fecha inicial.",
+    "UnmatchedBoletaSolicitanteCarne": "El carne del solicitante de devolución no coincide con el de la boleta préstamo seleccionada."
   }
 
 }

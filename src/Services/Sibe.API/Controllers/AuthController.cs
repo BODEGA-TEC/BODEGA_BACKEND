@@ -1,8 +1,8 @@
 ﻿
-using Sibe.API.Models;
 using Microsoft.AspNetCore.Mvc;
-using Sibe.API.Services.AuthService;
 using Sibe.API.Data.Dtos.Usuario;
+using Sibe.API.Models;
+using Sibe.API.Services.AuthService;
 
 namespace Sibe.API.Controllers
 {
@@ -41,9 +41,77 @@ namespace Sibe.API.Controllers
         /// <param name="request">Datos de autenticacion.</param>
         /// <returns>ActionResult<ServiceResponse<string>> Object encapsulating the operation result, including the ID of the authenticated user and an access token.</returns>
         [HttpPost("login")]
-        public async Task<ActionResult<ServiceResponse<string>>> Login(LoginUsuarioDto request)
+        public async Task<ActionResult<ServiceResponse<string>>> Login(LoginRequest request)
         {
-            var response = await _authService.Login(request.Correo, request.Clave);
+            var response = await _authService.Login(request.Username, request.Clave);
+            if (response.Success)
+            {
+                if (response.Data == null) throw new Exception("Fallo en el login");
+
+                // Establecer la cookie del ID
+                Response.Cookies.Append(
+                    "user_id",
+                     response.Data.Id.ToString(),
+                    new CookieOptions
+                    {
+                        Expires = DateTimeOffset.Now.AddDays(1), // Expira en 1 día
+                        HttpOnly = true,
+                        Secure = false,
+                        SameSite = SameSiteMode.Lax
+                    }
+                );
+
+                // Establecer la cookie del refresh token
+                Response.Cookies.Append(
+                    "refresh_token",
+                    response.Data.RefreshToken,
+                    new CookieOptions
+                    {
+                        Expires = DateTimeOffset.Now.AddDays(1), // Expira en 1 día
+                        HttpOnly = true,
+                        Secure = false,
+                        SameSite = SameSiteMode.Lax
+                    }
+                );
+
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
+            }
+        }
+
+
+        /// <summary>
+        /// Método HTTP POST para realizar el cierre de sesión.
+        /// </summary>
+        /// <param name="logoutRequest">Los datos de la solicitud de cierre de sesión.</param>
+        /// <returns>Un ActionResult que encapsula una respuesta de servicio.</returns>
+        [HttpPost("logout")]
+        public async Task<ActionResult<ServiceResponse<object>>> Logout(LogoutRequest logoutRequest)
+        {
+            var response = new ServiceResponse<object>();
+
+            try
+            {
+                // Obtener cookies
+                string usuarioId = Request.Cookies["user_id"] ?? throw new Exception("Id del usuario no proporcionado en las cookies.");
+                string refreshToken = Request.Cookies["refresh_token"] ?? throw new Exception("Refresh token no proporcionado en las cookies.");
+
+                // Limpiar las cookies en la respuesta
+                Response.Cookies.Delete("user_id", new CookieOptions { SameSite = SameSiteMode.None });
+                Response.Cookies.Delete("refresh_token", new CookieOptions { SameSite = SameSiteMode.None });
+
+                // Llamar al servicio de logout
+                response = await _authService.Logout(int.Parse(usuarioId), refreshToken, logoutRequest.AccessToken);
+            }
+            catch (Exception ex)
+            {
+                // Manejar cualquier excepción
+                response.SetError(ex.Message);
+            }
+
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
@@ -54,22 +122,39 @@ namespace Sibe.API.Controllers
         /// <param name="usuarioId">ID del usuario para el cual se va a refrescar el token.</param>
         /// <param name="requestTokenDto">Datos necesarios para el refresco del token.</param>
         /// <returns>ActionResult<ServiceResponse<Dictionary<string, string>>> Objeto que encapsula el resultado de la operación, incluyendo el nuevo token de acceso.</returns>
-        [HttpPost("refresh-token")]
-        public async Task<ActionResult<ServiceResponse<Dictionary<string, string>>>> RefreshToken(int usuarioId, RefreshTokenDto requestTokenDto)
+        [HttpGet("refresh-token")]
+        public async Task<ActionResult<LoginResponse>> RefreshToken()
         {
-            var response = await _authService.RefreshToken(usuarioId, requestTokenDto);
+            var response = new ServiceResponse<LoginResponse>();
+
+            try
+            {
+                // Obtener cookies
+                string usuarioId = Request.Cookies["user_id"] ?? throw new Exception("Id del usuario no proporcionado en las cookies.");
+                string refreshToken = Request.Cookies["refresh_token"] ?? throw new Exception("Refresh token no proporcionado en las cookies.");
+
+                // Llamar al servicio de autenticación para refrescar el token
+                response = await _authService.RefreshToken(int.Parse(usuarioId), refreshToken);
+            }
+            catch (Exception ex)
+            {
+                // Manejar cualquier excepción
+                response.SetError(ex.Message);
+            }
+
             return response.Success ? Ok(response) : BadRequest(response);
         }
+
 
         /// <summary>
         /// Setea la clave temporal al usuario propietario del correo y envía este codigo al correo registrado
         /// </summary>
-        /// <param name="correo">Correo del usuario para el cual se va generar la clave temporal.</param>
+        /// <param name="username">username del usuario para el cual se va generar la clave temporal.</param>
         /// <returns>ActionResult<ServiceResponse<string>> Objeto que encapsula el resultado de la operación.</returns>
         [HttpPost("forgot-password")]
-        public async Task<ActionResult<ServiceResponse<string>>> ForgotClave(string correo)
+        public async Task<ActionResult<ServiceResponse<string>>> ForgotClave(ForgotClaveDto dto)
         {
-            var response = await _authService.ForgotClave(correo);
+            var response = await _authService.ForgotClave(dto.Username);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 

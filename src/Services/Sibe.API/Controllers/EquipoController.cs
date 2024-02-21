@@ -19,41 +19,46 @@ namespace Sibe.API.Controllers
             _equipoService = equipoService;
         }
 
+        [Authorize]
         [HttpPost("")]
         public async Task<ActionResult<ServiceResponse<ReadEquipoDto>>> Create([FromBody] CreateEquipoDto equipo)
         {
             var response = await _equipoService.Create(equipo);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpGet("")]
         public async Task<ActionResult<ServiceResponse<List<ReadEquipoDto>>>> ReadAll()
         {
             var response = await _equipoService.ReadAll();
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<Equipo>>> ReadById(int id)
         {
             var response = await _equipoService.ReadById(id);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
+
         }
 
-        //[Authorize]
+        [Authorize(Roles = "ADMIN")]
         [HttpPut("{id}")]
         public async Task<ActionResult<ServiceResponse<ReadEquipoDto>>> Update(int id, [FromBody] UpdateEquipoDto equipo)
         {
             var response = await _equipoService.Update(id, equipo);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
+
         }
 
-        //[Authorize(Roles = "ADMINISTRADOR")]
+        [Authorize(Roles = "ADMIN")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<object>>> Delete(int id)
         {
             var response = await _equipoService.Delete(id);
-            return Ok(response);
+            return response.Success ? Ok(response) : BadRequest(response);
+
         }
 
     }

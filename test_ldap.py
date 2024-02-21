@@ -79,13 +79,13 @@ def consult_all_by_carne(carne):
     
     for e in conn.entries:
         career = "NA"
-        print(e.entry_dn)
-        if "ou=Docentes" in e['dn']:
+
+        if "OU=Docentes" in e.entry_dn:
             print("/ DOCENTE")
-        elif "ou=Estudiantes" in e['dn']:
-            
+        elif "OU=Estudiantes" in e.entry_dn:
             dnsplit = e.entry_dn.split(",")
             career = dnsplit[2]
+            print(career)
             print("/ ESTUDIANTE")
             
         print("Nombre:", e['cn'])

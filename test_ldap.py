@@ -68,5 +68,5 @@ def person():
     
     
 # consult_all_ou()
-consult_specific_ou("Computadores")
+consult_specific_ou("Estudiantes")
 # person()

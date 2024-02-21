@@ -65,7 +65,7 @@ def estudiantes_por_carrera(carrera,names):
     print("\n" * 2)
 
     
-consult_all_ous()
+# consult_all_ous()
 # consult_specific_ou("Computadores")
 # consult_all_domain()
-#estudiantes_por_carrera("computadores", ["Richards","Alexis"])
+estudiantes_por_carrera("electronica", ["Richards","Alexis"])

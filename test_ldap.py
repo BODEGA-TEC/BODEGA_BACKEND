@@ -16,8 +16,8 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 
 
 
-def consult_all_ou():
-    print("\n\nconsult_all_ou")
+def consult_all_ous():
+    print("\n\nconsult_all_ous")
 
     filter = '(objectClass=organizationalUnit)'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
@@ -36,11 +36,23 @@ def consult_specific_ou(ou_name):
     for e in conn.entries:
         print(e)
 
+def consult_all_domain():
+    base_dn = 'ou=Computadores,ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Dominio LDAP
+    filter = '(objectClass=*)'  # Filtro para buscar todos los objetos
+
+    conn.search(search_base=base_dn, search_filter=filter, search_scope=SUBTREE)
+
+    for e in conn.entries:
+        print(e)
+
+    print("\n" * 2)
+
 
 def estudiantes_por_carrera(carrera,names):
     print("\n\nestudiantes_por_carrera")
     carrera = carrera.capitalize()
     print(carrera)
+    
     base_dn = 'ou={carrera},ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
     filter = '(objectClass=person)'
 
@@ -55,6 +67,7 @@ def estudiantes_por_carrera(carrera,names):
     print("\n" * 2)
 
     
-# consult_all_ou()
+# consult_all_ous()
 # consult_specific_ou("Computadores")
-estudiantes_por_carrera("computadores", ["MichaeL","Richards","Alexis"])
+consult_all_domain()
+#estudiantes_por_carrera("computadores", ["MichaeL","Richards","Alexis"])

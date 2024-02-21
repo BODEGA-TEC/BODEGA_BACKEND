@@ -16,18 +16,21 @@ conn = Connection(server, user='{}\\{}'.format(domain_name, user_name), password
 
 
 
-def test():
+def consult_all_ou():
     filter = '(objectClass=organizationalUnit)'
     conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
 
-    for index, e in enumerate(conn.entries):
-        #if index >= 4:
-        #    break  # Sale del bucle después de imprimir las primeras 3 entradas    
-        #ou_name = e.ou.value
+    for e in enumerate(conn.entries):
         print(e.ou.value)
-        #print(f"- {ou_name} {e.ou.definition}")
-        
-test()
+     
+def consult_specific_ou(ou_name):
+    filter = f'(&(objectClass=organizationalUnit)(ou={ou_name}))'
+    conn.search('dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr', filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
+
+    for e in conn.entries:
+        print(e)
+
+
 
 
 def person():
@@ -63,4 +66,7 @@ def person():
     # for n in names:
     #     print(n)
     
+    
+# consult_all_ou()
+consult_specific_ou("Computadores")
 # person()

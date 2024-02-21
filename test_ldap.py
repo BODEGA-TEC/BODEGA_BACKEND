@@ -90,12 +90,9 @@ def consult_all_by_name(name):
 # estudiantes_por_carrera("electronica", ["Richards","Axel"])
 #consult_all_by_name("Richards")
 
-
-
-
 def search_carne(carne):
     base_dn = 'dc=cr'
-    filter = f'(&(objectClass=user)(telephoneNumber={carne})'
+    filter = f'(&(objectClass=user)(telephoneNumber={carne}))'  # Agrega un paréntesis de cierre aquí
     
     conn.search(base_dn, filter, SUBTREE)
 

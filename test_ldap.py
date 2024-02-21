@@ -76,8 +76,8 @@ def consult_all_by_carne(carne):
     
     conn.search(base_dn, filter, SUBTREE, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES])
     
-    for entry in conn.entries:
-        print(entry['cn'])
+    for e in conn.entries:
+        print(e)
 
 
 print("\n" * 2)
@@ -86,7 +86,7 @@ print("\n" * 2)
 # consult_specific_ou("Computadores")
 # consult_all_domain()
 # estudiantes_por_carrera("electronica", ["Richards","Axel"])
-consult_all_by_name("Leonardo Sandoval")
+#consult_all_by_name("Leonardo Sandoval")
 consult_all_by_carne('110760813')
 
 

@@ -54,6 +54,7 @@ def estudiantes_por_carrera(carrera,names):
     print(carrera)
     
     base_dn = 'ou={carrera},ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
+    print(base_dn)
     filter = '(objectClass=person)'
 
     conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
@@ -62,12 +63,12 @@ def estudiantes_por_carrera(carrera,names):
 
     for e in conn.entries:
         ##if e['cn'].value.lower() in [name.lower() for name in names]:
-        print(e)
+        print(e['cn'].value.lower())
 
     print("\n" * 2)
 
     
 # consult_all_ous()
 # consult_specific_ou("Computadores")
-consult_all_domain()
-#estudiantes_por_carrera("computadores", ["MichaeL","Richards","Alexis"])
+# consult_all_domain()
+estudiantes_por_carrera("computadores", ["MichaeL","Richards","Alexis"])

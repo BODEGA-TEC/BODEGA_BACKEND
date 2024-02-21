@@ -52,7 +52,7 @@ def estudiantes_por_carrera(carrera,names):
     print("\n\nestudiantes_por_carrera")
     
     base_dn = f'ou={carrera.capitalize()},ou=Estudiantes,dc=estudiantes,dc=ie,dc=tec,dc=ac,dc=cr'  # Ajusta según tu estructura LDAP
-    filter = '(objectClass=user)'
+    filter = '(objectClass=person)'
 
     conn.search(search_base=base_dn, search_filter=filter, attributes=[ALL_ATTRIBUTES, ALL_OPERATIONAL_ATTRIBUTES], search_scope=SUBTREE)
 

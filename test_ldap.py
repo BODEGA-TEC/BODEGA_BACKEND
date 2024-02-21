@@ -91,7 +91,7 @@ def consult_all_by_name(name):
 #consult_all_by_name("Richards")
 
 def search_carne(carne):
-    base_dn = 'dc=cr'
+    base_dn = 'dc=estudiantes,dc=ie,dc=tec,dc=ac'
     filter = f'(&(objectClass=user)(telephoneNumber={carne}))'  # Agrega un paréntesis de cierre aquí
     
     conn.search(base_dn, filter, SUBTREE)

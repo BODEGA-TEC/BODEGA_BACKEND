@@ -80,7 +80,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
     {
         policy.WithOrigins(
-            "http://172.21.6.223:8080",  // Producción y Staging
+            "http://sibe.ie.tec.ac.cr",  // Producción y Staging
             "http://localhost:3000"      // Local
         )
         .AllowAnyMethod()

@@ -3,6 +3,7 @@
 #pip install openpyxl
 
 import csv
+import re
 import mysql.connector
 from datetime import datetime, timezone, timedelta
 import pytz
@@ -65,36 +66,59 @@ def getActivoBodega(table_name):
     return code
 
 
+def if_default(text, default):
+    if text is None:
+        return default
+    if isinstance(text, (str, int)):
+        cleaned = str(text).strip()
+        cleaned = re.sub(r'\s+', ' ', cleaned)
+        if cleaned in ['*','-']:
+            return default
+        elif cleaned != '':
+            return cleaned
+        else:
+            default
+    return None
+
 def process_equipo():
     wb = openpyxl.load_workbook(filename)
-    sheet = wb['equipo']
+    sheet = wb[('inventario solo equipo').upper()]
     headers = [cell.value for cell in sheet[1]]
 
     # Encabezados esperados
     expected_headers = ['CATEGORIA', 'ESTADO', 'DESCRIPCION', 'MARCA', 'MODELO', 'ACTIVOTEC',  'SERIE', 'OBSERVACIONES', 'CONDICION', 'ESTANTE', 'CANTIDAD']
-        
+    print("hi")
     # Asegurarse de que todos los encabezados esperados estén presentes
     if all(header in headers for header in expected_headers):
         print("[...] Equipo")
-        for row in sheet.iter_rows(min_row=2, values_only=True):
 
+        i = 1
+        for row in sheet.iter_rows(min_row=2, values_only=True):
             # Asigna los valores a variables según los encabezados dinámicamente, debe ser el mismo orden que el de expected headers
             categoria, estado, descripcion, marca, modelo, activoTec, serie, observaciones, condicion, estante, cantidad = (
                 row[headers.index(header)] for header in expected_headers
             )
 
+            # Verifica si todas las celdas de la fila están vacías o nulas
+            if all(value is None or str(value).strip() == '' for value in [categoria, estado, descripcion, marca, modelo, activoTec, serie, observaciones, condicion, estante, cantidad ]):
+                print("Linea vacia")
+                break
+            
+            i+=1
+            print ("Linea:",i)
+    
             # Formateo
             categoriaId = getCategoria("equipo", categoria.upper())
             estadoId = estado_dict.get(estado.upper(), 1)
             fechaRegistro = datetime.now(pytz.timezone('America/Costa_Rica'))
-            descripcion = '?' if descripcion is None else (descripcion.strip() if isinstance(descripcion, str) and descripcion.strip() != '' else descripcion)
-            marca = None if marca is None else (marca.strip() if isinstance(marca, str) and marca.strip() != '' else marca)
-            modelo = None if modelo is None else (str(modelo).strip() if isinstance(modelo, (str, int)) else None)
-            activoTec = str(activoTec).upper().replace(" ", "").replace("'", "-")
-            serie = None if serie is None else (serie.strip() if isinstance(serie, str) and serie.strip() != '' else serie)
-            observaciones = None if (not observaciones or observaciones.strip() == '') else observaciones
+            descripcion = if_default(descripcion, 'SIN DEFINIR')
+            marca = if_default(marca, None)
+            modelo = if_default(modelo, None)
+            activoTec = 'SIN DEFINIR' if activoTec is None else str(activoTec).replace(" ", "").upper()
+            serie = if_default(serie, None)
+            observaciones = if_default(observaciones, None)
             condicion = condicion_dict.get(condicion.upper(), 1) # Condicion: Convierte la condición a mayúsculas y asigna por defecto "BUENO" si no es válida
-            estante =  estante.upper()
+            estante =  if_default(None if estante is None else estante.upper(), "N/A")
             
             # Insertar a DB
             cursor = connection.cursor()
@@ -113,32 +137,44 @@ def process_equipo():
 
 def process_componentes():
     wb = openpyxl.load_workbook(filename)
-    sheet = wb['componentes']
+    sheet = wb[('inventario componentes').upper()]
     headers = [cell.value for cell in sheet[1]]
 
     # Encabezados esperados
     expected_headers = ['CATEGORIA', 'DESCRIPCION', 'NO. PARTE', 'CANTIDAD', 'OBSERVACIONES', 'CONDICION', 'ESTANTE']
-
+    i = 1
     # Asegurarse de que todos los encabezados esperados estén presentes
     if all(header in headers for header in expected_headers):
         print("[...] Componentes")
+            
         for row in sheet.iter_rows(min_row=2):
+
+            
             # Asigna los valores a variables según los encabezados dinámicamente, debe ser el mismo orden que el de expected headers
             categoria, descripcion, no_parte, cantidad, observaciones, condicion, estante = (
                 row[headers.index(header)].value for header in expected_headers
             )
+            
+            # Verifica si todas las celdas de la fila están vacías o nulas
+            if all(value is None or str(value).strip() == '' for value in [categoria, descripcion, no_parte, cantidad, observaciones, condicion, estante]):
+                print("Linea vacia")
+                break
+            
+            i+=1
+            print ("Linea:",i)            
+
             # Formateo
             categoriaId = getCategoria("componente", categoria.upper())
             estadoId = 1 if (cantidad is not None and int(cantidad) > 0) else 3  # 1:Disponible - 3:Agotado
             fechaRegistro = datetime.now(pytz.timezone('America/Costa_Rica'))
-            descripcion = '?' if descripcion is None else (descripcion.strip() if isinstance(descripcion, str) and descripcion.strip() != '' else descripcion)
+            descripcion = if_default(descripcion, 'SIN DEFINIR')
             cantidadTotal = int(cantidad) if cantidad else 0     # Valor defecto si no esta, es cero
             cantidadDisponible = cantidadTotal
             activoBodega = getActivoBodega("componente")
-            observaciones = None if (not observaciones or str(observaciones).strip() == '') else str(observaciones)
-            estante =  estante.upper()
+            observaciones = if_default(observaciones, None)
+            estante =  if_default(None if estante is None else estante.upper(), "SIN DEFINIR")
             condicion = condicion_dict.get(condicion.upper(), 1) if condicion else 1 # Condicion: Convierte la condición a mayúsculas y asigna por defecto "BUENO" si no es válida
-            no_parte = None if no_parte is None else (str(no_parte).strip() if isinstance(no_parte, (str, int)) else None)
+            no_parte = if_default(no_parte, "N/A")
             
             # Insertar a dB
             cursor = connection.cursor()
@@ -164,7 +200,7 @@ if __name__ == "__main__":
         password="admin",
         database="sibe_db"
     )
-    filename = 'Inventario.xlsx'
+    filename = 'Inventario_1S24.xlsx'
 
     # Procesar
     process_equipo()

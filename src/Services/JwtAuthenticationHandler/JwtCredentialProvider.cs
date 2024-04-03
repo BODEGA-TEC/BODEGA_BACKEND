@@ -13,8 +13,8 @@ namespace JwtAuthenticationHandler
     public class JwtCredentialProvider
     {
         internal readonly string SECURITY_KEY;
-        private readonly int ACCESS_TOKEN_EXPIRATION_MINUTES;
-        private readonly int REFRESH_TOKEN_EXPIRATION_DAYS;
+        private readonly int USER_ACCESS_TOKEN_EXPIRATION_MINUTES;
+        private readonly int USER_REFRESH_TOKEN_EXPIRATION_HOURS;
 
 
         /// <summary>
@@ -31,12 +31,12 @@ namespace JwtAuthenticationHandler
                 throw new ArgumentException("La clave de seguridad JWT no está configurada en la aplicación.");
             }
 
-            if (!int.TryParse(configuration["JwtSettings:AccessTokenExpirationMinutes"], out ACCESS_TOKEN_EXPIRATION_MINUTES))
+            if (!int.TryParse(configuration["JwtSettings:UserAccessTokenExpirationMinutes"], out USER_ACCESS_TOKEN_EXPIRATION_MINUTES))
             {
                 throw new ArgumentException("La configuración del tiempo de expiración del access token JWT no es válida.");
             }
 
-            if (!int.TryParse(configuration["JwtSettings:RefreshTokenExpirationHours"], out REFRESH_TOKEN_EXPIRATION_DAYS))
+            if (!int.TryParse(configuration["JwtSettings:UserRefreshTokenExpirationHours"], out USER_REFRESH_TOKEN_EXPIRATION_HOURS))
             {
                 throw new ArgumentException("La configuración del tiempo de expiración del refresh token JWT no es válida.");
             }
@@ -104,9 +104,7 @@ namespace JwtAuthenticationHandler
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECURITY_KEY));
             var signingCreds = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512Signature);
-            //var expirationTimestamp = DateTime.UtcNow.AddMinutes(ACCESS_TOKEN_EXPIRATION_MINUTES);
-            var expirationTimestamp = DateTime.UtcNow.AddSeconds(10);
-
+            var expirationTimestamp = DateTime.UtcNow.AddMinutes(USER_ACCESS_TOKEN_EXPIRATION_MINUTES);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -144,8 +142,7 @@ namespace JwtAuthenticationHandler
         {
             string refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
             DateTime createdDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
-            //DateTime expiredDate = createdDate.AddMinutes(REFRESH_TOKEN_EXPIRATION_DAYS);
-            DateTime expiredDate = createdDate.AddSeconds(40);
+            DateTime expiredDate = createdDate.AddHours(USER_REFRESH_TOKEN_EXPIRATION_HOURS);
 
             return (refreshToken, createdDate, expiredDate);
         }
@@ -200,7 +197,7 @@ namespace JwtAuthenticationHandler
         {
             if (string.IsNullOrEmpty(carne))
             {
-                throw new ArgumentException("carne cannot be null or empty.");
+                throw new ArgumentException("El carné no puede ser nulo o vacío.");
             }
             // Add claims
             var claims = new List<Claim>

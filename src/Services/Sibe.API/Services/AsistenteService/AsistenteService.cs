@@ -22,6 +22,7 @@ namespace Sibe.API.Services.AsistenteService
         private readonly IMapper _mapper;
         private readonly JwtCredentialProvider _jwtCredentialProvider;
 
+        private readonly int ASISTENTE_ACCESS_TOKEN_EXPIRATION_MINUTES = 10;
 
         public AsistenteService(IConfiguration configuration, DataContext context, IMapper mapper, JwtCredentialProvider jwtCredentialProvider)
         {
@@ -31,7 +32,6 @@ namespace Sibe.API.Services.AsistenteService
             _jwtCredentialProvider = jwtCredentialProvider;
 
         }
-
 
         public async Task<Asistente> FetchByCarne(string carne)
         {
@@ -231,7 +231,7 @@ namespace Sibe.API.Services.AsistenteService
                     ?? throw new Exception(_messages["NotFound"]);
 
                 // Crear y almacenar el token para el asistente
-                var token = _jwtCredentialProvider.CreateAsistenteToken(asistente.Carne, 10); // 10 minutos de expiración
+                var token = _jwtCredentialProvider.CreateAsistenteToken(asistente.Carne, ASISTENTE_ACCESS_TOKEN_EXPIRATION_MINUTES); // minutos de expiración
 
                 // Map a Dto
                 ReadAsistenteDto dto = _mapper.Map<ReadAsistenteDto>(asistente);
@@ -272,7 +272,7 @@ namespace Sibe.API.Services.AsistenteService
                 }
 
                 // Crear y almacenar el token para el asistente
-                var token = _jwtCredentialProvider.CreateAsistenteToken(asistente.Carne, 10); // 10 minutos de expiración
+                var token = _jwtCredentialProvider.CreateAsistenteToken(asistente.Carne, ASISTENTE_ACCESS_TOKEN_EXPIRATION_MINUTES); // minutos de expiración
 
                 // Map a Dto
                 ReadAsistenteDto dto = _mapper.Map<ReadAsistenteDto>(asistente);

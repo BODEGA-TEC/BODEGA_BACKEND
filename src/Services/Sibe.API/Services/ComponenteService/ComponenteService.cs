@@ -62,7 +62,7 @@ namespace Sibe.API.Services.ComponenteService
                 {
                     Categoria = categoria,
                     Estado = estado,
-                    Descripcion = componenteDto.Descripcion.ToUpper(),
+                    Descripcion = componenteDto.Descripcion
                     CantidadTotal = componenteDto.CantidadTotal,
                     CantidadDisponible = componenteDto.CantidadDisponible,
                     Condicion = componenteDto.Condicion,
@@ -154,7 +154,7 @@ namespace Sibe.API.Services.ComponenteService
                 var target = await FetchById(id);
 
                 // Actualizar componente | Solamente datos que no son null
-                target.Descripcion = componenteDto.Descripcion ?? target.Descripcion.ToUpper();
+                target.Descripcion = componenteDto.Descripcion ?? target.Descripcion
                 target.CantidadTotal = componenteDto.CantidadTotal ?? target.CantidadTotal;
                 target.CantidadDisponible = componenteDto.CantidadDisponible ?? target.CantidadDisponible;
                 target.Condicion = componenteDto.Condicion ?? target.Condicion;

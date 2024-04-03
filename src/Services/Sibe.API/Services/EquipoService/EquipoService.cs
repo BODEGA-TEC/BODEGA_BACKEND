@@ -68,7 +68,7 @@ namespace Sibe.API.Services.EquipoService
                 {
                     Categoria = categoria,
                     Estado = estado,
-                    Descripcion = equipoDto.Descripcion.ToUpper(),
+                    Descripcion = equipoDto.Descripcion,
                     Condicion = equipoDto.Condicion,
                     Estante = equipoDto.Estante.ToUpper(),
                     Marca = equipoDto.Marca,
@@ -161,7 +161,7 @@ namespace Sibe.API.Services.EquipoService
                 var target = await FetchById(id);
 
                 // Actualizar equipo | Solamente datos que no son null
-                target.Descripcion = equipoDto.Descripcion ?? target.Descripcion.ToUpper();
+                target.Descripcion = equipoDto.Descripcion ?? target.Descripcion;
                 target.Condicion = equipoDto.Condicion ?? target.Condicion;
                 target.Estante = equipoDto.Estante ?? target.Estante.ToUpper();
                 target.Marca = equipoDto.Marca ?? target.Marca;

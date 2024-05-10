@@ -4,6 +4,8 @@
     {
         ADMIN = 0,
         ASISTENTE = 1,
-        PROFESOR = 2
+        PROFESOR = 2,
+        SOPORTE_TECNICO = 3,
+        COORDINADOR = 4
     }
 }

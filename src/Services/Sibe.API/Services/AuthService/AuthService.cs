@@ -6,8 +6,11 @@ using Sibe.API.Models.Entidades;
 using Sibe.API.Data.Dtos.Usuario;
 using Sibe.API.Models.Historicos;
 using Sibe.API.Utils;
+using Sibe.API.Services.EmailService;
 using System.Security.Claims;
 using Sibe.API.Models.Enums;
+using AutoMapper;
+using Sibe.API.Services.EstadoService;
 
 namespace Sibe.API.Services.AuthService
 {
@@ -22,6 +25,7 @@ namespace Sibe.API.Services.AuthService
         private readonly IConfigurationSection _messages;
         private readonly DataContext _context;
         private readonly JwtCredentialProvider _jwtCredentialProvider;
+        private readonly IEmailService _emailService;
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase AuthService.
@@ -29,13 +33,15 @@ namespace Sibe.API.Services.AuthService
         /// <param name="configuration">La configuración de la aplicación.</param>
         /// <param name="context">El contexto de datos de la aplicación.</param>
         /// <param name="jwtCredentialProvider">El proveedor de credenciales JWT.</param>
-        public AuthService(IConfiguration configuration, DataContext context, JwtCredentialProvider jwtCredentialProvider)
+        public AuthService(IConfiguration configuration, DataContext context, JwtCredentialProvider jwtCredentialProvider, IEmailService emailService)
         {
             _messages = configuration.GetSection("UsuarioService");
             _context = context;
             _jwtCredentialProvider = jwtCredentialProvider;
+            _emailService = emailService;
+
         }
-        
+
 
         /// <summary>
         /// Función para verificar que la clave tiene un formato correcto.
@@ -95,7 +101,7 @@ namespace Sibe.API.Services.AuthService
         /// </summary>
         /// <param name="usuario">El usuario del que se va a obtener la contraseña.</param>
         /// <returns>El objeto HistoricoClave que representa la contraseña actual.</returns>
-        private HistoricoClave GetCurrentClave(Usuario usuario)
+        private async Task<HistoricoClave> GetCurrentClave(Usuario usuario)
         {
             // Ordenar el historial de claves por fecha de cambio de forma descendente
             var currentClave = usuario.HistoricoClaves.OrderByDescending(h => h.FechaRegistro).FirstOrDefault();
@@ -105,6 +111,11 @@ namespace Sibe.API.Services.AuthService
             if (currentClave == null || expirationDate < TimeZoneHelper.Now())
             {
                 SetClaveTemporal(usuario);
+
+                // Enviar la clave temporal por correo
+                string code = usuario.ClaveTemporal!;
+                await _emailService.SendTemporaryCodeEmailAsync(usuario.Correo, code);
+
                 throw new Exception(currentClave == null ? _messages["ClaveTemporalUnchanged"] : _messages["ExpiredClave"]);
             }
 
@@ -169,7 +180,7 @@ namespace Sibe.API.Services.AuthService
             {
                 // Validaciones
                 await IsUsernameInUse(usuarioDto.Username);
-                //await IsCorreoInUse(usuarioDto.Correo);
+                await IsCorreoInUse(usuarioDto.Correo);
                 ValidateRegexClave(usuarioDto.Clave);
 
                 // Crear usuario
@@ -222,7 +233,7 @@ namespace Sibe.API.Services.AuthService
                     .FirstOrDefaultAsync(u => u.Username == username) ?? throw new Exception(_messages["UsuarioNotFound"]);
 
                 // Autenticacion
-                var currentClave = GetCurrentClave(usuario);
+                var currentClave = await GetCurrentClave(usuario);
                 if (!JwtCredentialProvider.AuthPasswordHash(clave, currentClave.ClaveHash, currentClave.ClaveSalt))
                 {
                     throw new Exception(_messages["InvalidCredentials"]);
@@ -338,13 +349,16 @@ namespace Sibe.API.Services.AuthService
                 // Asignar clave temporal
                 SetClaveTemporal(usuario);
 
-                /* Enviar la clave temporal por correo. */
+
+                // Enviar la clave temporal por correo
+                string code = usuario.ClaveTemporal!;
+                await _emailService.SendTemporaryCodeEmailAsync(usuario.Correo, code);
 
                 // Actualizar
                 await _context.SaveChangesAsync();
 
                 // Configurar respuesta
-                response.SetSuccess(_messages["ClaveTemporalSentSuccess"], usuario.ClaveTemporal);
+                response.SetSuccess(_messages["ClaveTemporalSentSuccess"]);
             }
 
             catch (Exception ex)
@@ -375,7 +389,7 @@ namespace Sibe.API.Services.AuthService
                 // Obtener las contraseñas del usuario.
                 var usuario = await _context.Usuario
                     .Include(u => u.HistoricoClaves)
-                    .FirstOrDefaultAsync(u => u.Id == info.UsuarioId && u.ClaveTemporal == info.ClaveTemporal) ?? throw new Exception(_messages["ClaveTemporalInvalid"]);
+                    .FirstOrDefaultAsync(u => u.Correo == info.UsuarioCorreo && u.ClaveTemporal == info.ClaveTemporal) ?? throw new Exception(_messages["ClaveTemporalInvalid"]);
 
                 // Verificar que la clave no esté repetida
                 bool duplicatedClave = usuario.HistoricoClaves.Any(currentClave => JwtCredentialProvider.AuthPasswordHash(info.ClaveNueva, currentClave.ClaveHash, currentClave.ClaveSalt));

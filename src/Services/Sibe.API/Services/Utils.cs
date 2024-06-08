@@ -56,4 +56,28 @@ namespace Sibe.API.Utils
             return randomString;
         }
     }
+
+    public static class EmailHelper
+    {
+        public static string ObfuscateEmail(string email)
+        {
+            var atIndex = email.IndexOf('@');
+            if (atIndex == -1)
+                return email;  // Retorna el correo como está si no tiene '@'
+
+            var prefix = email.Substring(0, atIndex);
+            var domain = email.Substring(atIndex);
+
+            if (prefix.Length <= 4)
+                return email; // Si el prefijo es muy corto, retorna el correo como está
+
+            var visiblePrefix = prefix.Substring(0, 3);  // Muestra los primeros tres caracteres
+            var lastChar = prefix[prefix.Length - 1];  // Muestra el último carácter antes del '@'
+
+            // Usa dos asteriscos para reemplazar la parte intermedia
+            var obfuscatedPrefix = visiblePrefix + "**" + lastChar;
+
+            return obfuscatedPrefix + domain;
+        }
+    }
 }

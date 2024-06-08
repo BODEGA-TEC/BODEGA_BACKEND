@@ -2,7 +2,7 @@
 {
     public class ChangeClaveDto
     {
-        public int UsuarioId { get; set; }
+        public string UsuarioCorreo { get; set; } = string.Empty!;
         public string ClaveNueva { get; set; } = string.Empty!;
         public string ClaveTemporal { get; set; } = string.Empty!;
     }

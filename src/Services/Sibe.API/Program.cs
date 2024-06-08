@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Sibe.API.Services.AuthService;
 using Sibe.API.Services.AsistenteService;
 using Sibe.API.Services.BoletaService;
+using Sibe.API.Services.EmailService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,7 +70,7 @@ builder.Services.AddScoped<IComponenteService, ComponenteService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAsistenteService, AsistenteService>();
 builder.Services.AddScoped<IBoletaService, BoletaService>();
-
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 // Service to implement authentication middleware
@@ -93,7 +94,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

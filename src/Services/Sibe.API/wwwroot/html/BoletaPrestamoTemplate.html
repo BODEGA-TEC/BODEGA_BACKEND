@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue Medium', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .section {
+            background-color: #fff;
+            padding: 10px;
+        }
+
+        .header {
+            background-color: #fff;
+            color: #000;
+            margin-top: 40px;
+            padding: 10px 10px 3px 10px;
+            font-size: 20px;
+            font-weight: bold;
+            border-top: 1px solid #004379;
+            border-bottom: 2px solid #004379;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 5px;
+        }
+
+        th {
+            background-color: #fff;
+            width: 15%;
+        }
+
+        td {
+            width: 45%;
+        }
+
+        .activos-table th {
+            background-color: #004379;
+            color: #FFF;
+            border-right: 1px solid #FFF;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .activos-table td {
+            border: none;
+            padding: 5px;
+            text-align: left;
+        }
+
+        .activos-table tr:nth-child(odd) {
+            background-color: #CCD9E4;
+        }
+
+        .activos-table tr:nth-child(even) {
+            background-color: #FFF;
+        }
+
+
+        .activos-table .codigo, .activos-table .tipo, .activos-table .cantidad {
+            width: 10%;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .activos-table .descripcion {
+            width: 55%;
+        }
+
+        .activos-table .observaciones {
+            width: 45%;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class='section'>
+        <table>
+            <tr>
+                <th>Consecutivo:</th>
+                <td>{{Consecutivo}}</td>
+                <th>Estado:</th>
+                <td>{{Estado}}</td>
+            </tr>
+            <tr>
+                <th>Tipo:</th>
+                <td>{{Tipo}}</td>
+                <th>Fecha:</th>
+                <td>{{Fecha}}</td>
+            </tr>
+            <tr>
+                <th>Asistente:</th>
+                <td>{{Asistente}}</td>
+                <th>Aprobado por:</th>
+                <td>{{AprobadoPor}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class='header'>DATOS DEL SOLICITANTE</div>
+    <div class='section'>
+        <table>
+            <tr>
+                <th>Tipo:</th>
+                <td>{{TipoSolicitante}}</td>
+                <th>Carné:</th>
+                <td>{{Carne}}</td>
+            </tr>
+            <tr>
+                <th>Nombre:</th>
+                <td>{{NombreSolicitante}}</td>
+                <th>Correo:</th>
+                <td>{{CorreoSolicitante}}</td>
+            </tr>
+            <tr>
+                <th>Carrera:</th>
+                <td>{{Carrera}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class='header'>DETALLE DE ACTIVOS</div>
+    <div class='section'>
+        <table class='activos-table'>
+            {{TablaActivos}}
+        </table>
+    </div>
+</body>
+</html>

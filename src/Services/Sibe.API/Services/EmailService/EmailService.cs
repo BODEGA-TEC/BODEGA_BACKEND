@@ -15,15 +15,10 @@ namespace Sibe.API.Services.EmailService
         private readonly string _templatePath = "wwwroot/html/TemporaryCodeTemplate.html"; // Ruta a la plantilla
 
 
-        private static string LoadTemplate(string path)
-        {
-            return File.ReadAllText(path);
-        }
-
         private string GenerateTemporaryCodeBodyFromTemplate(string toEmail, string code)
         {
             // Cargar y reemplazar los marcadores de la plantilla
-            string template = LoadTemplate(Path.Combine(Directory.GetCurrentDirectory(), _templatePath));
+            string template = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), _templatePath));
             string obfuscatedEmail = EmailHelper.ObfuscateEmail(toEmail);
             template = template.Replace("{{email}}", obfuscatedEmail);
             template = template.Replace("{{code}}", code);

@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Sibe.API.Models.Boletas;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Sibe.API.Utils

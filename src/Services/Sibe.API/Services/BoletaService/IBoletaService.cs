@@ -13,7 +13,7 @@ namespace Sibe.API.Services.BoletaService
         Solicitante AuthenticateSolicitante(string carne);
         Task<ServiceResponse<int>> CreateBoletaPrestamo(CreateBoletaDto info);
         Task<ServiceResponse<int>> CreateBoletaDevolucion(int boletaPrestamoId, CreateBoletaDto infoDevolucion);
-        Task<ServiceResponse<string>> GetBoletaPdf(int boletaId);
+        Task<ServiceResponse<string>> GetBoletaHtml(int boletaId);
         Task<ServiceResponse<string>> SendBoletaByEmail(int boletaId);
     }
 }

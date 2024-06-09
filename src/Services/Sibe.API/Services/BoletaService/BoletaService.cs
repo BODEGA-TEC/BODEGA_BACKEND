@@ -16,6 +16,8 @@ using Sibe.API.Utils;
 using System.Globalization;
 using System.Reflection.Metadata;
 using System.Security.Claims;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Sibe.API.Services.BoletaService
@@ -28,6 +30,7 @@ namespace Sibe.API.Services.BoletaService
         private readonly IMapper _mapper;
         private readonly IAsistenteService _asistenteService;
         private readonly JwtCredentialProvider _jwtCredentialProvider;
+        private readonly string _templatePath = "wwwroot/html/BoletaPrestamoTemplate.html";
 
         public BoletaService(IConfiguration configuration, DataContext context, IMapper mapper, IAsistenteService asistenteService, JwtCredentialProvider jwtCredentialProvider)
         {
@@ -385,33 +388,7 @@ namespace Sibe.API.Services.BoletaService
             return response;
         }
 
-        public async Task<ServiceResponse<string>> GetBoletaPdf(int boletaId)
-        {
-            var response = new ServiceResponse<string>();
 
-            try
-            {
-                // Paso 1: Recuperar la boleta respectiva con la informacion de los activos y demás.
-                Boleta boleta = await FetchBoletaById(boletaId);
-
-                // Paso 2: Crear el XML
-                string xml = CreateXml(boleta);
-
-                // Paso 3: Crear el PDF
-                //byte[] pdfBytes = CreatePdf(xml);
-
-                // Enviar como respuesta
-                response.SetSuccess(_messages["CreateSuccess"], xml);
-            }
-
-            catch (Exception ex)
-            {
-                // Configurar error
-                response.SetError(ex.Message);
-            }
-
-            return response;
-        }
 
         public async Task<ServiceResponse<string>> SendBoletaByEmail(int boletaId)
         {
@@ -441,6 +418,106 @@ namespace Sibe.API.Services.BoletaService
 
             return response;
         }
+
+
+
+
+        public async Task<ServiceResponse<string>> GetBoletaHtml(int boletaId)
+        {
+            var response = new ServiceResponse<string>();
+
+            try
+            {
+                // Paso 1: Recuperar la boleta respectiva con la informacion de los activos y demás.
+                Boleta boleta = await FetchBoletaById(boletaId);
+
+                // Paso 2: Crear el XML
+                string html = CreateBoletaHtml(boleta);
+
+                // Paso 3: Crear el PDF
+                //byte[] pdfBytes = CreatePdf(xml);
+
+                // Enviar como respuesta
+                response.SetSuccess(_messages["CreateSuccess"], html);
+            }
+
+            catch (Exception ex)
+            {
+                // Configurar error
+                response.SetError(ex.Message);
+            }
+
+            return response;
+        }
+
+        public string CreateBoletaHtml(Boleta boleta)
+        {
+            try
+            {
+                // Cargar la plantilla HTML desde un archivo
+                string htmlTemplate = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), _templatePath), Encoding.UTF8);
+
+                // Reemplazar marcadores de posición en la plantilla
+                htmlTemplate = htmlTemplate.Replace("{{Consecutivo}}", boleta.Consecutivo);
+                htmlTemplate = htmlTemplate.Replace("{{Tipo}}", boleta.TipoBoleta.ToString());
+                htmlTemplate = htmlTemplate.Replace("{{Estado}}", boleta.Estado.ToString());
+                htmlTemplate = htmlTemplate.Replace("{{Fecha}}", boleta.FechaEmision.ToString("dd/MM/yyyy hh:mm tt", CultureInfo.GetCultureInfo("en-US")));
+                htmlTemplate = htmlTemplate.Replace("{{Asistente}}", boleta.NombreAsistente);
+                htmlTemplate = htmlTemplate.Replace("{{AprobadoPor}}", boleta.Aprobador);
+                htmlTemplate = htmlTemplate.Replace("{{TipoSolicitante}}", boleta.TipoSolicitante.ToString());
+                htmlTemplate = htmlTemplate.Replace("{{Carne}}", boleta.CarneSolicitante);
+                htmlTemplate = htmlTemplate.Replace("{{NombreSolicitante}}", boleta.NombreSolicitante);
+                htmlTemplate = htmlTemplate.Replace("{{CorreoSolicitante}}", boleta.CorreoSolicitante);
+                htmlTemplate = htmlTemplate.Replace("{{Carrera}}", "INGENIERIA EN");
+
+                // Construir la tabla de activos
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("<tr><th class='codigo'>Código</th><th class='tipo'>Tipo</th><th class='descripcion'>Descripción</th><th class='cantidad'>Cantidad</th><th class='observaciones'>Observaciones</th></tr>");
+
+                foreach (var be in boleta.BoletaEquipo)
+                {
+                    stringBuilder.AppendFormat("<tr><td class='codigo'>{0}</td><td class='tipo'>EQUIPO</td><td class='descripcion'>{1}</td><td class='cantidad'>{2}</td><td class='observaciones'>{3}</td></tr>",
+                        be.Equipo!.ActivoBodega, be.Equipo.Descripcion, 1, be.Equipo.Observaciones ?? "");
+                }
+
+                foreach (var bc in boleta.BoletaComponentes)
+                {
+                    stringBuilder.AppendFormat("<tr><td class='codigo'>{0}</td><td class='tipo'>COMPONENTE</td><td class='descripcion'>{1}</td><td class='cantidad'>{2}</td><td class='observaciones'>{3}</td></tr>",
+                        bc.Componente!.ActivoBodega, bc.Componente.Descripcion, bc.Cantidad, bc.Componente.Observaciones ?? "");
+                }
+
+
+                stringBuilder.Append("</table>");
+                htmlTemplate = htmlTemplate.Replace("{{TablaActivos}}", stringBuilder.ToString());
+
+                return Regex.Replace(htmlTemplate, @"\s+", " ").Replace("> <", "><");
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                throw new Exception("Error al generar el HTML: " + ex.Message);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private string CreateXml(Boleta boleta)
         {

@@ -52,10 +52,10 @@ namespace Sibe.API.Controllers
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
-        [HttpGet("{id}/xml")]
-        public async Task<ActionResult<ServiceResponse<string>>> GetBoletaPdf(int id)
+        [HttpGet("{id}/html")]
+        public async Task<ActionResult<ServiceResponse<string>>> GetBoletaHtml(int id)
         {
-            var response = await _boletaService.GetBoletaPdf(id);
+            var response = await _boletaService.GetBoletaHtml(id);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 

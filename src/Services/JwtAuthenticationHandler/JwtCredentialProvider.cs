@@ -207,7 +207,7 @@ namespace JwtAuthenticationHandler
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECURITY_KEY));
             var signingCreds = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512Signature);
-            var expirationTimestamp = DateTime.UtcNow.AddSeconds(expirationTime);
+            var expirationTimestamp = DateTime.UtcNow.AddMinutes(expirationTime);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

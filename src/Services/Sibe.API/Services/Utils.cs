@@ -14,6 +14,14 @@ namespace Sibe.API.Utils
             DateTime currentTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone);
             return currentTime;
         }
+
+        public static string GetSemesterPeriod(DateTime date)
+        {
+            int year = date.Year;
+            int semester = date.Month <= 6 ? 1 : 2;
+            return $"{semester} {year}";
+        }
+
     }
 
     public static class RegexValidator

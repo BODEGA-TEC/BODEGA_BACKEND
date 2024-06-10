@@ -1,185 +1,158 @@
 ﻿<!DOCTYPE html>
-<html lang="es">
+<html lang='es'>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset='UTF-8' />
+    <meta name='description' content='Boleta Comprobante' />
+    <meta name='author' content='Equipo Bodega Web' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <style>
         body {
             font-family: 'Segoe UI', 'Helvetica Neue Medium', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
         }
 
-        .section {
-            background-color: #fff;
-            padding: 10px;
-        }
-
-        .header {
-            background-color: #fff;
-            color: #000;
-            margin-top: 40px;
-            padding: 10px 10px 3px 10px;
-            font-size: 20px;
-            font-weight: bold;
-            border-top: 1px solid #004379;
-            border-bottom: 2px solid #004379;
-        }
-
-        .title-section {
-            display: flex;
+        .header-section {
             align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            margin-top:25px;
-            color: #004379;
+            overflow: auto;
+            text-align: center;
         }
+
+        .header-text {
+            font-size: 12px;
+            font-weight: 400;
+            color: #004379;
+            float: left;
+            text-align: left;
+        }
+
+        .header-logo {
+            float: right;
+        }
+
+            .header-logo img {
+                width: auto;
+                height: 35px;
+            }
 
         .title-text {
-            font-size: 22px;
+            clear: both;
+            color: #004379;
+            font-size: 16px;
             font-weight: 600;
-            color: #004379;
+            padding-top: 30px;
+            padding-bottom: 45px;
         }
 
-        .subtitle-text {
-            text-align: center;
-            color: #004379;
-            font-size: 19px;
-            font-weight: 400;
-            padding: 10px;
-            margin-top: -5px;
-            margin-bottom: 40px;
-        }
-
-        .logo {
-            width: 100px;
-            height: auto;
-        }
-
-        table {
+        .details_section {
+            overflow: auto;
             width: 100%;
-            border-collapse: collapse;
         }
 
-        th, td {
-            text-align: left;
-            padding: 5px;
-        }
+            .details_section table {
+                height: auto;
+                width: 100%;
+                table-layout: auto;
+                border-collapse: collapse;
+                border-spacing: 1px;
+                text-align: left;
+                margin-bottom: 25px;
+            }
 
-        th {
-            background-color: #fff;
-            width: 15%;
-        }
+            .details_section th {
+                font-size: 12px;
+                font-weight: 400;
+                border-top: 1px solid #004379;
+                border-bottom: 1.5px solid #004379;
+                color: #004379;
+                padding: 5px 5px 0px 5px;
+            }
 
-        td {
-            width: 45%;
-        }
+            .details_section td {
+                font-size: 11px;
+                font-weight: normal;
+                background-color: #ffffff;
+                color: #000000;
+                padding: 5px;
+                padding-left: 15px;
+            }
 
-        .activos-table th {
-            background-color: #004379;
-            color: #FFF;
-            border-right: 1px solid #FFF;
-            text-align: center;
-            padding: 5px;
-        }
+                .details_section td:nth-child(1) {
+                    width: 13%;
+                }
 
-        .activos-table td {
-            border: none;
-            padding: 5px;
-            text-align: left;
-        }
+                .details_section td:nth-child(2) {
+                    width: 45%;
+                }
 
-        .activos-table tr:nth-child(odd) {
-            background-color: #CCD9E4;
-        }
-
-        .activos-table tr:nth-child(even) {
-            background-color: #FFF;
-        }
-
-
-        .activos-table .codigo, .activos-table .tipo, .activos-table .cantidad {
-            width: 5%;
-            white-space: nowrap;
-            text-align: center;
-        }
-
-        .activos-table .descripcion {
-            width: 30%;
-        }
-
-        .activos-table .observaciones {
-            width: 25%;
-        }
-
+                .details_section td:nth-child(3) {
+                    width: 10%;
+                }
     </style>
-
 </head>
 <body>
-
-    <div class='title-section'>
-        <div class='title-text'>
-            SISTEMA INTEGRADO DE BODEGA ELECTRÓNICA<br>
-            ESCUELA DE ELECTRÓNICA
+    <div>
+        <div class='header-section'>
+            <div class='header-text'>
+                SISTEMA INTEGRADO DE BODEGA ELECTRÓNICA<br />ESCUELA DE ELECTRÓNICA
+            </div>
+            <div class='header-logo'>
+                <img src='{{LogoPath}}' alt='TEC Logo' />
+            </div>
+            <div class='title-text'>
+                COMPROBANTE ELECTRÓNICO
+            </div>
         </div>
-        {{LogoTEC}}
-    </div>
 
-    <div class='subtitle-text'>
-        COMPROBANTE ELECTRÓNICO<br>
-        {{Tipo}}
-    </div>
-
-    <div class='section'>
-        <table>
-            <tr>
-                <th>Consecutivo:</th>
-                <td>{{Consecutivo}}</td>
-                <th>Estado:</th>
-                <td>{{Estado}}</td>
-            </tr>
-            <tr>
-                <th>Tipo:</th>
-                <td>{{Tipo}}</td>
-                <th>Fecha:</th>
-                <td>{{Fecha}}</td>
-            </tr>
-            <tr>
-                <th>Asistente:</th>
-                <td>{{Asistente}}</td>
-                <th>Aprobado por:</th>
-                <td>{{AprobadoPor}}</td>
-            </tr>
-        </table>
-    </div>
-
-    <div class='header'>DATOS DEL SOLICITANTE</div>
-    <div class='section'>
-        <table>
-            <tr>
-                <th>Tipo:</th>
-                <td>{{TipoSolicitante}}</td>
-                <th>Carné:</th>
-                <td>{{Carne}}</td>
-            </tr>
-            <tr>
-                <th>Nombre:</th>
-                <td>{{NombreSolicitante}}</td>
-                <th>Correo:</th>
-                <td>{{CorreoSolicitante}}</td>
-            </tr>
-            <tr>
-                <th>Carrera:</th>
-                <td>{{Carrera}}</td>
-            </tr>
-        </table>
-    </div>
-
-    <div class='header'>DETALLE DE ACTIVOS</div>
-    <div class='section'>
-        <table class='activos-table'>
-            {{TablaActivos}}
-        </table>
+        <div class='details_section' role='region'>
+            <table>
+                <tr>
+                    <td>Consecutivo:</td>
+                    <td>{{Consecutivo}}</td>
+                    <td>Tipo:</td>
+                    <td>{{TipoBoleta}}</td>
+                </tr>
+                <tr>
+                    <td>Periodo:</td>
+                    <td>SEMESTRE {{Periodo}}</td>
+                    <td>Fecha:</td>
+                    <td>{{Fecha}}&nbsp;&nbsp; {{Hora}}</td>
+                </tr>
+                <tr>
+                    <td>Asistente:</td>
+                    <td>{{Asistente}}</td>
+                    <td>Estado:</td>
+                    <td>{{Estado}}</td>
+                </tr>
+                <tr>
+                    <td>Aprobado por:</td>
+                    <td>{{AprobadoPor}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <th colspan='4'>DATOS DEL SOLICITANTE</th>
+                </tr>
+                <tr>
+                    <td>Nombre:</td>
+                    <td>{{Nombre}}</td>
+                    <td>Tipo:</td>
+                    <td>{{TipoSolicitante}}</td>
+                </tr>
+                <tr>
+                    <td>Carrera:</td>
+                    <td>{{Carrera}}</td>
+                    <td>Carné:</td>
+                    <td>{{Carne}}</td>
+                </tr>
+                <tr>
+                    <td>Correo:</td>
+                    <td>{{Correo}}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
     </div>
 </body>
 </html>

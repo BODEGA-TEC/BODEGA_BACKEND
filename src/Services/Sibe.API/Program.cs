@@ -14,8 +14,12 @@ using Sibe.API.Services.AuthService;
 using Sibe.API.Services.AsistenteService;
 using Sibe.API.Services.BoletaService;
 using Sibe.API.Services.EmailService;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Registrar el proveedor de codificación
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 //var ldapService = new LdapService("estudiantes.ie.tec.ac.cr","sibe", "Cg7X4k57QWSc");
 //ldapService.GetLdapServerDetails();

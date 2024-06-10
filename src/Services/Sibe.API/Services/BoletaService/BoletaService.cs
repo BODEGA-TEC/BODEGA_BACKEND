@@ -23,6 +23,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
+using System.Net;
 
 namespace Sibe.API.Services.BoletaService
 {
@@ -463,7 +467,7 @@ namespace Sibe.API.Services.BoletaService
             // Si la cantidad disponible es mayor que cero, el estado del componente se establece como "disponible"
             // Si la cantidad disponible es cero, el estado del componente se establece como "agotado"
             componente.EstadoId = componente.CantidadDisponible > 0 ? 1 : 3;
-         
+
             // Agregar el componente a la lista de la boleta con las observaciones
             boleta.BoletaComponentes.Add(new BoletaComponente
             {
@@ -479,7 +483,7 @@ namespace Sibe.API.Services.BoletaService
         {
             int cantidadDevuelta = boletaComponente.Cantidad;
             componente.CantidadDisponible += cantidadDevuelta;
-            
+
             // Agregar el componente a la lista de la boleta con las observaciones
             boleta.BoletaComponentes.Add(new BoletaComponente
             {
@@ -493,6 +497,7 @@ namespace Sibe.API.Services.BoletaService
             componente.Observaciones += " | " + boletaComponente.Observaciones;
         }
 
+
         public async Task<ServiceResponse<string>> SendBoletaByEmail(int boletaId)
         {
             var response = new ServiceResponse<string>();
@@ -502,13 +507,16 @@ namespace Sibe.API.Services.BoletaService
                 // Paso 1: Recuperar la boleta respectiva con la información de los activos y demás.
                 Boleta boleta = await FetchBoletaById(boletaId);
 
-                // Paso 2: Crear el HTML
-                string html = CreateBoletaHtml(boleta);
+                // Paso 2: Crear el PDF
+                byte[] pdf = CreateBoletaPdf(boleta);
 
                 // Paso 3: Enviar por correo electrónico
                 string subject = $"Comprobante electrónico {boleta.Consecutivo}";
-                await _emailService.SendEmailAsync(boleta.Solicitante.Correo, subject, html);
-                response.SetSuccess("Email enviado exitosamente.", html);
+                string pdfName = $"{boleta.TipoBoleta}_{boleta.Solicitante.Carne}_{boleta.Consecutivo}.pdf";
+                string body = $"<p>Estimado {boleta.Solicitante.Nombre},</p><p>Adjunto encontrará su comprobante electrónico.</p><p>Saludos,</p>";
+
+                await _emailService.SendEmailAsync(boleta.Solicitante.Correo, subject, body, null, pdf, pdfName);
+                response.SetSuccess("Email enviado exitosamente.");
             }
             catch (Exception ex)
             {
@@ -528,7 +536,7 @@ namespace Sibe.API.Services.BoletaService
                 // Paso 1: Recuperar la boleta respectiva con la informacion de los activos y demás.
                 Boleta boleta = await FetchBoletaById(boletaId);
 
-                // Paso 2: Crear el XML
+                // Paso 2: Crear el HTML
                 string html = CreateBoletaHtml(boleta);
 
                 // Paso 3: Crear el PDF
@@ -547,6 +555,29 @@ namespace Sibe.API.Services.BoletaService
             return response;
         }
 
+
+        /// <summary>
+        /// Crea un PDF a partir de una boleta dada.
+        /// </summary>
+        /// <param name="boleta">La boleta que se utilizará para generar el PDF.</param>
+        /// <returns>Un arreglo de bytes que representa el PDF generado.</returns>
+        public byte[] CreateBoletaPdf(Boleta boleta)
+        {
+            // Paso 1: Crear el HTML usando la boleta proporcionada
+            string html = CreateBoletaHtml(boleta);
+
+            // Paso 2: Crear el PDF a partir del HTML generado
+            byte[] pdf = CreateBoletaPdfFromHtml(html);
+
+            return pdf;
+        }
+
+
+        /// <summary>
+        /// Crea el contenido HTML para una boleta dada.
+        /// </summary>
+        /// <param name="boleta">La boleta para la cual se generará el HTML.</param>
+        /// <returns>Una cadena que contiene el HTML generado.</returns>
         public string CreateBoletaHtml(Boleta boleta)
         {
             try
@@ -555,45 +586,41 @@ namespace Sibe.API.Services.BoletaService
                 string htmlTemplate = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), _templatePath), Encoding.UTF8);
 
                 // Cargar la imagen del logo y convertirla a Base64
-                string logoBase64 = Convert.ToBase64String(File.ReadAllBytes(_tecLogoPath));
-                string logoImageHtml = $"<img src='data:image/png;base64,{logoBase64}' alt='TEC Logo' style='width: auto; height: 70px; margin-right: 80px;'>";
+                string logoPath = Path.Combine(Directory.GetCurrentDirectory(), _tecLogoPath);
+                string logoImageHtml = $"file:///{logoPath.Replace("\\", "/")}";
 
                 // Reemplazar marcadores de posición en la plantilla
-                htmlTemplate = htmlTemplate.Replace("{{LogoTEC}}", logoImageHtml);
-                htmlTemplate = htmlTemplate.Replace("{{Titulo}}", "Boleta Prestamo");
+                htmlTemplate = htmlTemplate.Replace("{{LogoPath}}", logoImageHtml);
                 htmlTemplate = htmlTemplate.Replace("{{Consecutivo}}", boleta.Consecutivo);
-                htmlTemplate = htmlTemplate.Replace("{{Tipo}}", boleta.TipoBoleta.ToString());
+                htmlTemplate = htmlTemplate.Replace("{{Periodo}}", TimeZoneHelper.GetSemesterPeriod(boleta.FechaEmision));
+                htmlTemplate = htmlTemplate.Replace("{{TipoBoleta}}", boleta.TipoBoleta.ToString());
                 htmlTemplate = htmlTemplate.Replace("{{Estado}}", boleta.Estado.ToString());
-                htmlTemplate = htmlTemplate.Replace("{{Fecha}}", boleta.FechaEmision.ToString("dd/MM/yyyy hh:mm tt", CultureInfo.GetCultureInfo("en-US")));
+                htmlTemplate = htmlTemplate.Replace("{{Fecha}}", boleta.FechaEmision.ToString("dd/MM/yyyy", CultureInfo.GetCultureInfo("en-US")));
+                htmlTemplate = htmlTemplate.Replace("{{Hora}}", boleta.FechaEmision.ToString("hh:mm tt", CultureInfo.GetCultureInfo("en-US")));
                 htmlTemplate = htmlTemplate.Replace("{{Asistente}}", boleta.NombreAsistente);
                 htmlTemplate = htmlTemplate.Replace("{{AprobadoPor}}", boleta.Aprobador);
                 htmlTemplate = htmlTemplate.Replace("{{TipoSolicitante}}", boleta.Solicitante.Tipo.ToString());
                 htmlTemplate = htmlTemplate.Replace("{{Carne}}", boleta.Solicitante.Carne);
-                htmlTemplate = htmlTemplate.Replace("{{NombreSolicitante}}", boleta.Solicitante.Nombre);
-                htmlTemplate = htmlTemplate.Replace("{{CorreoSolicitante}}", boleta.Solicitante.Correo);
+                htmlTemplate = htmlTemplate.Replace("{{Nombre}}", boleta.Solicitante.Nombre);
+                htmlTemplate = htmlTemplate.Replace("{{Correo}}", boleta.Solicitante.Correo);
                 htmlTemplate = htmlTemplate.Replace("{{Carrera}}", boleta.Solicitante.Carrera);
 
-                // Construir la tabla de activos
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append("<tr><th class='codigo'>Código</th><th class='tipo'>Tipo</th><th class='descripcion'>Descripción</th><th class='cantidad'>Cantidad</th><th class='observaciones'>Observaciones</th></tr>");
-
-                foreach (var be in boleta.BoletaEquipo)
-                {
-                    stringBuilder.AppendFormat("<tr><td class='codigo'>{0}</td><td class='tipo'>EQUIPO</td><td class='descripcion'>{1}</td><td class='cantidad'>{2}</td><td class='observaciones'>{3}</td></tr>",
-                        be.Equipo!.ActivoBodega, be.Equipo.Descripcion, 1, be.Equipo.Observaciones ?? "");
-                }
-
-                foreach (var bc in boleta.BoletaComponentes)
-                {
-                    stringBuilder.AppendFormat("<tr><td class='codigo'>{0}</td><td class='tipo'>COMPONENTE</td><td class='descripcion'>{1}</td><td class='cantidad'>{2}</td><td class='observaciones'>{3}</td></tr>",
-                        bc.Componente!.ActivoBodega, bc.Componente.Descripcion, bc.Cantidad, bc.Componente.Observaciones ?? "");
-                }
-
-
-                stringBuilder.Append("</table>");
-                htmlTemplate = htmlTemplate.Replace("{{TablaActivos}}", stringBuilder.ToString());
-
-                return Regex.Replace(htmlTemplate, @"\s+", " ").Replace("> <", "><");
+                //// Construir la tabla de activos
+                //StringBuilder stringBuilder = new StringBuilder();
+                //stringBuilder.Append("<tr><th class='codigo'>Código</th><th class='tipo'>Tipo</th><th class='descripcion'>Descripción</th><th class='cantidad'>Cantidad</th><th class='observaciones'>Observaciones</th></tr>");
+                //foreach (var be in boleta.BoletaEquipo)
+                //{
+                //    stringBuilder.AppendFormat("<tr><td class='codigo'>{0}</td><td class='tipo'>EQUIPO</td><td class='descripcion'>{1}</td><td class='cantidad'>{2}</td><td class='observaciones'>{3}</td></tr>",
+                //        be.Equipo!.ActivoBodega, be.Equipo.Descripcion, 1, be.Equipo.Observaciones ?? "");
+                //}
+                //foreach (var bc in boleta.BoletaComponentes)
+                //{
+                //    stringBuilder.AppendFormat("<tr><td class='codigo'>{0}</td><td class='tipo'>COMPONENTE</td><td class='descripcion'>{1}</td><td class='cantidad'>{2}</td><td class='observaciones'>{3}</td></tr>",
+                //        bc.Componente!.ActivoBodega, bc.Componente.Descripcion, bc.Cantidad, bc.Componente.Observaciones ?? "");
+                //}
+                //htmlTemplate = htmlTemplate.Replace("{{TablaActivos}}", stringBuilder.ToString());
+                htmlTemplate = Regex.Replace(htmlTemplate, @"\s+", " ").Replace("> <", "><");
+                return htmlTemplate;
             }
             catch (Exception ex)
             {
@@ -601,6 +628,36 @@ namespace Sibe.API.Services.BoletaService
                 throw new Exception("Error al generar el HTML: " + ex.Message);
             }
         }
+
+
+        /// <summary>
+        /// Crea un PDF a partir de una cadena HTML dada.
+        /// </summary>
+        /// <param name="html">El contenido HTML que se utilizará para generar el PDF.</param>
+        /// <returns>Un arreglo de bytes que representa el PDF generado.</returns>
+        public byte[] CreateBoletaPdfFromHtml(string html)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4);
+                iTextSharp.text.pdf.PdfWriter writer = iTextSharp.text.pdf.PdfWriter.GetInstance(document, stream);
+                document.Open();
+ 
+
+                using (StringReader stringReader = new StringReader(html))
+                {
+                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, stringReader);
+                }
+                document.Close();
+                return stream.ToArray();
+            }
+        }
+
+        //using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(html)))
+        //using (StreamReader sr = new StreamReader(ms, Encoding.UTF8))
+        //{
+        //    XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, sr);
+        //}
     }
 }
 

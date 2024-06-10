@@ -1,10 +1,16 @@
-﻿namespace Sibe.API.Models.Entidades
+﻿using Sibe.API.Models.Enums;
+using System.ComponentModel.DataAnnotations;
+
+namespace Sibe.API.Models.Entidades
 {
+
     public class Solicitante
     {
-        private string _nombre = string.Empty;
 
-        public string Carne { get; set; } = string.Empty;
+        [Key]
+        public required string Carne { get; set; }
+
+        private string _nombre = string.Empty;
 
         public string Nombre
         {
@@ -12,7 +18,10 @@
             set => _nombre = value?.ToUpperInvariant() ?? string.Empty;
         }
 
-        public string Correo { get; set; } = string.Empty;
-    }
+        public required string Correo { get; set; }
+        public required string Carrera { get; set; }
+        public TipoSolicitante Tipo { get; set; }
 
+
+    }
 }

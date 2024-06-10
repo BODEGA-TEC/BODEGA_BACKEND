@@ -6,6 +6,7 @@ using Sibe.API.Models;
 using Sibe.API.Models.Inventario;
 using Sibe.API.Services.CategoriaService;
 using Sibe.API.Services.EstadoService;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace Sibe.API.Services.EquipoService
 {
@@ -41,7 +42,18 @@ namespace Sibe.API.Services.EquipoService
                 .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
                 .Include(e => e.Estado)    // Incluye entidad relacionada Estado
                 .FirstOrDefaultAsync(e => e.Id == id)
-                ?? throw new Exception(_messages["NotFound"]);
+                ?? throw new Exception($"{_messages["EquipoIdNotFound"]} {id}");
+        }
+
+
+        public async Task<Equipo> FetchByActivoBodega(string activoBodega)
+        {
+            // Recuperar equipo
+            return await _context.Equipo
+                .Include(e => e.Categoria) // Incluye entidad relacionada Categoria
+                .Include(e => e.Estado)    // Incluye entidad relacionada Estado
+            .FirstOrDefaultAsync(e => e.ActivoBodega == activoBodega)
+                ?? throw new Exception($"{_messages["EquipoActivoBodegaNotFound"]} {activoBodega}");
         }
 
 

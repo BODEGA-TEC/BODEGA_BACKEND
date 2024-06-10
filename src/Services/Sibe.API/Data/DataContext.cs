@@ -22,6 +22,7 @@ namespace Sibe.API.Data
             Estado = Set<Estado>();
             //HistoricoEquipo = Set<HistoricoEquipo>();
             //HistoricoComponente = Set<HistoricoComponente>();
+            Solicitante = Set<Solicitante>();
             HistoricoRefreshToken = Set<HistoricoRefreshToken>();
             HistoricoClave = Set<HistoricoClave>();
             Usuario = Set<Usuario>();
@@ -37,6 +38,7 @@ namespace Sibe.API.Data
         public DbSet<Estado> Estado { get; set; }
         //public DbSet<HistoricoEquipo> HistoricoEquipo { get; set; }
         //public DbSet<HistoricoComponente> HistoricoComponente { get; set; }
+        public DbSet<Solicitante> Solicitante { get; set; }
         public DbSet<HistoricoRefreshToken> HistoricoRefreshToken { get; set; }
         public DbSet<HistoricoClave> HistoricoClave { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
@@ -48,9 +50,15 @@ namespace Sibe.API.Data
             modelBuilder.Entity<Usuario>()
                 .HasIndex(u => u.Username)
                 .IsUnique();
-            //modelBuilder.Entity<Usuario>()
-            //    .HasIndex(u => u.Correo)
-            //    .IsUnique();
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.Correo)
+                .IsUnique();
+
+            // Configurar la relación entre Usuario y HistoricoClave
+            modelBuilder.Entity<Usuario>()
+                .HasMany(u => u.HistoricoClaves)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Categoria>()
                 .HasIndex(c => new { c.Tipo, c.Nombre })

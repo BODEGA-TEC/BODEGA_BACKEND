@@ -6,6 +6,10 @@ namespace Sibe.API.Services.ComponenteService
 {
     public interface IComponenteService
     {
+        Task<Componente> FetchById(int id);
+        Task<Componente> FetchByActivoBodega(string activoBodega);
+
+
         Task<ServiceResponse<object>> Create(CreateComponenteDto componente);
         Task<ServiceResponse<List<ReadComponenteDto>>> ReadAll();
         Task<ServiceResponse<Componente>> ReadById(int id);

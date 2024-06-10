@@ -1,4 +1,5 @@
 ﻿using Sibe.API.Models.Boletas;
+using Sibe.API.Models.Entidades;
 using Sibe.API.Models.Enums;
 
 namespace Sibe.API.Data.Dtos.Boletas
@@ -13,10 +14,7 @@ namespace Sibe.API.Data.Dtos.Boletas
         public string Aprobador { get; set; } = string.Empty;
         public string NombreAsistente { get; set; } = string.Empty;
         public string CarneAsistente { get; set; } = string.Empty;
-        public TipoSolicitante TipoSolicitante { get; set; }
-        public string NombreSolicitante { get; set; } = string.Empty;
-        public string CorreoSolicitante { get; set; } = string.Empty;
-        public string CarneSolicitante { get; set; } = string.Empty;
+        public required Solicitante Solicitante { get; set; } 
 
         // En caso de querer visualizar el equipo y demás, se solicita el pdf
     }

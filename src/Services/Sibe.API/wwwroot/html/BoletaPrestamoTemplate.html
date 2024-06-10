@@ -26,6 +26,36 @@
             border-bottom: 2px solid #004379;
         }
 
+        .title-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin-top:25px;
+            color: #004379;
+        }
+
+        .title-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #004379;
+        }
+
+        .subtitle-text {
+            text-align: center;
+            color: #004379;
+            font-size: 19px;
+            font-weight: 400;
+            padding: 10px;
+            margin-top: -5px;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -69,23 +99,37 @@
 
 
         .activos-table .codigo, .activos-table .tipo, .activos-table .cantidad {
-            width: 10%;
+            width: 5%;
             white-space: nowrap;
             text-align: center;
         }
 
         .activos-table .descripcion {
-            width: 55%;
+            width: 30%;
         }
 
         .activos-table .observaciones {
-            width: 45%;
+            width: 25%;
         }
 
     </style>
 
 </head>
 <body>
+
+    <div class='title-section'>
+        <div class='title-text'>
+            SISTEMA INTEGRADO DE BODEGA ELECTRÓNICA<br>
+            ESCUELA DE ELECTRÓNICA
+        </div>
+        {{LogoTEC}}
+    </div>
+
+    <div class='subtitle-text'>
+        COMPROBANTE ELECTRÓNICO<br>
+        {{Tipo}}
+    </div>
+
     <div class='section'>
         <table>
             <tr>

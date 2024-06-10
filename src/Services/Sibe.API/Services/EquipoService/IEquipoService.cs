@@ -7,6 +7,10 @@ namespace Sibe.API.Services.EquipoService
 {
     public interface IEquipoService
     {
+
+        Task<Equipo> FetchById(int id);
+        Task<Equipo> FetchByActivoBodega(string activoBodega);
+
         Task<ServiceResponse<object>> Create(CreateEquipoDto equipoDto);
         Task<ServiceResponse<List<ReadEquipoDto>>> ReadAll();
         Task<ServiceResponse<Equipo>> ReadById(int id);

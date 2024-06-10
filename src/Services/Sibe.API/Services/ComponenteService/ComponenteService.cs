@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using iText.Commons.Actions.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Sibe.API.Data;
 using Sibe.API.Data.Dtos.Componente;
@@ -6,6 +7,7 @@ using Sibe.API.Models;
 using Sibe.API.Models.Inventario;
 using Sibe.API.Services.CategoriaService;
 using Sibe.API.Services.EstadoService;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace Sibe.API.Services.ComponenteService
 {
@@ -34,13 +36,25 @@ namespace Sibe.API.Services.ComponenteService
 
         public async Task<Componente> FetchById(int id)
         {
-            // Recuperar equipo
+            // Recuperar componente
             return await _context.Componente
                 .Include(c => c.Categoria) // Incluye entidad relacionada Categoria
                 .Include(c => c.Estado)    // Incluye entidad relacionada Estado
                 .FirstOrDefaultAsync(c => c.Id == id)
-                ?? throw new Exception(_messages["NotFound"]);
+                ?? throw new Exception($"{_messages["ComponenteIdNotFound"]} {id}");
         }
+
+        public async Task<Componente> FetchByActivoBodega(string activoBodega)
+        {
+            // Recuperar componente
+            return await _context.Componente
+                .Include(c => c.Categoria) // Incluye entidad relacionada Categoria
+                .Include(c => c.Estado)    // Incluye entidad relacionada Estado
+                .FirstOrDefaultAsync(c => c.ActivoBodega == activoBodega)
+                ?? throw new Exception($"{_messages["ComponenteActivoBodegaNotFound"]} {activoBodega}");
+
+        }
+
 
         public async Task<ServiceResponse<object>> Create(CreateComponenteDto componenteDto)
         {

@@ -16,7 +16,8 @@
     "DeletedSuccess": "Categoría eliminada con éxito."
   },
   "ComponenteService": {
-    "NotFound": "Componente no encontrado.",
+    "ComponenteIdNotFound": "El componente no se ha encontrado. Id: ",
+    "ComponenteActivoBodegaNotFound": "El componente no se ha encontrado. Activo: ",
     "ActivoBodegaInUse": "El activo bodega ya se encuentra registrado.",
     "ActivoTecInUse": "El activo TEC ya se encuentra registrado.",
     "CreateSuccess": "Componente creado con éxito.",
@@ -27,7 +28,8 @@
     "GenerateBarCodeSuccess": "Codigo generado con éxito."
   },
   "EquipoService": {
-    "NotFound": "Equipo no encontrado.",
+    "EquipoIdNotFound": "El equipo no se ha encuentrado. Id: ",
+    "EquipoActivoBodegaNotFound": "El equipo no se ha encuentrado. Activo: ",
     "ActivoBodegaInUse": "El activo bodega ya se encuentra registrado.",
     "ActivoTecInUse": "El activo TEC ya se encuentra registrado.",
     "CreateSuccess": "Equipo creado con éxito.",
@@ -72,10 +74,8 @@
     "CreateSuccess": "Boleta creada con éxito.",
     "ReadSuccess": "Boleta(s) recuperada(s) con éxito.",
     "Empty": "No se han registrado boletas.",
-    "EquipoIdNotFound": "El equipo no se ha encuentrado. id: ",
-    "EquipoNotAvailable": "El equipo no está disponible. id: ",
-    "EquipoNotPrestado": "El equipo no se encuentra prestado. id: ",
-    "ComponenteIdNotFound": "El componente no se ha encontrado. id: ",
+    "EquipoNotAvailable": "El equipo no está disponible. Activo: ",
+    "EquipoNotPrestado": "El equipo no se encuentra prestado. Activo: ",
     "BoletaPrestamoNotFound": "No se ha encontrado la boleta de prestamo respectiva.",
     "ComponenteQuantityRequestError": "La cantidad solicitada es mayor que la cantidad disponible. ACTIVO: ",
     "AprobadorNeeded": "No se permiten préstamos de componentes sin la aprobación de un profesor.",

@@ -11,7 +11,7 @@ namespace Sibe.API.Services.EmailService
         private readonly int _smtpPort = 587;
         private readonly string _smtpUser = "s.jeykime@outlook.com";
         private readonly string _smtpPass = "hsrndydbaormnsbh"; // Reemplaza con tu contraseña
-        private readonly string _tecLogoPath = "wwwroot/teclogo.png";
+        private readonly string _tecLogoPath = "wwwroot/images/teclogo.png";
         private readonly string _templatePath = "wwwroot/html/TemporaryCodeTemplate.html"; // Ruta a la plantilla
 
 

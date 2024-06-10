@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sibe.API.Data;
 
@@ -10,9 +11,11 @@ using Sibe.API.Data;
 namespace Sibe.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240609220324_Add_Solicitante_Boleta")]
+    partial class Add_Solicitante_Boleta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -565,8 +568,7 @@ namespace Sibe.API.Migrations
                 {
                     b.HasOne("Sibe.API.Models.Entidades.Usuario", null)
                         .WithMany("HistoricoClaves")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("Sibe.API.Models.Historicos.HistoricoComponente", b =>

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Sibe.API.Models.Boletas
 {
+
     public class Boleta
     {
         [Key]
@@ -24,11 +25,8 @@ namespace Sibe.API.Models.Boletas
         public required string CarneAsistente { get; set; }
 
 
-        public TipoSolicitante TipoSolicitante { get; set; }
-        public required string NombreSolicitante { get; set; }
-        public required string CorreoSolicitante { get; set; }
-        public required string CarneSolicitante { get; set; }
-
+        // Propiedad de navegación al modelo Solicitante
+        public required Solicitante Solicitante { get; set; }
 
         // Navegación al hash de componentes asociados a este comprobante de préstamo - cada componente se asocia solo una vez por eso el hash
         public ICollection<BoletaComponente> BoletaComponentes { get; set; } = new HashSet<BoletaComponente>();

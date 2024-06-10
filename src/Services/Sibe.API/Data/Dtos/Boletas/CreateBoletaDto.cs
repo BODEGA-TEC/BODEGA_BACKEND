@@ -4,14 +4,14 @@ namespace Sibe.API.Data.Dtos.Boletas
 {
     public class BoletaEquipoDto
     {
-        public int Id { get; set; }
+        public string ActivoBodega { get; set; } = string.Empty;
         public string? Observaciones { get; set; }
     }
 
     public class BoletaComponenteDto
     {
         private int _cantidad;
-        public int Id { get; set; }
+        public string ActivoBodega { get; set; } = string.Empty;
         public int Cantidad
         {
             get => _cantidad;

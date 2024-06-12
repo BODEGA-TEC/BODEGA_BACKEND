@@ -605,20 +605,20 @@ namespace Sibe.API.Services.BoletaService
                 htmlTemplate = htmlTemplate.Replace("{{Correo}}", boleta.Solicitante.Correo);
                 htmlTemplate = htmlTemplate.Replace("{{Carrera}}", boleta.Solicitante.Carrera);
 
-                //// Construir la tabla de activos
-                //StringBuilder stringBuilder = new StringBuilder();
-                //stringBuilder.Append("<tr><th class='codigo'>Código</th><th class='tipo'>Tipo</th><th class='descripcion'>Descripción</th><th class='cantidad'>Cantidad</th><th class='observaciones'>Observaciones</th></tr>");
-                //foreach (var be in boleta.BoletaEquipo)
-                //{
-                //    stringBuilder.AppendFormat("<tr><td class='codigo'>{0}</td><td class='tipo'>EQUIPO</td><td class='descripcion'>{1}</td><td class='cantidad'>{2}</td><td class='observaciones'>{3}</td></tr>",
-                //        be.Equipo!.ActivoBodega, be.Equipo.Descripcion, 1, be.Equipo.Observaciones ?? "");
-                //}
-                //foreach (var bc in boleta.BoletaComponentes)
-                //{
-                //    stringBuilder.AppendFormat("<tr><td class='codigo'>{0}</td><td class='tipo'>COMPONENTE</td><td class='descripcion'>{1}</td><td class='cantidad'>{2}</td><td class='observaciones'>{3}</td></tr>",
-                //        bc.Componente!.ActivoBodega, bc.Componente.Descripcion, bc.Cantidad, bc.Componente.Observaciones ?? "");
-                //}
-                //htmlTemplate = htmlTemplate.Replace("{{TablaActivos}}", stringBuilder.ToString());
+                // Construir la tabla de activos
+                string alignStyle = "style=\'text-align: center;\'";
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (var be in boleta.BoletaEquipo)
+                {
+                    stringBuilder.AppendFormat("<tr><td {0}>{1}</td><td {0}>E</td><td>{2}</td><td {0}>{3}</td><td>{4}</td></tr>",
+                        alignStyle, be.Equipo!.ActivoBodega, be.Equipo.Descripcion, 1, be.Equipo.Observaciones ?? "");
+                }
+                foreach (var bc in boleta.BoletaComponentes)
+                {
+                    stringBuilder.AppendFormat("<tr><td {0}>{1}</td><td {0}>C</td><td>{2}</td><td {0}>{3}</td><td>{4}</td></tr>",
+                        alignStyle, bc.Componente!.ActivoBodega, bc.Componente.Descripcion, bc.Cantidad, bc.Componente.Observaciones ?? "");
+                }
+                htmlTemplate = htmlTemplate.Replace("{{Activos}}", stringBuilder.ToString());
                 htmlTemplate = Regex.Replace(htmlTemplate, @"\s+", " ").Replace("> <", "><");
                 return htmlTemplate;
             }
@@ -639,8 +639,20 @@ namespace Sibe.API.Services.BoletaService
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4);
+                // Configurar márgenes: 1 pulgada (72 puntos) arriba y abajo, 0.75 pulgadas (54 puntos) a los lados
+                float topBottomMargin = 72f;  // 1 pulgada
+                float leftRightMargin = 54f;  // 0.75 pulgadas
+
+                iTextSharp.text.Document document = new iTextSharp.text.Document(
+                    PageSize.A4,
+                    leftRightMargin, leftRightMargin,
+                    topBottomMargin, topBottomMargin);
+
                 iTextSharp.text.pdf.PdfWriter writer = iTextSharp.text.pdf.PdfWriter.GetInstance(document, stream);
+                
+                // Asignar
+                writer.PageEvent = new PageEventHelper();
+
                 document.Open();
  
 
@@ -652,6 +664,7 @@ namespace Sibe.API.Services.BoletaService
                 return stream.ToArray();
             }
         }
+
 
         //using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(html)))
         //using (StreamReader sr = new StreamReader(ms, Encoding.UTF8))

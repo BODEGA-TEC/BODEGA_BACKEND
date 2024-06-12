@@ -1,4 +1,6 @@
-﻿using Sibe.API.Models.Boletas;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Sibe.API.Models.Boletas;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text;
@@ -23,6 +25,23 @@ namespace Sibe.API.Utils
         }
 
     }
+
+    public class PageEventHelper : PdfPageEventHelper
+    {
+        public override void OnEndPage(PdfWriter writer, Document document)
+        {
+            PdfContentByte cb = writer.DirectContent;
+            cb.BeginText();
+            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED), 8);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER,
+                "" + writer.PageNumber,
+                (document.Right + document.Left) / 2,
+                document.Bottom - 5,
+                0);
+            cb.EndText();
+        }
+    }
+
 
     public static class RegexValidator
     {

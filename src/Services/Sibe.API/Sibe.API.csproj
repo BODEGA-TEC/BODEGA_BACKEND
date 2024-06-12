@@ -34,8 +34,4 @@
     <ProjectReference Include="..\JwtAuthenticationHandler\JwtAuthenticationHandler.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\tempfiles\" />
-  </ItemGroup>
-
 </Project>

@@ -30,7 +30,7 @@
 
             .header-logo img {
                 width: auto;
-                height: 35px;
+                height: 50px;
             }
 
         .title-text {
@@ -94,11 +94,11 @@
                     width: 33%;
                 }
 
-            .empty-space {
-                padding-bottom: 20px;
-                color: transparent;
-                opacity: 0;
-            }
+        .empty-space {
+            padding-bottom: 20px;
+            color: transparent;
+            opacity: 0;
+        }
 
         .items_section {
             overflow: auto;
@@ -108,9 +108,16 @@
             .items_section table {
                 height: auto;
                 width: 100%;
-                table-layout: auto;
+                table-layout: fixed;
                 border-collapse: collapse;
                 border-spacing: 1px;
+            }
+
+            .items_section caption {
+                font-size: 14px;
+                font-weight: 500;
+                color: #004379;
+                margin: 10px;
             }
 
             .items_section th {
@@ -120,6 +127,8 @@
                 border-bottom: 1.5px solid #004379;
                 color: #004379;
                 padding: 7px 7px 3px 7px;
+                white-space: nowrap;
+                min-width: 80px;
             }
 
             .items_section td {
@@ -129,33 +138,8 @@
                 background-color: #ffffff;
                 color: #000000;
                 padding: 6px;
-                
             }
 
-                .items_section th:nth-child(1),
-                .items_section td:nth-child(1) {
-                    width: 15%;
-                }
-
-                .items_section th:nth-child(2),
-                .items_section td:nth-child(2) {
-                    width: 10%;
-                }
-
-                .items_section th:nth-child(3),
-                .items_section td:nth-child(3) {
-                    width: 43%;
-                }
-
-                .items_section th:nth-child(4),
-                .items_section td:nth-child(4) {
-                    width: 10%;
-                }
-
-                .items_section th:nth-child(5),
-                .items_section td:nth-child(5) {
-                    width: 32%;
-                }
     </style>
 </head>
 <body>
@@ -197,7 +181,9 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <tr><td colspan='4' class='empty-space'>.</td></tr>
+                <tr>
+                    <td colspan='4' class='empty-space'>.</td>
+                </tr>
                 <tr>
                     <th colspan='4'>DATOS DEL SOLICITANTE</th>
                 </tr>
@@ -219,17 +205,20 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <tr><td colspan='4' class='empty-space'>.</td></tr>
+                <tr>
+                    <td colspan='4' class='empty-space'>.</td>
+                </tr>
             </table>
         </div>
         <div class='items_section'>
             <table>
+                <caption>LISTA DE ACTIVOS</caption>
                 <tr>
-                    <th style='text-align: center;'>CÓDIGO</th>
-                    <th style='text-align: center;'>TIPO</th>
-                    <th>DESCRIPCIÓN</th>
-                    <th style='text-align: center;'>CANTIDAD</th>
-                    <th>OBSERVACIONES</th>
+                    <th style='white-space: nowrap; width: 15%; text-align: center; '>CÓDIGO</th>
+                    <th style='white-space: nowrap; width: 10%; text-align: center; '>TIPO</th>
+                    <th style='white-space: nowrap; width: 40%;'>DESCRIPCIÓN</th>
+                    <th style='white-space: nowrap; width: 15%; text-align: center; '>CANTIDAD</th>
+                    <th style='white-space: nowrap; width: 30%;'>OBSERVACIONES</th>
                 </tr>
                 {{Activos}}
             </table>

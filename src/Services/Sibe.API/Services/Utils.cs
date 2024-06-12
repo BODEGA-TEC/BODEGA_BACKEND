@@ -36,7 +36,7 @@ namespace Sibe.API.Utils
             cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER,
                 "" + writer.PageNumber,
                 (document.Right + document.Left) / 2,
-                document.Bottom - 5,
+                document.Bottom - 50,
                 0);
             cb.EndText();
         }

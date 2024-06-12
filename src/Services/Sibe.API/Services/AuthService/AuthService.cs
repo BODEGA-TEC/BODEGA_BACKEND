@@ -252,6 +252,15 @@ namespace Sibe.API.Services.AuthService
                     RefreshToken = tokens.RefreshToken,
                 };
 
+
+                // En caso de que exista una clave temporal activa, inhabilitarla
+                if (usuario.ClaveTemporal != null)
+                {
+                    usuario.ClaveTemporal = null;
+                    await _context.SaveChangesAsync();
+                }
+                    
+
                 // Configurar respuesta
                 response.SetSuccess(_messages["LoginSucess"], loginResponse);
             }

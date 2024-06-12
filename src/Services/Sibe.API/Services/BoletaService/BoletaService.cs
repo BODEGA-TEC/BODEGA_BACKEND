@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
+using iTextSharp.text;
+using iTextSharp.tool.xml;
 using JwtAuthenticationHandler;
 using Microsoft.EntityFrameworkCore;
-using MimeKit;
 using Sibe.API.Data;
 using Sibe.API.Data.Dtos.Boletas;
 using Sibe.API.Models;
@@ -18,15 +16,9 @@ using Sibe.API.Services.EmailService;
 using Sibe.API.Services.EquipoService;
 using Sibe.API.Utils;
 using System.Globalization;
-using System.Reflection.Metadata;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using iTextSharp.tool.xml;
-using System.Net;
 
 namespace Sibe.API.Services.BoletaService
 {
@@ -246,9 +238,6 @@ namespace Sibe.API.Services.BoletaService
         }
 
 
-
-
-
         public async Task<ServiceResponse<int>> CreateBoletaPrestamo(CreateBoletaDto info)
         {
             var response = new ServiceResponse<int>();
@@ -366,7 +355,10 @@ namespace Sibe.API.Services.BoletaService
         /// <param name="boletaEquipos">Lista de DTOs de equipo asociados con la boleta.</param>
         private async Task ProcessBoletaEquipoTransaction(Boleta boleta, List<BoletaEquipoDto> boletaEquipos)
         {
-            foreach (var boletaEquipo in boletaEquipos)
+            // Ordenar la lista por ActivoBodega
+            var sortedBoletaEquipos = boletaEquipos.OrderBy(be => be.ActivoBodega).ToList();
+
+            foreach (var boletaEquipo in sortedBoletaEquipos)
             {
                 var equipo = await _equipoService.FetchByActivoBodega(boletaEquipo.ActivoBodega);
 
@@ -433,7 +425,10 @@ namespace Sibe.API.Services.BoletaService
         /// <param name="boletaComponentes">Lista de componentes involucrados en la transacción.</param>
         private async Task ProcessBoletaComponenteTransaction(Boleta boleta, List<BoletaComponenteDto> boletaComponentes)
         {
-            foreach (var boletaComponente in boletaComponentes)
+            // Ordenar la lista por ActivoBodega
+            var sortedBoletaComponentes = boletaComponentes.OrderBy(be => be.ActivoBodega).ToList();
+
+            foreach (var boletaComponente in sortedBoletaComponentes)
             {
                 var componente = await _componenteService.FetchByActivoBodega(boletaComponente.ActivoBodega);
 
@@ -513,7 +508,7 @@ namespace Sibe.API.Services.BoletaService
                 // Paso 3: Enviar por correo electrónico
                 string subject = $"Comprobante electrónico {boleta.Consecutivo}";
                 string pdfName = $"{boleta.TipoBoleta}_{boleta.Solicitante.Carne}_{boleta.Consecutivo}.pdf";
-                string body = $"<p>Estimado {boleta.Solicitante.Nombre},</p><p>Adjunto encontrará su comprobante electrónico.</p><p>Saludos,</p>";
+                string body = $"<p>Estimado {boleta.Solicitante.Nombre},</p><p>Adjunto encontrará su comprobante electrónico.</p>";
 
                 await _emailService.SendEmailAsync(boleta.Solicitante.Correo, subject, body, null, pdf, pdfName);
                 response.SetSuccess("Email enviado exitosamente.");
@@ -586,7 +581,7 @@ namespace Sibe.API.Services.BoletaService
                 string htmlTemplate = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), _templatePath), Encoding.UTF8);
 
                 // Cargar la imagen del logo y convertirla a Base64
-                string logoPath = Path.Combine(Directory.GetCurrentDirectory(), _tecLogoPath);
+                string logoPath = Path.Combine(Directory.GetCurrentDirectory(), _sibeLogoPath);
                 string logoImageHtml = $"file:///{logoPath.Replace("\\", "/")}";
 
                 // Reemplazar marcadores de posición en la plantilla
@@ -643,7 +638,7 @@ namespace Sibe.API.Services.BoletaService
                 float topBottomMargin = 72f;  // 1 pulgada
                 float leftRightMargin = 54f;  // 0.75 pulgadas
 
-                iTextSharp.text.Document document = new iTextSharp.text.Document(
+                Document document = new Document(
                     PageSize.A4,
                     leftRightMargin, leftRightMargin,
                     topBottomMargin, topBottomMargin);
@@ -664,13 +659,6 @@ namespace Sibe.API.Services.BoletaService
                 return stream.ToArray();
             }
         }
-
-
-        //using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(html)))
-        //using (StreamReader sr = new StreamReader(ms, Encoding.UTF8))
-        //{
-        //    XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, sr);
-        //}
     }
 }
 

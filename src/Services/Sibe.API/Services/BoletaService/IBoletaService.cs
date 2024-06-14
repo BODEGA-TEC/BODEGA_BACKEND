@@ -14,6 +14,7 @@ namespace Sibe.API.Services.BoletaService
         Task<ServiceResponse<int>> CreateBoletaPrestamo(CreateBoletaDto info);
         Task<ServiceResponse<int>> CreateBoletaDevolucion(int boletaPrestamoId, CreateBoletaDto infoDevolucion);
         Task<ServiceResponse<string>> GetBoletaHtml(int boletaId);
+        Task<ServiceResponse<(byte[] pdf, string filename)>> GetBoletaPdf(int boletaId);
         Task<ServiceResponse<string>> SendBoletaByEmail(int boletaId);
     }
 }

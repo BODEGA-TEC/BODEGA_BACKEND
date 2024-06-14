@@ -59,7 +59,21 @@ namespace Sibe.API.Controllers
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
-        [HttpGet("{id}/enviar")]
+        [HttpGet("{id}/pdf")]
+        public async Task<ActionResult<ServiceResponse<byte[]>>> GetBoletaPdf(int id)
+        {
+            var response = await _boletaService.GetBoletaPdf(id);
+            if (!response.Success)
+            {
+                return BadRequest(response.Message);
+            }
+            var (pdf, filename) = response.Data;
+
+            // Devolver el PDF directamente como un archivo
+            return File(pdf, "application/pdf", filename);
+        }
+
+        [HttpGet("{id}/enviar-correo")]
         public async Task<ActionResult<ServiceResponse<string>>> SendBoletaByEmail(int id)
         {
             var response = await _boletaService.SendBoletaByEmail(id);

@@ -479,6 +479,10 @@ namespace Sibe.API.Services.BoletaService
             int cantidadDevuelta = boletaComponente.Cantidad;
             componente.CantidadDisponible += cantidadDevuelta;
 
+            // Si la cantidad disponible es mayor que cero, el estado del componente se establece como "disponible"
+            // Si la cantidad disponible es cero, el estado del componente se establece como "agotado"
+            componente.EstadoId = componente.CantidadDisponible > 0 ? 1 : 3;
+
             // Agregar el componente a la lista de la boleta con las observaciones
             boleta.BoletaComponentes.Add(new BoletaComponente
             {
@@ -489,7 +493,14 @@ namespace Sibe.API.Services.BoletaService
             });
 
             // Actualiza las observaciones del equipo añadiendo las nuevas observaciones
-            componente.Observaciones += " | " + boletaComponente.Observaciones;
+            if (!string.IsNullOrEmpty(boletaComponente.Observaciones))
+            {
+                componente.Observaciones = string.Concat(
+                    componente.Observaciones ?? string.Empty,
+                    string.IsNullOrEmpty(componente.Observaciones) ? string.Empty : Environment.NewLine,
+                    boletaComponente.Observaciones
+                );
+            }
         }
 
 
@@ -503,14 +514,13 @@ namespace Sibe.API.Services.BoletaService
                 Boleta boleta = await FetchBoletaById(boletaId);
 
                 // Paso 2: Crear el PDF
-                byte[] pdf = CreateBoletaPdf(boleta);
+                var (pdf, filename) = CreateBoletaPdf(boleta);
 
                 // Paso 3: Enviar por correo electrónico
                 string subject = $"Comprobante electrónico {boleta.Consecutivo}";
-                string pdfName = $"{boleta.TipoBoleta}_{boleta.Solicitante.Carne}_{boleta.Consecutivo}.pdf";
                 string body = $"<p>Estimado {boleta.Solicitante.Nombre},</p><p>Adjunto encontrará su comprobante electrónico.</p>";
 
-                await _emailService.SendEmailAsync(boleta.Solicitante.Correo, subject, body, null, pdf, pdfName);
+                await _emailService.SendEmailAsync(boleta.Solicitante.Correo, subject, body, null, pdf, filename);
                 response.SetSuccess("Email enviado exitosamente.");
             }
             catch (Exception ex)
@@ -534,9 +544,6 @@ namespace Sibe.API.Services.BoletaService
                 // Paso 2: Crear el HTML
                 string html = CreateBoletaHtml(boleta);
 
-                // Paso 3: Crear el PDF
-                //byte[] pdfBytes = CreatePdf(xml);
-
                 // Enviar como respuesta
                 response.SetSuccess(_messages["CreateSuccess"], html);
             }
@@ -550,13 +557,37 @@ namespace Sibe.API.Services.BoletaService
             return response;
         }
 
+        public async Task<ServiceResponse<(byte[] pdf, string filename)>> GetBoletaPdf(int boletaId)
+        {
+            var response = new ServiceResponse<(byte[] pdf, string filename)>();
+
+            try
+            {
+                // Paso 1: Recuperar la boleta respectiva con la informacion de los activos y demás.
+                Boleta boleta = await FetchBoletaById(boletaId);
+
+                // Paso 2: Crear el PDF
+                var (pdf, filename) = CreateBoletaPdf(boleta);
+
+                // Enviar como respuesta
+                response.SetSuccess(_messages["CreateSuccess"], (pdf, filename));
+            }
+
+            catch (Exception ex)
+            {
+                // Configurar error
+                response.SetError(ex.Message);
+            }
+
+            return response;
+        }
 
         /// <summary>
         /// Crea un PDF a partir de una boleta dada.
         /// </summary>
         /// <param name="boleta">La boleta que se utilizará para generar el PDF.</param>
         /// <returns>Un arreglo de bytes que representa el PDF generado.</returns>
-        public byte[] CreateBoletaPdf(Boleta boleta)
+        public (byte[] pdf, string filename) CreateBoletaPdf(Boleta boleta)
         {
             // Paso 1: Crear el HTML usando la boleta proporcionada
             string html = CreateBoletaHtml(boleta);
@@ -564,8 +595,12 @@ namespace Sibe.API.Services.BoletaService
             // Paso 2: Crear el PDF a partir del HTML generado
             byte[] pdf = CreateBoletaPdfFromHtml(html);
 
-            return pdf;
+            // Crear el nombre del archivo
+            string filename = $"{boleta.TipoBoleta}_{boleta.Solicitante.Carne}_{boleta.Consecutivo}.pdf";
+
+            return (pdf, filename);
         }
+
 
 
         /// <summary>

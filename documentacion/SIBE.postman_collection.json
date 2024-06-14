@@ -19,7 +19,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"nombre\": \"Cuenta Bodega Asistentes\",\r\n  \"username\": \"bodegaAsistentes\",\r\n  \"correo\": \"asistentesie@gmail.com\",\r\n  \"clave\": \"asistentesIE2023_\",\r\n  \"rol\": \"ASISTENTE\"\r\n}",
+									"raw": "{\r\n  \"nombre\": \"Michael Richards Sparks\",\r\n  \"username\": \"mrichards\",\r\n  \"correo\": \"s.jeykime@gmail.com\",\r\n  \"clave\": \"Mrichards1-\",\r\n  \"rol\": \"ADMIN\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -46,7 +46,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"username\": \"bodegaAsistentes\",\r\n  \"clave\": \"asistentesIE2024_\"\r\n}",
+									"raw": "{\r\n  \"username\": \"mrichards\",\r\n  \"clave\": \"Mrichards1-\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -73,7 +73,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"tokenExpirado\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJib2RlZ2FBc2lzdGVudGVzIiwiZW1haWwiOiJhc2lzdGVudGVzaWVAZ21haWwuY29tIiwicm9sZSI6IkFTSVNURU5URSIsIm5iZiI6MTcwNDc3NDUzMywiZXhwIjoxNzA0Nzc0NjUzLCJpYXQiOjE3MDQ3NzQ1MzN9._ZBUx_fK6NVDE-2gJXy2dVgHHgEdMfpyGD8JCVBErfm9p-ulX3wem3gdGwbGW93TKpubNu9KIxzShUki3iucDg\",\r\n  \"refreshToken\": \"xnlCV1q4CGSaK/u+gP0HkzZKijRyx3e8eCoQeAI4o99/r1QUsRqtCUbWVx2d5zE/ID8F3Ow+RlJLwsOla/4uKQ==\"\r\n}",
+									"raw": "{\r\n  \"usuarioId\": 10,\r\n  \"accessTokenExpirado\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJib2RlZ2FBc2lzdGVudGVzIiwiZW1haWwiOiJhc2lzdGVudGVzaWVAZ21haWwuY29tIiwicm9sZSI6IkFTSVNURU5URSIsIm5iZiI6MTcwNjgxNDg1OSwiZXhwIjoxNzA2ODE0OTE5LCJpYXQiOjE3MDY4MTQ4NTl9.6oiIADWD4eUzrZwEvSEtqu36tkRDPO7I3Q4eOnye0HZl0BIzZ_anf9nHdOUBWxZzE7RDJeIrBdr7C__r8U6sOQ\",\r\n  \"refreshToken\": \"rhCCgKgJINa13u4Cfw+8B1z8xj0obZ/LQhk/ZZolSwweTWDnXOTsiFbfdLkVQOdPZXJqklI9vwAPvFhFZlIAcg==\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -81,13 +81,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/login",
+									"raw": "{{host}}/api/refresh-token",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"api",
-										"login"
+										"refresh-token"
 									]
 								}
 							},
@@ -100,7 +100,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"username\": \"bodegaAsistentes\"\r\n}",
+									"raw": "{\r\n  \"username\": \"mrichards\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -127,7 +127,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"usuarioId\": 2,\r\n  \"claveNueva\": \"asistentesIE2024_\",\r\n  \"claveTemporal\": \"044799\"\r\n}",
+									"raw": "{\r\n  \"usuarioCorreo\": \"s.jeykime@gmail.com\",\r\n  \"claveNueva\": \"Mrichards1-\",\r\n  \"claveTemporal\": \"570681\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -159,7 +159,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "[\r\n  {\r\n    \"carne\": \"2000000000\",\r\n    \"nombre\": \"Carlos Gonzalez\",\r\n    \"correo\": \"carlos@estudiantec.cr\"\r\n  },\r\n  {\r\n    \"carne\": \"2000000001\",\r\n    \"nombre\": \"Ana Rodriguez\",\r\n    \"correo\": \"ana@estudiantec.cr\"\r\n  },\r\n  {\r\n    \"carne\": \"2000000002\",\r\n    \"nombre\": \"Luis Fernández\",\r\n    \"correo\": \"luis@estudiantec.cr\"\r\n  }\r\n]",
+									"raw": "[\r\n  {\r\n    \"carne\": \"2000000000\",\r\n    \"nombre\": \"Carlos Gonzalez\",\r\n    \"correo\": \"jeykimers.johnson@estudiantec.cr\"\r\n  },\r\n  {\r\n    \"carne\": \"2000000001\",\r\n    \"nombre\": \"Ana Rodriguez\",\r\n    \"correo\": \"jeykimers.johnson@estudiantec.cr\"\r\n  },\r\n  {\r\n    \"carne\": \"2000000002\",\r\n    \"nombre\": \"Luis Fernández\",\r\n    \"correo\": \"jeykimers.johnson@estudiantec.cr\"\r\n  }\r\n]",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -254,7 +254,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"huellaDigitalImagen\": \"huelladigitalprueba\"\r\n}",
+									"raw": "{\r\n  \"huellaDigitalImagen\": \"huella\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -319,7 +319,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyMDAwMDAwMDAxIiwibmJmIjoxNzA0NzcwNzgzLCJleHAiOjE3MDQ3NzEzODMsImlhdCI6MTcwNDc3MDc4M30.qDZFZBmCgBYN4-qgS1zg7idJ4ysQm6QMktHvljrK7ZrRM6Egb2kLBo8GoqrRvNswoazrZoUn7Hnrb0owdwOJhw\",\r\n  \"aprobador\": \"Leonardo Sandoval\",\r\n  \"carneSolicitante\": \"2018170667\",\r\n  \"tipoSolicitante\": \"ESTUDIANTE\",\r\n  \"equipo\": [\r\n    {\r\n      \"id\":1\r\n    },\r\n    {\r\n      \"id\":2\r\n    },\r\n    {\r\n      \"id\":3\r\n    }\r\n  ],\r\n  \"componentes\": [\r\n    {\r\n      \"id\": 1,\r\n      \"cantidad\": 10\r\n    },\r\n    {\r\n      \"id\": 2,\r\n      \"cantidad\": 64\r\n    },\r\n    {\r\n      \"id\": 3,\r\n      \"cantidad\": 6\r\n    }\r\n  ]\r\n}",
+							"raw": "{\r\n  \"token\": \"{{asistenteToken}}\",\r\n  \"aprobador\": \"Leonardo Sandoval Cascante\",\r\n  \"carneSolicitante\": \"2018170668\",\r\n  \"tipoSolicitante\": \"ESTUDIANTE\",\r\n   \"equipo\": [\r\n    {\r\n      \"activoBodega\": \"BE000009\"\r\n    },\r\n    {\r\n      \"activoBodega\": \"BE000008\"\r\n    }\r\n  ],\r\n  \"componentes\": [\r\n    {\r\n      \"activoBodega\": \"BC000003\",\r\n      \"cantidad\": 60\r\n    },\r\n    {\r\n      \"activoBodega\": \"BC000002\",\r\n      \"cantidad\": 60\r\n    },\r\n    {\r\n      \"activoBodega\": \"BC000001\",\r\n      \"cantidad\": 106    \r\n    }\r\n  ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -348,7 +348,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyMDAwMDAwMDAxIiwibmJmIjoxNzA0NzcyMjk0LCJleHAiOjE3MDQ3NzI4OTQsImlhdCI6MTcwNDc3MjI5NH0.CXCxj7tCGwhAM37Jg3KVHbTnEh93WwgCmHXCwL36yqOKcwYuKy72gOuby3NBlTVGgImGv6zVrxM7VBH7_chjtQ\",\r\n    \"carneSolicitante\": \"2018170667\",\r\n    \"tipoSolicitante\": \"ESTUDIANTE\",\r\n    \"equipo\": [\r\n        {\r\n            \"id\": 1,\r\n            \"observaciones\": \"Raspado a un costado\"\r\n        },\r\n        {\r\n            \"id\": 2\r\n        },\r\n        {\r\n            \"id\": 3\r\n        }\r\n    ],\r\n    \"componentes\": [\r\n        {\r\n            \"id\": 1,\r\n            \"cantidad\": 10\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"cantidad\": 60,\r\n            \"observaciones\": \"Se dañaron 4\"\r\n        },\r\n        {\r\n            \"id\": 3,\r\n            \"cantidad\": 6\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n  \"token\": \"{{asistenteToken}}\",\r\n  \"carneSolicitante\": \"2018170668\",\r\n  \"tipoSolicitante\": \"ESTUDIANTE\",\r\n  \"equipo\": [\r\n    {\r\n      \"activoBodega\": \"BE000008\",\r\n      \"observaciones\": \"Presenta un raspón\"\r\n    },\r\n    {\r\n      \"activoBodega\": \"BE000009\",\r\n      \"observaciones\": \"Presenta herrumbre\"\r\n    }\r\n  ],\r\n  \"componentes\": [\r\n    {\r\n      \"activoBodega\": \"BC000002\",\r\n      \"cantidad\": 60\r\n    },\r\n    {\r\n      \"activoBodega\": \"BC000001\",\r\n      \"cantidad\": 106,\r\n      \"observaciones\": \"Se dañó uno\"\r\n    },\r\n    {\r\n      \"activoBodega\": \"BC000003\",\r\n      \"cantidad\": 60\r\n    }\r\n  ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -356,7 +356,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/boletas/registrar/devolucion",
+							"raw": "{{host}}/api/boletas/registrar/devolucion/10",
 							"host": [
 								"{{host}}"
 							],
@@ -364,7 +364,8 @@
 								"api",
 								"boletas",
 								"registrar",
-								"devolucion"
+								"devolucion",
+								"10"
 							]
 						}
 					},
@@ -376,14 +377,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/boletas/2018170667",
+							"raw": "{{host}}/api/boletas/2018170668",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"boletas",
-								"2018170667"
+								"2018170668"
 							]
 						}
 					},
@@ -413,7 +414,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/boletas/fecha/2024-01-08/2024-01-08",
+							"raw": "{{host}}/api/boletas/fecha/2024-01-08/2025-01-08",
 							"host": [
 								"{{host}}"
 							],
@@ -422,14 +423,78 @@
 								"boletas",
 								"fecha",
 								"2024-01-08",
-								"2024-01-08"
+								"2025-01-08"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Consultar XML boleta",
+					"name": "Consultar HTML boleta",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/boletas/10/html",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"boletas",
+								"10",
+								"html"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar PDF boleta",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/boletas/10/pdf",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"boletas",
+								"10",
+								"pdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enviar por correro la boleta",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -446,15 +511,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/boletas/4/xml",
+							"raw": "{{host}}/api/boletas/10/enviar-correo",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"boletas",
-								"4",
-								"xml"
+								"10",
+								"enviar-correo"
 							]
 						}
 					},
@@ -463,6 +528,16 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
